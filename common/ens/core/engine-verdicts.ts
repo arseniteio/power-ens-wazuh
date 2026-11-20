@@ -11,6 +11,7 @@ import { renderEngineMessage } from '../catalog/engine-messages';
 import { getEvidenceDefinitions } from './evidence/registry';
 import type { ENSTally } from './tally';
 import type {
+  ENSAttestation,
   ENSComplianceResult,
   ENSComplianceStatus,
   ENSEvidenceResult,
@@ -51,6 +52,13 @@ const STATUS: Record<string, ENSComplianceStatus> = {
 
 const reasonOf = (verdict?: ENSEngineVerdict): string | undefined =>
   verdict && (renderEngineMessage(verdict.reason_code, verdict.reason_args) ?? verdict.reason);
+
+const attestationOf = (verdict?: ENSEngineVerdict): { attestation?: ENSAttestation } => {
+  const args = verdict?.reason_args;
+  if (verdict?.reason_code !== 'requirement.attested' || !args) return {};
+  const links = Array.isArray(args.links) ? args.links.filter((link): link is string => typeof link === 'string') : [];
+  return { attestation: { reference: String(args.reference ?? ''), links } };
+};
 
 const statusOfVerdict = (status?: string): ENSComplianceStatus => (status && STATUS[status]) || 'NO_EVALUABLE';
 
@@ -137,6 +145,7 @@ export const buildENSResultFromVerdicts = (
       applicable,
       evidenced: verdict ? verdict.evidenced === true : false,
       ...(verdict?.attested ? { attested: true } : {}),
+      ...attestationOf(verdict),
       score: status === 'CUMPLE' ? 100 : 0,
       observations: [reasonOf(verdict) || (applicable ? noVerdict : requirement.applicability.reason || `No aplica en nivel ${level}.`)],
       evidenceIds: requirement.evidenceIds,

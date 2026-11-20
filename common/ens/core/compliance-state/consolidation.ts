@@ -18,6 +18,11 @@ interface ENSAgentResultEntry {
   result: ENSComplianceResult;
 }
 
+const attestationAmong = (requirements: ENSRequirementResult[]): Pick<ENSRequirementResult, 'attestation'> => {
+  const found = requirements.find(requirement => requirement.attestation)?.attestation;
+  return found ? { attestation: found } : {};
+};
+
 const uniqueValues = <T>(values: T[]): T[] => Array.from(new Set(values));
 
 const uniqueByKey = <T>(items: T[], keyOf: (item: T) => string): T[] => {
@@ -217,6 +222,7 @@ const consolidateRequirements = (entries: ENSAgentResultEntry[]): ENSRequirement
 
     const template = { ...requirementEntries[0].requirement };
     delete template.attested;
+    delete template.attestation;
     delete template.documental;
 
     const evidenceIds = uniqueValues(
@@ -252,6 +258,7 @@ const consolidateRequirements = (entries: ENSAgentResultEntry[]): ENSRequirement
         ({ requirement }) => requirement.evidenced !== false
       ),
       ...(attested ? { attested: true } : {}),
+      ...(attested ? attestationAmong(requirementEntries.map(({ requirement }) => requirement)) : {}),
       ...(documental ? { documental: true } : {}),
       level: uniqueValues(requirementEntries.flatMap(({ requirement }) => requirement.level)),
       evidenceIds: evidenceIds.length > 0 ? evidenceIds : undefined,

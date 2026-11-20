@@ -56,6 +56,7 @@ import { ControlGuideFlyout, ControlRelationPanel, GuideCode } from './control-g
 import type { GuideTarget } from './control-guide';
 import { ProvenancedText, RequirementTextsPanel, TemplateCorrespondencePanel } from './requirement-texts';
 import { InfoTip } from '../../ui/info-tip';
+import { AttestationLinks } from './attestation-links';
 import { formatTally } from '../../../../common/ens/core/tally';
 import { describeNotMeasuredOnAgent } from '../../../../common/ens/core/scope/measurement-planes';
 import {
@@ -1020,7 +1021,9 @@ export const ControlDetailENS = ({
                         </EuiFlexItem>
 
                         <EuiFlexItem>
-                          {isCompliant ? (
+                          {isCompliant && requirement.attestation ? (
+                            <AttestationLinks attestation={requirement.attestation} />
+                          ) : isCompliant ? (
                             <EuiText size='xs' color='subdued'>
                               {compliantRequirementLabel(requirement)}
                             </EuiText>

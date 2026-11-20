@@ -53,6 +53,11 @@ export type ENSComplianceStatus =
   | 'NO_EVALUABLE'
   | 'NO_APLICA';
 
+export interface ENSAttestation {
+  reference: string;
+  links: string[];
+}
+
 export interface ENSRequirementResult {
   id: string;
   title: string;
@@ -62,6 +67,8 @@ export interface ENSRequirementResult {
   evidenced?: boolean;
 
   attested?: boolean;
+
+  attestation?: ENSAttestation;
 
   documental?: boolean;
 
