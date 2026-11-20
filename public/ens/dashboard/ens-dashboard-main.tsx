@@ -43,6 +43,7 @@ import { OrganizationMaturityPanel } from '../maturity/organization-maturity-pan
 import { downloadCsv } from '../download-csv';
 import { metricsCsv } from '../../../common/ens/maturity/metrics-export';
 import { assessmentsOf } from '../../../common/ens/maturity/assessments';
+import { categoryLabel } from '../../../common/ens/core/control-level';
 
 interface DashboardResponse {
   dashboard: ReturnType<typeof buildENSDashboardModel>;
@@ -61,7 +62,6 @@ const REVIEW_PANEL_ID = 'ens-controles-revision';
 
 const ATTENTION_FILTERS = ['NO_CUMPLE', 'PARCIAL', 'NO_EVALUABLE'];
 
-const LEVEL_LABELS: Record<string, string> = { BAJO: 'Bajo', MEDIO: 'Medio', ALTO: 'Alto' };
 
 const percent = (score?: number): string => (typeof score === 'number' ? `${score} %` : '—');
 
@@ -177,7 +177,7 @@ const IndexPanel = ({ data, counts, delta }: { data: DashboardResponse; counts: 
           <EuiText size='s' color='subdued'>
             <p>
               {compliance.measured ? `${compliance.measured} de ${compliance.total} controles medidos` : 'Sin controles medidos'}
-              {level ? ` · Nivel ENS ${LEVEL_LABELS[level] || level}` : ''}
+              {level ? ` · Categoría ${categoryLabel(level)}` : ''}
             </p>
           </EuiText>
           {typeof delta === 'number' && (

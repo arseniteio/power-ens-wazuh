@@ -4,6 +4,7 @@ import type { ENSGlobalConfiguration } from '../../../../common/ens/configuratio
 import {
   ENS_DIMENSION_LEVEL_KEYS,
   ENS_DIMENSION_NAMES,
+  categoryLabel,
   findDimensionsAboveENSLevel,
 } from '../../../../common/ens/core/control-level';
 import { configurationSearchChanges } from '../../../routing/configuration-link';
@@ -18,7 +19,7 @@ const describeIncoherentLevelsLine = (global?: Partial<ENSGlobalConfiguration>):
 
   const list = above.map(d => `${ENS_DIMENSION_NAMES[d]} (${d}) ${global[ENS_DIMENSION_LEVEL_KEYS[d]]}`).join(', ');
 
-  return `Niveles incoherentes: ${list} ${above.length === 1 ? 'supera' : 'superan'} el nivel ENS ${global.ensLevel}.`;
+  return `Niveles incoherentes: ${list} ${above.length === 1 ? 'supera' : 'superan'} la categoría del sistema ${categoryLabel(global.ensLevel)}.`;
 };
 
 export const IncoherentLevelsNotice = ({ global }: { global?: Partial<ENSGlobalConfiguration> }) => {

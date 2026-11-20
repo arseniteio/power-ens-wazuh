@@ -18,6 +18,7 @@ import {
   ENS_DIMENSION_LEVEL_KEYS,
   ENS_DIMENSION_NAMES,
   ENS_DIMENSIONS,
+  ENS_CATEGORY_LABELS,
   describeDimensionsAboveENSLevel,
   listControlDimensions,
 } from '../../../../common/ens/core/control-level';
@@ -28,34 +29,21 @@ interface GlobalConfigurationPanelProps {
   onConfigurationSaved: () => void;
 }
 
-const ensLevelOptions = [
-  {
-    value: 'BAJO',
-    text: 'BAJO',
-  },
-  {
-    value: 'MEDIO',
-    text: 'MEDIO',
-  },
-  {
-    value: 'ALTO',
-    text: 'ALTO',
-  },
-];
+const categoryOptions = (['BAJO', 'MEDIO', 'ALTO'] as const).map(value => ({ value, text: ENS_CATEGORY_LABELS[value] }));
 
 const dimensionLevelOptions = [
   {
     value: '',
-    text: 'El mismo que el nivel ENS',
+    text: 'Según la categoría',
   },
-  ...ensLevelOptions,
+  ...(['BAJO', 'MEDIO', 'ALTO'] as const).map(value => ({ value, text: value })),
 ];
 
 const describeDimensionUse = (dimension: ENSLevelDimension): string => {
   const users = ENSCatalog.filter(control => listControlDimensions(control).includes(dimension)).map(control => control.id);
 
   return users.length
-    ? `Afecta a ${users.length} ${users.length === 1 ? 'control' : 'controles'}. Si no se indica, se usa el nivel ENS.`
+    ? `Afecta a ${users.length} ${users.length === 1 ? 'control' : 'controles'}. Sin valor: categoría del sistema.`
     : 'No afecta a ningún control.';
 };
 
@@ -212,15 +200,6 @@ export const GlobalConfigurationPanel = ({
 
       <EuiSpacer size='s' />
 
-      <EuiText
-        size='s'
-        color='subdued'
-      >
-        <p>
-          Nivel ENS y periodo de evaluación.
-        </p>
-      </EuiText>
-
       <EuiSpacer size='m' />
 
       {saveError && (
@@ -286,13 +265,13 @@ export const GlobalConfigurationPanel = ({
       </EuiFormRow>
 
       <EuiFormRow
-        label='Nivel ENS'
+        label='Categoría del sistema'
         
         fullWidth
       >
         <Choice
-          legend='Nivel ENS'
-          options={ensLevelOptions}
+          legend='Categoría del sistema'
+          options={categoryOptions}
           value={draftConfiguration.ensLevel}
           onChange={(value: string) => updateField(
               'ensLevel',

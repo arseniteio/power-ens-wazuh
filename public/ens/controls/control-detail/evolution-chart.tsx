@@ -106,7 +106,7 @@ const ReadingLabel = ({
           {shortSeries && withoutNumber > 0 ? ' ' : null}
           {withoutNumber > 0 ? (
             <>
-              {withoutNumber} día(s) sin dibujar: el control no aplicaba al nivel ENS
+              {withoutNumber} día(s) sin dibujar: el control no aplicaba a la categoría del sistema
               de esa fecha. No son un cero.
             </>
           ) : null}

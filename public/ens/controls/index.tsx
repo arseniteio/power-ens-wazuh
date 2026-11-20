@@ -102,7 +102,7 @@ export const ControlsENS = () => {
               <p>
                 <EuiIcon type='iInCircle' /> {outOfLevel.text}: sin requisitos en este nivel.{' '}
                 <EuiLink onClick={() => updateUrl({ tabView: 'configuration', configView: 'general', configAgent: undefined, configControl: undefined, configParam: undefined })}>
-                  Nivel ENS
+                  Categoría del sistema
                 </EuiLink>
               </p>
             </EuiText>

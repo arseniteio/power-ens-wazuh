@@ -28,6 +28,12 @@ export const ENS_DIMENSION_NAMES: Record<ENSLevelDimension, string> = {
 
 const LEVEL_RANK: Record<ENSLevel, number> = { BAJO: 1, MEDIO: 2, ALTO: 3 };
 
+// The configuration keeps BAJO for rank 1 in both places; only the system category is named BÁSICO.
+export const ENS_CATEGORY_LABELS: Record<ENSLevel, string> = { BAJO: 'BÁSICO', MEDIO: 'MEDIO', ALTO: 'ALTO' };
+
+export const categoryLabel = (level?: string): string =>
+  (level && ENS_CATEGORY_LABELS[level as ENSLevel]) || level || '';
+
 const isENSLevel = (value: unknown): value is ENSLevel =>
   typeof value === 'string' && value in LEVEL_RANK;
 
@@ -96,7 +102,7 @@ export const describeDimensionsAboveENSLevel = (
     .map(dimension => `${ENS_DIMENSION_NAMES[dimension]} (${dimension}) ${global[ENS_DIMENSION_LEVEL_KEYS[dimension]]}`)
     .join(', ');
 
-  return `El nivel ENS (${global.ensLevel}) es inferior a: ${list}.`;
+  return `Categoría del sistema ${categoryLabel(global.ensLevel)} inferior a: ${list}.`;
 };
 
 export const describeControlAxis = (
@@ -128,5 +134,5 @@ export const describeLevelSource = (
 export const describeApplicableLevelLabel = (control: Pick<ENSControlDefinition, 'levelDimension'>): string => {
   const source = describeLevelSource(control);
 
-  return source ? `Nivel aplicable (${source})` : 'Nivel ENS';
+  return source ? `Nivel aplicable (${source})` : 'Categoría del sistema';
 };
