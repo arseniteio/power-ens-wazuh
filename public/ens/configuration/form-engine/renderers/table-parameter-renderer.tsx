@@ -21,6 +21,7 @@ import {
   validateParameterValue,
 } from '../../../../../common/ens/configuration/services/parameter-value-validator';
 import { Choice } from '../../../ui/choice';
+import { ParameterLabel } from './parameter-label';
 
 
 const MIN_CELL = 140;
@@ -138,20 +139,11 @@ export const TableParameterRenderer = ({
     .map(column => column.label)
     .join(', ');
 
-  const help = [
-    parameter.description,
-    requiredColumns
-      ? `Columnas obligatorias: ${requiredColumns}.`
-      : '',
-    '',
-  ]
-    .filter(Boolean)
-    .join(' ');
+  const requiredColumnsDetail = requiredColumns ? [`Columnas obligatorias: ${requiredColumns}.`] : [];
 
   return (
     <EuiFormRow
-      label={`${parameter.id} · ${parameter.label}`}
-      helpText={help}
+      label={<ParameterLabel parameter={parameter} details={requiredColumnsDetail} />}
       isInvalid={!verdict.valid}
       error={
         verdict.reason

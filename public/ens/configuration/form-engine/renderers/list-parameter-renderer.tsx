@@ -10,6 +10,7 @@ import {
   hasParameterSeparator,
   parseParameterInput,
 } from '../../../../../common/ens/configuration/services/parameter-input';
+import { ParameterLabel } from './parameter-label';
 
 export const ListParameterRenderer = ({
   parameter,
@@ -34,7 +35,7 @@ export const ListParameterRenderer = ({
 
   return (
     <EuiFormRow
-      label={`${parameter.id} · ${parameter.label}`}
+      label={<ParameterLabel parameter={parameter} />}
       helpText={
         parameter.example
           ? `Ej.: ${parameter.example}`

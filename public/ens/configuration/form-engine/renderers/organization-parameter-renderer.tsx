@@ -8,6 +8,7 @@ import type {
 import { organizationValueLines } from '../../../../../common/ens/configuration/organization/organization-data-form';
 import { useSetRouterSearch } from '../../../../routing/use-router-search';
 import { configurationSearchChanges } from '../../../../routing/configuration-link';
+import { ParameterLabel } from './parameter-label';
 
 interface OrganizationParameterRendererProps {
   parameter: ENSControlParameter;
@@ -19,7 +20,7 @@ export const OrganizationParameterRenderer = ({ parameter, value, item }: Organi
   const setSearch = useSetRouterSearch();
   const lines = organizationValueLines(value);
   return (
-    <EuiFormRow label={`${parameter.id} · ${parameter.label}`} helpText={parameter.description} fullWidth>
+    <EuiFormRow label={<ParameterLabel parameter={parameter} />} fullWidth>
       <EuiText size='s'>
         {lines.length ? (
           <ul>

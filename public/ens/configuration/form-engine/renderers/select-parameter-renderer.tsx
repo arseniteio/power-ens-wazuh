@@ -7,6 +7,7 @@ import {
   validateParameterValue,
 } from '../../../../../common/ens/configuration/services/parameter-value-validator';
 import { Choice } from '../../../ui/choice';
+import { ParameterLabel } from './parameter-label';
 
 
 export const SelectParameterRenderer = ({
@@ -35,14 +36,11 @@ export const SelectParameterRenderer = ({
     })),
   ];
 
-  const helpText = model.legacyValue
-    ? `${parameter.description} El valor configurado (${model.legacyValue}) no está entre las opciones admitidas: se conserva hasta que se elija una, no se borra solo.`
-    : `${parameter.description} Solo se admiten las opciones de la lista.`;
 
   return (
     <EuiFormRow
-      label={`${parameter.id} · ${parameter.label}`}
-      helpText={helpText}
+      label={<ParameterLabel parameter={parameter} />}
+      helpText={model.legacyValue ? `Valor guardado fuera de las opciones: ${model.legacyValue}` : undefined}
       isInvalid={!verdict.valid}
       error={
         verdict.reason

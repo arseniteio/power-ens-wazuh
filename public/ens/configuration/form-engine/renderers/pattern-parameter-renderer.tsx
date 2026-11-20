@@ -14,6 +14,7 @@ import {
 import { ListParameterRenderer } from './list-parameter-renderer';
 import { TextParameterRenderer } from './text-parameter-renderer';
 import { Choice } from '../../../ui/choice';
+import { ParameterLabel } from './parameter-label';
 
 export const PatternParameterRenderer = ({ parameter, value, onChange, onMatchModeChange }: ENSFormFieldProps) => {
   const mode: ENSMatchMode = parameter.matchMode === 'regex' ? 'regex' : 'exact';
@@ -59,7 +60,7 @@ export const PatternParameterRenderer = ({ parameter, value, onChange, onMatchMo
       {mode === 'regex' ? (
         <>
           <EuiFormRow
-            label={`${parameter.id} · ${parameter.label}`}
+            label={<ParameterLabel parameter={parameter} />}
             fullWidth
             helpText='Ej.: ^svc_.*$'
             isInvalid={!verdict.valid}

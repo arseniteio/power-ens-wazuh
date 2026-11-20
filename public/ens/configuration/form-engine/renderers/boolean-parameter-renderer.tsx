@@ -4,6 +4,7 @@ import { EuiFormRow } from '@elastic/eui';
 import { ENSFormFieldProps } from '../types';
 import { resolveBooleanFieldModel, validateParameterValue } from '../../../../../common/ens/configuration/services/parameter-value-validator';
 import { Choice } from '../../../ui/choice';
+import { ParameterLabel } from './parameter-label';
 
 export const BooleanParameterRenderer = ({ parameter, value, onChange }: ENSFormFieldProps) => {
   const model = resolveBooleanFieldModel(value);
@@ -11,8 +12,7 @@ export const BooleanParameterRenderer = ({ parameter, value, onChange }: ENSForm
 
   return (
     <EuiFormRow
-      label={`${parameter.id} · ${parameter.label}`}
-      helpText={parameter.description}
+      label={<ParameterLabel parameter={parameter} />}
       isInvalid={!verdict.valid}
       error={verdict.reason ? [verdict.reason] : undefined}
       fullWidth

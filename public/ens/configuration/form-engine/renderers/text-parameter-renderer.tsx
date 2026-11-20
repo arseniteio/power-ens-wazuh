@@ -3,6 +3,7 @@ import { EuiFieldText, EuiFormRow } from '@elastic/eui';
 
 import { ENSFormFieldProps } from '../types';
 import { validateParameterValue } from '../../../../../common/ens/configuration/services/parameter-value-validator';
+import { ParameterLabel } from './parameter-label';
 
 export const TextParameterRenderer = ({
   parameter,
@@ -16,8 +17,7 @@ export const TextParameterRenderer = ({
 
   return (
     <EuiFormRow
-      label={`${parameter.id} · ${parameter.label}`}
-      helpText={parameter.description}
+      label={<ParameterLabel parameter={parameter} />}
       isInvalid={!verdict.valid}
       error={
         verdict.reason
