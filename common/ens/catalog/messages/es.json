@@ -921,7 +921,7 @@
   "probe.not_written": "el agente no pudo escribir su sonda en syslog: {error}",
   "probe.pending": "la sonda más reciente aún no ha tenido tiempo de volver",
   "raw": "{text}",
-  "requirement.attested": "acreditado documentalmente: {reference}",
+  "requirement.attested": "acreditado documentalmente: {reference} ({links})",
   "requirement.compliant": "cumple: {evidences}",
   "requirement.control_disabled": "control desactivado en la configuración",
   "requirement.decision_gap": "no demostrado: {reason}",
