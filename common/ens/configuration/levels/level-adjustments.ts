@@ -50,3 +50,27 @@ export const adjustedLevel = (
   const adjustment = usable.find(a => agentId && a.agentId === agentId) || usable.find(a => !a.agentId);
   return adjustment ? { level: adjustment.level, adjustment } : { level };
 };
+
+type WithAdjustments = { levelAdjustments?: ENSLevelAdjustment[] };
+
+const sameTarget = (a: Pick<ENSLevelAdjustment, 'controlId' | 'agentId'>, b: Pick<ENSLevelAdjustment, 'controlId' | 'agentId'>): boolean =>
+  a.controlId === b.controlId && (a.agentId || '') === (b.agentId || '');
+
+const byTarget = (a: ENSLevelAdjustment, b: ENSLevelAdjustment): number =>
+  a.controlId.localeCompare(b.controlId) || (a.agentId || '').localeCompare(b.agentId || '');
+
+export const setLevelAdjustment = <T extends WithAdjustments>(configuration: T, next: ENSLevelAdjustment, replaced?: ENSLevelAdjustment): T => {
+  const clean: ENSLevelAdjustment = {
+    controlId: next.controlId,
+    ...(next.agentId?.trim() ? { agentId: next.agentId.trim() } : {}),
+    level: next.level,
+    reason: next.reason.trim(),
+  };
+  const others = (configuration.levelAdjustments || []).filter(a => !sameTarget(a, clean) && !(replaced && sameTarget(a, replaced)));
+  return { ...configuration, levelAdjustments: [...others, clean].sort(byTarget) };
+};
+
+export const removeLevelAdjustment = <T extends WithAdjustments>(configuration: T, removed: ENSLevelAdjustment): T => ({
+  ...configuration,
+  levelAdjustments: (configuration.levelAdjustments || []).filter(a => !sameTarget(a, removed)),
+});

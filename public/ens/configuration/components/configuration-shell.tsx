@@ -40,6 +40,8 @@ import { useHostSummary } from '../profiles/use-host-summary';
 import { GroupsTab } from '../groups/groups-tab';
 import { PendingTab } from '../profiles/pending-tab';
 import { DeclaredMeasuresPanel } from '../../maturity/declared-measures-panel';
+import { LevelAdjustmentsPanel } from './level-adjustments-panel';
+import { MaturityScalesPanel } from './maturity-scales-panel';
 
 type TabId = 'groups' | 'pending' | 'organization' | 'general';
 
@@ -176,6 +178,10 @@ const ConfigurationContent = () => {
             <OrganizationDataPanel configuration={activeConfiguration} onConfigurationSaved={handleConfigurationSaved} />
             <EuiSpacer size='l' />
             <DeclaredMeasuresPanel configuration={activeConfiguration} onSaved={handleConfigurationSaved} />
+            <EuiSpacer size='l' />
+            <LevelAdjustmentsPanel configuration={activeConfiguration} onSaved={handleConfigurationSaved} />
+            <EuiSpacer size='l' />
+            <MaturityScalesPanel configuration={activeConfiguration} onSaved={handleConfigurationSaved} />
             <EuiSpacer size='l' />
             <ControlsTab
               configuration={activeConfiguration}

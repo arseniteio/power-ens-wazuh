@@ -98,3 +98,28 @@ export const stampAssessments = (
       ? { ...entry, assessedBy: before!.assessedBy, assessedAt: before!.assessedAt }
       : { ...entry, assessedBy: user, assessedAt: now };
   });
+
+const sameScaleTarget = (a: ENSMaturityScale, b: ENSMaturityScale): boolean =>
+  a.controlId === b.controlId && (a.agentId || '') === (b.agentId || '');
+
+const withScales = (configuration: ENSConfigurationVersion, scales: ENSMaturityScale[]): ENSConfigurationVersion => ({
+  ...configuration,
+  maturity: { assessments: assessmentsOf(configuration), ...(scales.length ? { scales } : {}) },
+});
+
+export const setScale = (configuration: ENSConfigurationVersion, next: ENSMaturityScale, replaced?: ENSMaturityScale): ENSConfigurationVersion => {
+  const clean: ENSMaturityScale = {
+    controlId: next.controlId,
+    ...(next.agentId?.trim() ? { agentId: next.agentId.trim() } : {}),
+    thresholds: next.thresholds,
+  };
+  const others = scalesOf(configuration).filter(s => !sameScaleTarget(s, clean) && !(replaced && sameScaleTarget(s, replaced)));
+  const scales = [...others, clean].sort((a, b) => a.controlId.localeCompare(b.controlId) || (a.agentId || '').localeCompare(b.agentId || ''));
+  return withScales(configuration, scales);
+};
+
+export const removeScale = (configuration: ENSConfigurationVersion, removed: ENSMaturityScale): ENSConfigurationVersion =>
+  withScales(configuration, scalesOf(configuration).filter(s => !sameScaleTarget(s, removed)));
+
+export const thresholdsProblem = (thresholds: number[]): string | undefined =>
+  risingPercents(thresholds) ? undefined : `${ENS_MATURITY_MAX} porcentajes de 0 a 100 en orden creciente`;

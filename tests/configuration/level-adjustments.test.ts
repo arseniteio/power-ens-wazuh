@@ -28,3 +28,20 @@ describe('level adjustments', () => {
     assert.equal(validateLevelAdjustmentsShape({}).length, 1);
   });
 });
+
+describe('editing level adjustments', () => {
+  test('replaces the one for the same control and machine and keeps the rest sorted', async () => {
+    const { setLevelAdjustment, removeLevelAdjustment } = await import('../../common/ens/configuration/levels/level-adjustments');
+    let configuration: { levelAdjustments?: ENSLevelAdjustment[] } = {};
+    configuration = setLevelAdjustment(configuration, { controlId: 'op.exp.2', level: 'MEDIO', reason: ' acta ' });
+    configuration = setLevelAdjustment(configuration, { controlId: 'op.acc.1', agentId: ' 001 ', level: 'BAJO', reason: 'lab' });
+    configuration = setLevelAdjustment(configuration, { controlId: 'op.exp.2', level: 'BAJO', reason: 'acta 2' });
+    assert.deepEqual(configuration.levelAdjustments, [
+      { controlId: 'op.acc.1', agentId: '001', level: 'BAJO', reason: 'lab' },
+      { controlId: 'op.exp.2', level: 'BAJO', reason: 'acta 2' },
+    ]);
+    const moved = setLevelAdjustment(configuration, { controlId: 'op.acc.2', level: 'BAJO', reason: 'x' }, { controlId: 'op.exp.2', level: 'BAJO', reason: '' });
+    assert.deepEqual(moved.levelAdjustments?.map(a => a.controlId), ['op.acc.1', 'op.acc.2']);
+    assert.equal(removeLevelAdjustment(configuration, { controlId: 'op.acc.1', agentId: '001', level: 'BAJO', reason: '' }).levelAdjustments?.length, 1);
+  });
+});

@@ -119,3 +119,17 @@ describe('maturity scales', () => {
     assert.deepEqual(organizationMaturityOf(body).measures['mp.info.6'].tally, { met: 36, total: 40, percent: 90, level: 4 });
   });
 });
+
+describe('editing scales', () => {
+  test('keeps the assessments and replaces the scale of the same target', async () => {
+    const { setScale, removeScale, thresholdsProblem } = await import('../../common/ens/maturity/assessments');
+    const start = { maturity: { assessments: [{ measureId: 'op.acc.1', level: 3 }] } } as any;
+    const one = setScale(start, { controlId: 'mp.info.6', thresholds: [20, 40, 60, 80, 100] });
+    const two = setScale(one, { controlId: 'mp.info.6', thresholds: [10, 30, 50, 70, 90] });
+    assert.deepEqual(two.maturity?.scales, [{ controlId: 'mp.info.6', thresholds: [10, 30, 50, 70, 90] }]);
+    assert.deepEqual(two.maturity?.assessments, [{ measureId: 'op.acc.1', level: 3 }]);
+    assert.equal(removeScale(two, { controlId: 'mp.info.6', thresholds: [] }).maturity?.scales, undefined);
+    assert.equal(thresholdsProblem([20, 40, 60, 80, 100]), undefined);
+    assert.ok(thresholdsProblem([20, 40, 30, 80, 100]));
+  });
+});
