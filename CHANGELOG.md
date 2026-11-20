@@ -7,6 +7,13 @@ All notable changes to Power ENS are documented in this file. The format follows
 ### Added
 
 - Evidences that count items show the count, the percentage and the level the engine set. Each judged measure shows Máquinas conformes.
+- An attested requirement shows its reference and links.
+- The fleet view shows, per requirement, the machines where it complies.
+- The configuration accepts and keeps `levelAdjustments`.
+
+### Fixed
+
+- A non-conformity on one machine names that machine.
 
 ### Changed
 
