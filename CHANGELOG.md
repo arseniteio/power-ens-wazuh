@@ -10,6 +10,7 @@ All notable changes to Power ENS are documented in this file. The format follows
 - An attested requirement shows its reference and links.
 - The fleet view shows, per requirement, the machines where it complies.
 - The configuration accepts and keeps `levelAdjustments`.
+- Configuración, Organización edits level adjustments and maturity scales.
 
 ### Fixed
 
@@ -21,6 +22,7 @@ All notable changes to Power ENS are documented in this file. The format follows
 - Parameter descriptions move from the help text to an info icon next to the label.
 - The system category reads BÁSICO, MEDIO or ALTO; dimension levels stay BAJO, MEDIO or ALTO.
 - Saving the configuration keeps `maturity.scales`.
+- One non-conformity per failed evidence lists every requirement it breaks, instead of one repeated card per requirement.
 
 ## [2.0.1] - 2026-11-19
 
