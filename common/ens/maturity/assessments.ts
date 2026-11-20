@@ -1,5 +1,5 @@
 import type { ENSConfigurationVersion } from '../configuration/types';
-import { ENS_MATURITY_MAX, ENSMaturityAssessment } from './types';
+import { ENS_MATURITY_MAX, ENSMaturityAssessment, ENSMaturityScale } from './types';
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -28,8 +28,38 @@ export const validateMaturityShape = (value: unknown, path: string = 'configurat
       if (entry[key] !== undefined && typeof entry[key] !== 'string') errors.push(`${at}.${key} must be a string.`);
     });
   });
+  return [...errors, ...validateScales(value.scales, `${path}.scales`)];
+};
+
+const isPercent = (value: unknown): value is number => Number.isInteger(value) && (value as number) >= 0 && (value as number) <= 100;
+
+const risingPercents = (value: unknown): boolean =>
+  Array.isArray(value) &&
+  value.length === ENS_MATURITY_MAX &&
+  value.every((threshold, index) => isPercent(threshold) && (index === 0 || threshold >= value[index - 1]));
+
+const validateScales = (value: unknown, path: string): string[] => {
+  if (value === undefined) return [];
+  if (!Array.isArray(value)) return [`${path} must be an array.`];
+  const errors: string[] = [];
+  const seen = new Set<string>();
+  value.forEach((entry, index) => {
+    const at = `${path}[${index}]`;
+    if (!isRecord(entry) || typeof entry.controlId !== 'string' || !MEASURE.test(entry.controlId)) {
+      errors.push(`${at}.controlId must be an ENS measure such as mp.info.6.`);
+      return;
+    }
+    if (entry.agentId !== undefined && (typeof entry.agentId !== 'string' || !entry.agentId.trim())) errors.push(`${at}.agentId must be a Wazuh agent id.`);
+    const key = `${entry.controlId}|${entry.agentId || ''}`;
+    if (seen.has(key)) errors.push(`${at}: ${entry.controlId}${entry.agentId ? ` on ${entry.agentId}` : ''} has two scales.`);
+    seen.add(key);
+    if (!risingPercents(entry.thresholds)) errors.push(`${at}.thresholds must be ${ENS_MATURITY_MAX} rising percents from 0 to 100, the minimum for L1 to L${ENS_MATURITY_MAX}.`);
+  });
   return errors;
 };
+
+export const scalesOf = (configuration: Pick<ENSConfigurationVersion, 'maturity'>): ENSMaturityScale[] =>
+  configuration.maturity?.scales || [];
 
 export const assessmentsOf = (configuration: Pick<ENSConfigurationVersion, 'maturity'>): ENSMaturityAssessment[] =>
   configuration.maturity?.assessments || [];
@@ -48,7 +78,8 @@ export const setAssessment = (
 ): ENSConfigurationVersion => {
   const others = assessmentsOf(configuration).filter(entry => entry.measureId !== next.measureId);
   const assessments = emptyAssessment(next) ? others : [...others, next].sort((a, b) => a.measureId.localeCompare(b.measureId));
-  return { ...configuration, maturity: { assessments } };
+  const scales = scalesOf(configuration);
+  return { ...configuration, maturity: scales.length ? { assessments, scales } : { assessments } };
 };
 
 const sameContent = (a: ENSMaturityAssessment, b?: ENSMaturityAssessment): boolean =>

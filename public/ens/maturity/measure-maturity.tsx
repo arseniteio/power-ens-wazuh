@@ -33,6 +33,7 @@ import {
 import { dateTimeLabel } from '../../../common/ens/core/date-label';
 import { Choice } from '../ui/choice';
 import { InfoTip } from '../ui/info-tip';
+import { formatTally } from '../../../common/ens/core/tally';
 
 const LEVEL_OPTIONS = [
   { value: '', text: 'Sin valorar' },
@@ -155,6 +156,11 @@ export const MeasureMaturity = ({
         <EuiFlexItem grow={false}>
           <EuiBadge color={assessed === undefined ? 'default' : 'primary'}>{`Valorado: ${assessed === undefined ? 'sin valorar' : maturityLabel(assessed)}`}</EuiBadge>
         </EuiFlexItem>
+        {maturity?.tally && (
+          <EuiFlexItem grow={false}>
+            <EuiBadge color='hollow'>{`Máquinas conformes: ${formatTally(maturity.tally)}`}</EuiBadge>
+          </EuiFlexItem>
+        )}
         {target !== undefined && (
           <EuiFlexItem grow={false}>
             <EuiBadge color={(assessed ?? maturity?.accredited ?? 0) < target ? 'warning' : 'success'}>{`Objetivo: L${target}`}</EuiBadge>

@@ -1,3 +1,5 @@
+import type { ENSTally } from '../core/tally';
+
 export const ENS_MATURITY_MAX = 5;
 export const ENS_MATURITY_MAX_ACCREDITED = 2;
 
@@ -29,8 +31,15 @@ export interface ENSMaturityAssessment {
   note?: string;
 }
 
+export interface ENSMaturityScale {
+  controlId: string;
+  agentId?: string;
+  thresholds: number[];
+}
+
 export interface ENSMaturityConfiguration {
   assessments: ENSMaturityAssessment[];
+  scales?: ENSMaturityScale[];
 }
 
 export interface ENSEngineMaturity {
@@ -53,6 +62,7 @@ export interface ENSEngineMaturity {
   assessed_counts?: number[];
   global_accredited?: number;
   global_assessed?: number;
+  tally?: ENSTally;
 }
 
 export interface ENSOrganizationMaturity {

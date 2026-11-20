@@ -97,3 +97,25 @@ describe('metrics export', () => {
     assert.equal(metricsCsv([], [], undefined, [{ measureId: 'org.2', references: ' +SUM(A1)' }], 'x').split('\r\n')[1].split(';')[11], '"\' +SUM(A1)"');
   });
 });
+
+describe('maturity scales', () => {
+  const scale = (fields: Record<string, unknown> = {}) => ({ controlId: 'mp.info.6', thresholds: [20, 40, 60, 80, 95], ...fields });
+
+  test('accept five rising percents per control or machine', () => {
+    assert.deepEqual(validateMaturityShape({ assessments: [], scales: [scale(), scale({ agentId: '001' })] }), []);
+    assert.equal(validateMaturityShape({ assessments: [], scales: [scale({ thresholds: [20, 40, 60, 80] })] }).length, 1);
+    assert.equal(validateMaturityShape({ assessments: [], scales: [scale({ thresholds: [20, 60, 40, 80, 95] })] }).length, 1);
+    assert.equal(validateMaturityShape({ assessments: [], scales: [scale({ thresholds: [20, 40, 60, 80, 101] })] }).length, 1);
+    assert.equal(validateMaturityShape({ assessments: [], scales: [scale(), scale()] }).length, 1);
+  });
+
+  test('survive an assessment', () => {
+    const withScale = { maturity: { assessments: [], scales: [scale()] } } as any;
+    assert.deepEqual(setAssessment(withScale, { measureId: 'op.acc.1', level: 3 }).maturity?.scales, [scale()]);
+  });
+
+  test('reach the measure as a tally of machines', () => {
+    const body = { hits: { hits: [{ _source: { '@timestamp': 't', control: 'mp.info.6', maturity: { accredited: 1 }, tally: { met: 36, total: 40, percent: 90, level: 4 } } }] } };
+    assert.deepEqual(organizationMaturityOf(body).measures['mp.info.6'].tally, { met: 36, total: 40, percent: 90, level: 4 });
+  });
+});

@@ -23,7 +23,7 @@ import {
 import { describeNewLevelOptionIssues } from '../../common/ens/configuration/services/level-options';
 import { withCatalogControls } from '../../common/ens/configuration/services/catalog-controls';
 import { stampAssessments, validateMaturityShape } from '../../common/ens/maturity/assessments';
-import type { ENSMaturityAssessment } from '../../common/ens/maturity/types';
+import type { ENSMaturityAssessment, ENSMaturityScale } from '../../common/ens/maturity/types';
 
 interface Options {
   logger: Logger;
@@ -45,6 +45,13 @@ const statusOf = (error: any): number => Number(error?.statusCode || error?.meta
 const HISTORY_NOT_WRITTEN = 'Guardado; no se pudo registrar el historial';
 
 const NO_ROLE = 'Hace falta el rol power_ens_admin o all_access para cambiar la configuración ENS o ver su historial.';
+
+// Scales come from the consultant's template, not from the maturity form: a save that does not
+// send them keeps the ones already stored.
+const keptScales = (sent?: ENSMaturityScale[], stored?: ENSMaturityScale[]): { scales?: ENSMaturityScale[] } => {
+  const scales = sent ?? stored;
+  return scales?.length ? { scales } : {};
+};
 
 export const createConfigurationHandlers = ({ logger, securityEnabled }: Options) => {
   const internal = (context: any) => context.core.opensearch.client.asInternalUser;
@@ -155,7 +162,12 @@ export const createConfigurationHandlers = ({ logger, securityEnabled }: Options
 
       const previousAssessments: ENSMaturityAssessment[] = previous2.maturity?.assessments || [];
       const maturity = Object.prototype.hasOwnProperty.call(bodyText.configuration, 'maturity')
-        ? { maturity: { assessments: stampAssessments(bodyText.configuration.maturity?.assessments || [], previousAssessments, username, now) } }
+        ? {
+            maturity: {
+              assessments: stampAssessments(bodyText.configuration.maturity?.assessments || [], previousAssessments, username, now),
+              ...keptScales(bodyText.configuration.maturity?.scales, previous2.maturity?.scales),
+            },
+          }
         : previous2.maturity
           ? { maturity: previous2.maturity }
           : {};

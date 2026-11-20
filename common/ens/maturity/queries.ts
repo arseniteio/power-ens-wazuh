@@ -25,7 +25,7 @@ export const organizationMaturityOf = (body: any): ENSOrganizationMaturity => {
     const source = hit?._source;
     if (!source || source['@timestamp'] !== at || !source.maturity) continue;
     if (source.control === ENS_ALL_MEASURES) summary = source.maturity;
-    else measures[source.control] = source.maturity;
+    else measures[source.control] = source.tally ? { ...source.maturity, tally: source.tally } : source.maturity;
   }
   return { at, summary, measures };
 };
