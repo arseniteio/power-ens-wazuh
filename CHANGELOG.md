@@ -4,6 +4,17 @@ All notable changes to Power ENS are documented in this file. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Evidences that count items show the count, the percentage and the level the engine set. Each judged measure shows Máquinas conformes.
+
+### Changed
+
+- The evidence table shows the evidence title; the template description moves to an info icon.
+- Parameter descriptions move from the help text to an info icon next to the label.
+- The system category reads BÁSICO, MEDIO or ALTO; dimension levels stay BAJO, MEDIO or ALTO.
+- Saving the configuration keeps `maturity.scales`.
+
 ## [2.0.1] - 2026-11-19
 
 ### Changed
