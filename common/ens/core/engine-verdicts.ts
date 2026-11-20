@@ -9,6 +9,7 @@ import { validateControlConfiguration } from '../configuration/services/validati
 import { resolveControlLevel } from './control-level';
 import { renderEngineMessage } from '../catalog/engine-messages';
 import { getEvidenceDefinitions } from './evidence/registry';
+import type { ENSTally } from './tally';
 import type {
   ENSComplianceResult,
   ENSComplianceStatus,
@@ -37,6 +38,7 @@ export interface ENSEngineVerdict {
   applicable_requirements?: number;
   measured_requirements?: number;
   unmeasured_requirements?: string[];
+  tally?: ENSTally;
 }
 
 const STATUS: Record<string, ENSComplianceStatus> = {
@@ -105,7 +107,9 @@ export const buildENSResultFromVerdicts = (
       id: definition.id,
       controlId,
       status: verdict ? statusOfVerdict(verdict.status) : 'NO_EVALUABLE',
+      title: definition.title,
       description: definition.description,
+      ...(verdict?.tally ? { tally: verdict.tally } : {}),
       observations: [reasonOf(verdict) || noVerdict],
       requirements: definition.requirements,
       levels: definition.levels,

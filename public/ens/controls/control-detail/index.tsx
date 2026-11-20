@@ -54,7 +54,9 @@ import { getControlRelation } from '../../../../common/ens/catalog/guide';
 import { describeApplicableLevelLabel } from '../../../../common/ens/core/control-level';
 import { ControlGuideFlyout, ControlRelationPanel, GuideCode } from './control-guide';
 import type { GuideTarget } from './control-guide';
-import { ProvenanceLabel, RequirementTextsPanel, TemplateCorrespondencePanel } from './requirement-texts';
+import { ProvenancedText, RequirementTextsPanel, TemplateCorrespondencePanel } from './requirement-texts';
+import { InfoTip } from '../../ui/info-tip';
+import { formatTally } from '../../../../common/ens/core/tally';
 import { describeNotMeasuredOnAgent } from '../../../../common/ens/core/scope/measurement-planes';
 import {
   ENS_PENDING_MEASUREMENT_LABEL,
@@ -207,7 +209,9 @@ export const ControlDetailENS = ({
 
   const evidenceStatusItems = (complianceResult?.evidences || []).map(evidence => ({
     id: evidence.id,
-    title: evidence.description,
+    title: evidence.title,
+    description: evidence.description,
+    tally: evidence.tally,
     requirement: evidence.requirements.join(', '),
     level: evidence.levels.join(', '),
     status: evidence.status,
@@ -1143,13 +1147,18 @@ export const ControlDetailENS = ({
             },
             {
               field: 'title',
-              name: 'Descripción',
+              name: 'Título',
               render: (title: string, item: (typeof evidenceStatusItems)[number]) => {
                 const requiredSource = describeRequiredSource(control.id, item.id);
 
                 return (
                   <EuiText size='s'>
-                    {title} <ProvenanceLabel provenance={ENS_PROPOSAL_TEXT_PROVENANCE} />
+                    {title}{' '}
+                    <InfoTip
+                      content={
+                        <ProvenancedText provenance={ENS_PROPOSAL_TEXT_PROVENANCE} text={item.description} />
+                      }
+                    />
                     {requiredSource && (
                       <EuiText size='xs' color='subdued'>
                         Fuente necesaria: {requiredSource}
@@ -1163,18 +1172,25 @@ export const ControlDetailENS = ({
               field: 'status',
               name: 'Estado',
               width: '150px',
-              render: (status: string) =>
+              render: (status: string, item: (typeof evidenceStatusItems)[number]) =>
                 pendingMeasurement ? (
                   <EuiBadge color='hollow' iconType='clock'>
                     {ENS_PENDING_MEASUREMENT_LABEL}
                   </EuiBadge>
                 ) : (
-                  <EuiBadge
-                    color={getBadgeColor(status)}
-                    iconType={getStatusIcon(status)}
-                  >
-                    {statusLabel(status)}
-                  </EuiBadge>
+                  <>
+                    <EuiBadge
+                      color={getBadgeColor(status)}
+                      iconType={getStatusIcon(status)}
+                    >
+                      {statusLabel(status)}
+                    </EuiBadge>
+                    {item.tally && (
+                      <EuiText size='xs' color='subdued'>
+                        {formatTally(item.tally)}
+                      </EuiText>
+                    )}
+                  </>
                 ),
             },
             {

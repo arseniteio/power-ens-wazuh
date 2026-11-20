@@ -1,3 +1,4 @@
+import { sumTallies } from '../tally';
 import type {
   ENSAgentRef,
   ENSComplianceResult,
@@ -294,6 +295,7 @@ const consolidateEvidences = (entries: ENSAgentResultEntry[]): ENSEvidenceResult
       ),
       relatedRules: uniqueValues(evidenceEntries.flatMap(({ evidence }) => evidence.relatedRules)),
       lastSeen: getLatestIsoDate(evidenceEntries.map(({ evidence }) => evidence.lastSeen)),
+      tally: sumTallies(evidenceEntries.map(({ evidence }) => evidence.tally)),
 
       observations: observationGroups.map(formatObservationGroup),
       observationGroups,

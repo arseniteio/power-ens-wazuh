@@ -1,3 +1,5 @@
+import type { ENSTally } from '../tally';
+
 export interface ENSAgentRef {
   agentId: string;
   agentName?: string;
@@ -74,7 +76,10 @@ export interface ENSEvidenceResult {
   id: string;
   controlId: string;
   status: ENSComplianceStatus;
+  title: string;
   description: string;
+
+  tally?: ENSTally;
 
   observations: string[];
 
