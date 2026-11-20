@@ -331,7 +331,7 @@ const nonConformityKey = (nonConformity: ENSNonConformity): string =>
   [
     nonConformity.origin,
     nonConformity.cause || '',
-    nonConformity.requirementId,
+    (nonConformity.requirementIds || [nonConformity.requirementId]).join(','),
     nonConformity.evidenceId,
     nonConformity.finding,
     nonConformity.impact,

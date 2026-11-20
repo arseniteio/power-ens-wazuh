@@ -38,6 +38,7 @@ export const nonConformitiesOf = (state: Pick<ENSComplianceState, 'results'> | u
         controlId: result.control.id,
         id: nc.id,
         requirementId: nc.requirementId,
+        ...(nc.requirementIds && nc.requirementIds.length > 1 ? { requirementIds: nc.requirementIds } : {}),
         origin: nc.origin,
         ...(nc.cause ? { cause: nc.cause } : {}),
         ...(nc.documental ? { documental: true } : {}),

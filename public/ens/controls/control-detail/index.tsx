@@ -227,6 +227,7 @@ export const ControlDetailENS = ({
       evidence: nonConformity.evidenceId,
       evidenceIds: nonConformity.evidenceIds || [],
       requirement: nonConformity.requirementId,
+      requirements: nonConformity.requirementIds || [nonConformity.requirementId],
       finding: nonConformity.finding,
       impact: nonConformity.impact,
       requiredAction: nonConformity.requiredAction,

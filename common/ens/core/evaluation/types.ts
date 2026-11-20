@@ -23,6 +23,7 @@ export interface ENSNonConformity {
   id: string;
   evidenceId: string;
   requirementId: string;
+  requirementIds?: string[];
   finding: string;
   impact: string;
   requiredAction: string;

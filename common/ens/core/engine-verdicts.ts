@@ -12,6 +12,7 @@ import { renderEngineMessage } from '../catalog/engine-messages';
 import { getEvidenceDefinitions } from './evidence/registry';
 import type { ENSTally } from './tally';
 import type {
+  ENSAgentRef,
   ENSAttestation,
   ENSComplianceResult,
   ENSComplianceStatus,
@@ -94,6 +95,93 @@ const ACTION_BY_CAUSE: Record<ENSGapCause, string> = {
 const isApplicable = (requirement: ENSRequirementDefinition, level: ENSLevel) =>
   requirement.applicability.levels.includes(level);
 
+interface NonConformityInput {
+  controlId: string;
+  level: ENSLevel;
+  machines: ENSAgentRef[];
+  failing: { id: string; evidenced: boolean; observations: string[] }[];
+  definitionOf: (id: string) => ENSRequirementDefinition;
+  evidenceVerdict: (id: string) => ENSEngineVerdict | undefined;
+}
+
+interface EvidenceFailure {
+  verdict: ENSEngineVerdict;
+  measured: boolean;
+  requirementIds: string[];
+}
+
+// One card per failed evidence: an evidence shared by several requirements (op.acc.1 EV-01 serves
+// four) would otherwise repeat the same finding once per requirement.
+const buildNonConformities = ({ controlId, level, machines, failing, definitionOf, evidenceVerdict }: NonConformityInput): ENSNonConformity[] => {
+  const byEvidence = new Map<string, EvidenceFailure>();
+  const withoutEvidence: Omit<ENSNonConformity, 'id'>[] = [];
+
+  for (const requirement of failing) {
+    const definition = definitionOf(requirement.id);
+    const own = definition.evidenceIds.map(evidenceVerdict).filter((v): v is ENSEngineVerdict => Boolean(v));
+    const culprits = requirement.evidenced
+      ? own.filter(v => v.status === 'NON_COMPLIANT' || v.status === 'PARTIAL')
+      : own.filter(v => v.status === 'NOT_EVALUABLE');
+
+    if (!culprits.length) {
+      const cause = requirement.evidenced ? undefined : requirementCause(definition, []);
+      withoutEvidence.push({
+        evidenceId: definition.evidenceIds[0] || (cause === 'CONFIGURATION' ? 'CONFIG' : 'ENS'),
+        requirementId: requirement.id,
+        requirementIds: [requirement.id],
+        finding: requirement.observations[0],
+        impact: `${requirement.evidenced ? 'Impide cumplir' : 'Sin prueba no se puede dar por cumplido'} ${controlId} en nivel ${level}.`,
+        requiredAction: cause ? ACTION_BY_CAUSE[cause] : `Corregir en la máquina lo que señala ${requirement.id}.`,
+        origin: requirement.evidenced ? 'MEDIDA' : 'NO_EVIDENCIADA',
+        ...(cause ? { cause } : {}),
+        evidenceIds: [],
+        parameterIds: [],
+        agents: machines,
+      });
+      continue;
+    }
+
+    for (const verdict of culprits) {
+      const key = `${requirement.evidenced ? 'M' : 'P'}|${verdict.evidence}`;
+      const entry = byEvidence.get(key) || { verdict, measured: requirement.evidenced, requirementIds: [] };
+      entry.requirementIds.push(requirement.id);
+      byEvidence.set(key, entry);
+    }
+  }
+
+  const fromEvidence = [...byEvidence.values()].map(({ verdict, measured, requirementIds }): Omit<ENSNonConformity, 'id'> => {
+    const evidenceId = verdict.evidence as string;
+    const base = {
+      evidenceId,
+      requirementId: requirementIds[0],
+      requirementIds,
+      finding: `${evidenceId}: ${reasonOf(verdict)}`,
+      evidenceIds: [evidenceId],
+      agents: machines,
+    };
+    if (measured) {
+      return {
+        ...base,
+        impact: `Impide cumplir ${controlId} (${requirementIds.join(', ')}) en nivel ${level}.`,
+        requiredAction: `Corregir en la máquina lo que señala ${evidenceId}.`,
+        origin: 'MEDIDA',
+        parameterIds: [],
+      };
+    }
+    const cause = requirementCause(definitionOf(requirementIds[0]), [verdict]);
+    return {
+      ...base,
+      impact: `Sin prueba no se puede dar por cumplido ${controlId} (${requirementIds.join(', ')}) en nivel ${level}.`,
+      requiredAction: ACTION_BY_CAUSE[cause],
+      origin: 'NO_EVIDENCIADA',
+      cause,
+      parameterIds: cause === 'CONFIGURATION' ? parameterIdsIn([verdict.reason]) : [],
+    };
+  });
+
+  return [...fromEvidence, ...withoutEvidence].map((card, index) => ({ ...card, id: `NC-${String(index + 1).padStart(3, '0')}` }));
+};
+
 export const buildENSResultFromVerdicts = (
   controlId: string,
   globalLevel: ENSLevel,
@@ -157,45 +245,14 @@ export const buildENSResultFromVerdicts = (
   const judgedMachine = verdicts.find(v => v.agent?.id === agentId)?.agent;
   const machines = agentId ? [{ agentId, ...(judgedMachine?.name ? { agentName: judgedMachine.name } : {}) }] : [];
 
-  const nonConformities: ENSNonConformity[] = requirements
-    .filter(requirement => requirement.applicable && requirement.status === 'NO_CUMPLE')
-    .map((requirement, index) => {
-      const definition = control.requirements.find(entry => entry.id === requirement.id) as ENSRequirementDefinition;
-      const own = definition.evidenceIds.map(evidenceVerdict).filter((v): v is ENSEngineVerdict => Boolean(v));
-      const id = `NC-${String(index + 1).padStart(3, '0')}`;
-
-      if (requirement.evidenced) {
-        const against = own.filter(v => v.status === 'NON_COMPLIANT' || v.status === 'PARTIAL');
-        return {
-          id,
-          evidenceId: against[0]?.evidence || definition.evidenceIds[0] || 'ENS',
-          requirementId: requirement.id,
-          finding: against.map(v => `${v.evidence}: ${reasonOf(v)}`).join('; ') || requirement.observations[0],
-          impact: `Impide cumplir ${controlId} en nivel ${level}.`,
-          requiredAction: `Corregir en la máquina lo que señala ${against.map(v => v.evidence).join(', ') || requirement.id}.`,
-          origin: 'MEDIDA' as const,
-          evidenceIds: against.map(v => v.evidence as string),
-          parameterIds: [],
-          agents: machines,
-        };
-      }
-
-      const pending = own.filter(v => v.status === 'NOT_EVALUABLE');
-      const cause = requirementCause(definition, pending);
-      return {
-        id,
-        evidenceId: pending[0]?.evidence || (cause === 'CONFIGURATION' ? 'CONFIG' : 'ENS'),
-        requirementId: requirement.id,
-        finding: pending.map(v => `${v.evidence}: ${reasonOf(v)}`).join('; ') || requirement.observations[0],
-        impact: `Sin prueba no se puede dar por cumplido ${controlId} en nivel ${level}.`,
-        requiredAction: ACTION_BY_CAUSE[cause],
-        origin: 'NO_EVIDENCIADA' as const,
-        cause,
-        evidenceIds: pending.map(v => v.evidence as string),
-        parameterIds: cause === 'CONFIGURATION' ? parameterIdsIn(pending.map(v => v.reason)) : [],
-        agents: machines,
-      };
-    });
+  const nonConformities = buildNonConformities({
+    controlId,
+    level,
+    machines,
+    failing: requirements.filter(requirement => requirement.applicable && requirement.status === 'NO_CUMPLE'),
+    definitionOf: id => control.requirements.find(entry => entry.id === id) as ENSRequirementDefinition,
+    evidenceVerdict,
+  });
 
   const applicable = requirements.filter(requirement => requirement.applicable);
   const unmeasured = applicable.filter(requirement => !requirement.evidenced).map(requirement => requirement.id);

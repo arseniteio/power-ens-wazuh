@@ -91,7 +91,7 @@ export interface ENSFreshness {
   cells: ENSFreshnessCell[];
 }
 
-export type ENSOverviewNonConformity = Pick<ENSNonConformity, 'id' | 'requirementId' | 'origin' | 'cause' | 'documental' | 'evidenceIds'> & {
+export type ENSOverviewNonConformity = Pick<ENSNonConformity, 'id' | 'requirementId' | 'requirementIds' | 'origin' | 'cause' | 'documental' | 'evidenceIds'> & {
   controlId: string;
   agentIds: string[];
   title: string;

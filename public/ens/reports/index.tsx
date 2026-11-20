@@ -195,7 +195,7 @@ const ControlReport = ({
 
     nonConformities.forEach(nonConformity => {
       if (
-        nonConformity.requirementId !== requirementId ||
+        !(nonConformity.requirementIds || [nonConformity.requirementId]).includes(requirementId) ||
         nonConformity.origin !== 'NO_EVIDENCIADA' ||
         !nonConformity.cause
       ) {

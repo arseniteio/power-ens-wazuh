@@ -44,6 +44,7 @@ import { statusLabel } from '../../../../common/ens/core/status-label';
 interface NonConformityItem {
   id: string;
   requirement: string;
+  requirements?: string[];
   origin: string;
   finding: string;
   impact: string;
@@ -70,6 +71,8 @@ interface NonConformityCardProps {
 }
 
 const QUESTION_PREFIX = 'Pregunta de auditoría:';
+
+const requirementsOf = (item: NonConformityItem): string[] => (item.requirements?.length ? item.requirements : [item.requirement]);
 
 interface ParsedLine {
   line: MotiveLine;
@@ -244,7 +247,12 @@ export const NonConformityCard = ({
         <EuiText size='xs' color='subdued'>
           {onGuide ? (
             <>
-              <GuideCode target={{ kind: 'requirement', id: item.requirement }} onOpen={onGuide} />
+              {requirementsOf(item).map((id, index) => (
+                <React.Fragment key={id}>
+                  {index > 0 && ', '}
+                  <GuideCode target={{ kind: 'requirement', id }} onOpen={onGuide} />
+                </React.Fragment>
+              ))}
               {involvedEvidences.map(id => (
                 <React.Fragment key={id}>
                   {', '}
@@ -254,7 +262,7 @@ export const NonConformityCard = ({
               {context.length > 0 && ' · '}
             </>
           ) : (
-            [item.requirement, ...involvedEvidences].join(', ') + (context.length > 0 ? ' · ' : '')
+            [...requirementsOf(item), ...involvedEvidences].join(', ') + (context.length > 0 ? ' · ' : '')
           )}
           {context.join(' · ')}
         </EuiText>
@@ -433,7 +441,7 @@ export const NonConformityCard = ({
                 <strong>Control:</strong> {controlId}
               </p>
               <p>
-                <strong>Requisito:</strong> {item.requirement}
+                <strong>{requirementsOf(item).length > 1 ? 'Requisitos' : 'Requisito'}:</strong> {requirementsOf(item).join(', ')}
               </p>
               <p>
                 <strong>Evidencias:</strong> {involvedEvidences.join(', ') || '—'}

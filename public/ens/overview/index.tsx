@@ -224,7 +224,7 @@ const MachineFlyout = ({
               pagination={group.items.length > 10 ? { initialPageSize: 10, hidePerPageOptions: true } : false}
               columns={[
                 { field: 'controlId', name: 'Control', width: '110px', render: (id: string) => <EuiLink onClick={() => onOpen(id)}>{id}</EuiLink> },
-                { field: 'nc', name: 'Requisito', width: '120px', render: (nc: any) => nc.requirementId },
+                { field: 'nc', name: 'Requisito', width: '120px', render: (nc: any) => (nc.requirementIds || [nc.requirementId]).join(', ') },
                 {
                   field: 'title',
                   name: 'Qué falla',

@@ -116,3 +116,17 @@ describe('a non-conformity of one machine', () => {
     assert.deepEqual(card?.parameterIds, ['P-03']);
   });
 });
+
+describe('non-conformities', () => {
+  test('come once per failed evidence with every requirement it breaks', () => {
+    const built = result([
+      verdict({ evidence: 'EV-01', status: 'NON_COMPLIANT', reason: 'UID 1001 compartido' }),
+      verdict({ scope: 'requirement', requirement: 'op.acc.1.3', status: 'NON_COMPLIANT', evidenced: true }),
+      verdict({ scope: 'requirement', requirement: 'op.acc.1.4', status: 'NON_COMPLIANT', evidenced: true }),
+    ]);
+    const cards = built.nonConformities.filter(nc => nc.origin === 'MEDIDA' && nc.evidenceIds.includes('EV-01'));
+    assert.equal(cards.length, 1);
+    assert.deepEqual(cards[0].requirementIds, ['op.acc.1.3', 'op.acc.1.4']);
+    assert.equal(cards[0].finding, 'EV-01: UID 1001 compartido');
+  });
+});
