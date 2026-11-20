@@ -1020,6 +1020,14 @@ export const ControlDetailENS = ({
                           </EuiText>
                         </EuiFlexItem>
 
+                        {isAggregatedView && requirement.machines && (
+                          <EuiFlexItem grow={false} style={{ minWidth: 110 }}>
+                            <EuiText size='xs' color='subdued'>
+                              {`Máquinas ${formatTally(requirement.machines)}`}
+                            </EuiText>
+                          </EuiFlexItem>
+                        )}
+
                         <EuiFlexItem>
                           {isCompliant && requirement.attestation ? (
                             <AttestationLinks attestation={requirement.attestation} />
@@ -1066,12 +1074,14 @@ export const ControlDetailENS = ({
 
                 <EuiText size='xs' color='subdued'>
                   <strong>
-                    {compliantRequirements}/{denominatorRequirements} cumplen
+                    {isAggregatedView
+                      ? `Requisitos conformes en todas las máquinas: ${compliantRequirements}/${denominatorRequirements}`
+                      : `Requisitos conformes: ${compliantRequirements}/${denominatorRequirements}`}
                   </strong>{' '}
                   ·{' '}
                   {isAggregatedView
-                    ? `${engineScoreText} media de ${totalMachines} máquinas`
-                    : engineScoreText}
+                    ? `Cumplimiento medio de ${totalMachines} máquinas: ${engineScoreText}`
+                    : `Cumplimiento: ${engineScoreText}`}
                 </EuiText>
             </EuiPanel>
           </EuiFlexItem>

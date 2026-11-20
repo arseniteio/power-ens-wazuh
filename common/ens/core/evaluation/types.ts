@@ -70,6 +70,8 @@ export interface ENSRequirementResult {
 
   attestation?: ENSAttestation;
 
+  machines?: ENSTally;
+
   documental?: boolean;
 
   observations: string[];

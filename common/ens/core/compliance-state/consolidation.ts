@@ -1,4 +1,5 @@
 import { sumTallies } from '../tally';
+import type { ENSTally } from '../tally';
 import type {
   ENSAgentRef,
   ENSComplianceResult,
@@ -17,6 +18,12 @@ interface ENSAgentResultEntry {
   agentName?: string;
   result: ENSComplianceResult;
 }
+
+const machinesMeeting = (statuses: ENSComplianceStatus[]): ENSTally | undefined => {
+  const applicable = statuses.filter(status => status !== 'NO_APLICA');
+  if (!applicable.length) return undefined;
+  return sumTallies(applicable.map(status => ({ met: status === 'CUMPLE' ? 1 : 0, total: 1, percent: status === 'CUMPLE' ? 100 : 0 })));
+};
 
 const attestationAmong = (requirements: ENSRequirementResult[]): Pick<ENSRequirementResult, 'attestation'> => {
   const found = requirements.find(requirement => requirement.attestation)?.attestation;
@@ -258,6 +265,7 @@ const consolidateRequirements = (entries: ENSAgentResultEntry[]): ENSRequirement
         ({ requirement }) => requirement.evidenced !== false
       ),
       ...(attested ? { attested: true } : {}),
+      machines: machinesMeeting(requirementEntries.map(({ requirement }) => requirement.status)),
       ...(attested ? attestationAmong(requirementEntries.map(({ requirement }) => requirement)) : {}),
       ...(documental ? { documental: true } : {}),
       level: uniqueValues(requirementEntries.flatMap(({ requirement }) => requirement.level)),

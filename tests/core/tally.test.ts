@@ -61,3 +61,20 @@ describe('system category', () => {
     assert.equal(describeApplicableLevelLabel({}), 'Categoría del sistema');
   });
 });
+
+describe('a requirement over several machines', () => {
+  test('counts the machines where it complies', async () => {
+    const { consolidateAgentComplianceResultByControl } = await import('../../common/ens/core/compliance-state/consolidation');
+    const verdictsOf = (id: string, status: string) =>
+      [{ '@timestamp': '2026-11-20T10:00:00Z', control: 'op.acc.1', agent: { id }, scope: 'requirement', requirement: 'op.acc.1.1', status, evidenced: true }] as ENSEngineVerdict[];
+    const agents = [['001', 'COMPLIANT'], ['002', 'COMPLIANT'], ['003', 'NON_COMPLIANT']].map(([id, status]) => ({
+      agentId: id,
+      results: [buildENSResultFromVerdicts('op.acc.1', 'MEDIO', id, verdictsOf(id, status), new Date())],
+    })) as any;
+
+    const requirement = consolidateAgentComplianceResultByControl(agents, 'op.acc.1')?.requirements.find(r => r.id === 'op.acc.1.1');
+
+    assert.deepEqual(requirement?.machines, { met: 2, total: 3, percent: 66 });
+    assert.equal(requirement?.status, 'NO_CUMPLE');
+  });
+});
