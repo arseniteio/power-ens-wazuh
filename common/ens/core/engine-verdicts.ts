@@ -152,6 +152,9 @@ export const buildENSResultFromVerdicts = (
     };
   });
 
+  const judgedMachine = verdicts.find(v => v.agent?.id === agentId)?.agent;
+  const machines = agentId ? [{ agentId, ...(judgedMachine?.name ? { agentName: judgedMachine.name } : {}) }] : [];
+
   const nonConformities: ENSNonConformity[] = requirements
     .filter(requirement => requirement.applicable && requirement.status === 'NO_CUMPLE')
     .map((requirement, index) => {
@@ -171,6 +174,7 @@ export const buildENSResultFromVerdicts = (
           origin: 'MEDIDA' as const,
           evidenceIds: against.map(v => v.evidence as string),
           parameterIds: [],
+          agents: machines,
         };
       }
 
@@ -187,6 +191,7 @@ export const buildENSResultFromVerdicts = (
         cause,
         evidenceIds: pending.map(v => v.evidence as string),
         parameterIds: cause === 'CONFIGURATION' ? parameterIdsIn(pending.map(v => v.reason)) : [],
+        agents: machines,
       };
     });
 

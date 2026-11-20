@@ -104,3 +104,15 @@ describe('the daily series of a control', () => {
     assert.ok(points[dayEnd(15).toISOString()]);
   });
 });
+
+describe('a non-conformity of one machine', () => {
+  test('names that machine', () => {
+    const built = result([
+      verdict({ evidence: 'EV-05', status: 'NOT_EVALUABLE', cause: 'CONFIGURATION', reason: 'configuration missing on lab-agent-01 (001): P-03 has no value' }),
+      verdict({ scope: 'requirement', requirement: 'op.acc.1.2', status: 'NON_COMPLIANT', evidenced: false }),
+    ]);
+    const card = built.nonConformities.find(nc => nc.requirementId === 'op.acc.1.2');
+    assert.deepEqual(card?.agents, [{ agentId: '001', agentName: 'lab-agent-01' }]);
+    assert.deepEqual(card?.parameterIds, ['P-03']);
+  });
+});
