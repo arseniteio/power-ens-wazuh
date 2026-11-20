@@ -148,9 +148,9 @@
   "mpinfo6.access_closed": "{copies} copias y {keys} claves que solo leen cuentas de P-07",
   "mpinfo6.access_open": "copias o claves legibles fuera de P-07: {list}",
   "mpinfo6.copies_done": "{count} copias con copia reciente: {list}",
-  "mpinfo6.copies_failed": "{met} de {total} copias con copia reciente válida; sin ella: {list}",
+  "mpinfo6.copies_failed": "copias sin una copia reciente válida: {list}",
   "mpinfo6.copies_fresh": "todas las copias dentro de su intervalo: {list}",
-  "mpinfo6.copies_late": "{met} de {total} copias dentro de su intervalo; fuera: {list}",
+  "mpinfo6.copies_late": "copias más antiguas que su intervalo: {list}",
   "mpinfo6.item_age": "{name}: {date}, hace {hours} h, máximo {max} h",
   "mpinfo6.item_date": "{name} ({date})",
   "mpinfo6.item_empty": "{name}: la copia más reciente ({date}) está vacía",
@@ -168,7 +168,7 @@
   "mpinfo6.offsite": "{name} se guarda en otra máquina ({filesystem} {device})",
   "mpinfo6.out_of_scope": "la máquina no declara copias en P-04: mp.info.6 se mide donde se hacen o guardan copias",
   "mpinfo6.retention_kept": "todas las copias conservadas su retención: {list}",
-  "mpinfo6.retention_short": "{met} de {total} copias conservan su retención; por debajo: {list}",
+  "mpinfo6.retention_short": "copias conservadas menos que su retención: {list}",
   "mpinfo6.truncated": "{name} tiene más ficheros de los que lee el agente: no se sabe su copia más antigua",
   "mps1.dns": "no se pudieron leer los registros DNS de {domain}: {error}",
   "mps1.domains": "{count} dominios propios con SPF, DKIM y una política DMARC que se aplica",
@@ -931,7 +931,7 @@
   "requirement.evidence_cause": "{evidence} ({cause})",
   "requirement.no_attestation": "no demostrado: no hay evidencia técnica ni atestación P-ATT con referencia y enlace válido",
   "requirement.non_compliant": "no cumple: {evidences}",
-  "requirement.none_applies": "no demostrado: no aplica ninguna de {evidences}",
+  "requirement.none_applies": "no aplica ninguna de sus evidencias: {evidences}",
   "requirement.not_evidenced": "no demostrado: {evidences}",
   "requirement.out_of_adjusted_level": "rige en {levels}; nivel ajustado {level}: {reason}",
   "requirement.out_of_level": "rige en {levels}; categoría del sistema {level}",
@@ -943,5 +943,7 @@
   "scope.excluded_by_group": "la máquina está en el grupo de Wazuh {group}: este control no se le aplica",
   "source.absent": "no existe",
   "source.read": "leído",
-  "source.unreadable": "no se puede leer"
+  "source.unreadable": "no se puede leer",
+  "tally.below_level": "no llega a {category}: {met} de {total} ({percent} %), L{level}, exige L{required}. {detail}",
+  "tally.meets_level": "cumple en {category}: {met} de {total} ({percent} %), L{level}, exige L{required}. {detail}"
 }
