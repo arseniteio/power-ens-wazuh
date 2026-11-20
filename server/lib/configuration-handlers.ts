@@ -154,6 +154,11 @@ export const createConfigurationHandlers = ({ logger, securityEnabled }: Options
           ? { templates: previous2.templates }
           : {};
 
+      const keptLevelAdjustments =
+        !Object.prototype.hasOwnProperty.call(bodyText.configuration, 'levelAdjustments') && Array.isArray(previous2.levelAdjustments)
+          ? { levelAdjustments: previous2.levelAdjustments }
+          : {};
+
       const keptOrganizationData =
         !Object.prototype.hasOwnProperty.call(bodyText.configuration, 'organizationData') &&
         previous2.organizationData && typeof previous2.organizationData === 'object'
@@ -173,7 +178,7 @@ export const createConfigurationHandlers = ({ logger, securityEnabled }: Options
           : {};
 
       const organization = normalizeOrganizationData(
-        withCatalogControls({ ...bodyText.configuration, ...keepsAgents, ...keptTemplates, ...keptOrganizationData, ...maturity })
+        withCatalogControls({ ...bodyText.configuration, ...keepsAgents, ...keptTemplates, ...keptOrganizationData, ...keptLevelAdjustments, ...maturity })
       );
       const levelIssues = describeNewLevelOptionIssues(organization.configuration, previous2);
       if (levelIssues.length) {

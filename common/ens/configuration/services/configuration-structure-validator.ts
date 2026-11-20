@@ -15,6 +15,7 @@ import {
 } from '../../../agent-configuration';
 import { validateOrganizationDataShape } from '../organization/organization-data-shape';
 import { validateMaturityShape } from '../../maturity/assessments';
+import { validateLevelAdjustmentsShape } from '../levels/level-adjustments';
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -534,6 +535,7 @@ export const validateENSConfigurationStructure = (
   errors.push(...validateCustomTemplatesShape(value.templates));
   errors.push(...validateOrganizationDataShape(value.organizationData));
   errors.push(...validateMaturityShape(value.maturity));
+  errors.push(...validateLevelAdjustmentsShape(value.levelAdjustments));
 
   if (!Array.isArray(value.auditTrail)) {
     errors.push('configuration.auditTrail must be an array.');

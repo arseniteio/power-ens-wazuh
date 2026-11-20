@@ -1,4 +1,5 @@
 import type { ENSMaturityConfiguration } from '../../maturity/types';
+import type { ENSLevelAdjustment } from '../levels/level-adjustments';
 import type {
   ENSAgentParameterValue,
   ENSAgentsConfiguration,
@@ -164,6 +165,7 @@ export interface ENSConfigurationVersion {
   templates?: ENSCustomTemplate[];
   organizationData?: ENSOrganizationData;
   maturity?: ENSMaturityConfiguration;
+  levelAdjustments?: ENSLevelAdjustment[];
 }
 
 export interface ENSOrganizationData {

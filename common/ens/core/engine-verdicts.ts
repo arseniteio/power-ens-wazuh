@@ -7,6 +7,7 @@ import {
 } from '../configuration/services/configuration-state-service';
 import { validateControlConfiguration } from '../configuration/services/validation-engine';
 import { resolveControlLevel } from './control-level';
+import { adjustedLevel } from '../configuration/levels/level-adjustments';
 import { renderEngineMessage } from '../catalog/engine-messages';
 import { getEvidenceDefinitions } from './evidence/registry';
 import type { ENSTally } from './tally';
@@ -101,7 +102,8 @@ export const buildENSResultFromVerdicts = (
   now: Date
 ): ENSComplianceResult => {
   const control = ENSCatalog.find(entry => entry.id === controlId) as ENSControlDefinition;
-  const level = resolveControlLevel(control, globalLevel, getActiveENSConfiguration()?.global);
+  const active = getActiveENSConfiguration();
+  const { level } = adjustedLevel(controlId, agentId, resolveControlLevel(control, globalLevel, active?.global), active?.levelAdjustments);
   const configuration = getActiveControlConfiguration(controlId, agentId);
   const validation = configuration ? validateControlConfiguration(configuration, level) : undefined;
 
