@@ -50,7 +50,7 @@ describe('configuration gaps', () => {
       source: [{ code: 'configuration.source_template', args: { id: 'linux-ubuntu' } }],
       detail: { code: 'param.not_set', args: { param: 'P-03' } },
     });
-    assert.match(text || '', /P-03 = «svc_\.\*\(» \(plantilla linux-ubuntu\)/);
+    assert.match(text || '', /P-03 configurado: «svc_\.\*\(» \(plantilla linux-ubuntu\)/);
   });
 });
 
