@@ -22,7 +22,10 @@ import {
 import type { ENSConfigurationVersion } from '../../../../common/ens/configuration/types';
 import { saveFromLatestConfiguration } from '../../../../common/ens/configuration/services/configuration-state-service';
 import { removeScale, scalesOf, setScale, thresholdsProblem } from '../../../../common/ens/maturity/assessments';
-import { ENS_DEFAULT_SCALE, ENSMaturityScale } from '../../../../common/ens/maturity/types';
+import type { ENSMaturityScale } from '../../../../common/ens/maturity/types';
+import { CCN_SCALE } from '../../../../common/ens/maturity/compliance-level';
+
+const LINEAR_SCALE = [20, 40, 60, 80, 100];
 import { InfoTip } from '../../ui/info-tip';
 import { ControlChoice } from './control-choice';
 
@@ -39,7 +42,7 @@ interface EditorProps {
 const ScaleEditor = ({ current, onClose, onSaved }: EditorProps) => {
   const [controlId, setControlId] = useState(current?.controlId || '');
   const [agentId, setAgentId] = useState(current?.agentId || '');
-  const [thresholds, setThresholds] = useState<number[]>(current?.thresholds || ENS_DEFAULT_SCALE);
+  const [thresholds, setThresholds] = useState<number[]>(current?.thresholds || CCN_SCALE);
   const [error, setError] = useState<string | undefined>();
   const [busy, setBusy] = useState(false);
 
@@ -86,6 +89,19 @@ const ScaleEditor = ({ current, onClose, onSaved }: EditorProps) => {
           error={problem}
           labelAppend={<InfoTip content='L2 cumple en BÁSICO, L3 en MEDIO y L4 en ALTO.' />}
         >
+          <>
+          <EuiFlexGroup gutterSize='s' responsive={false}>
+            <EuiFlexItem grow={false}>
+              <EuiButtonEmpty size='xs' onClick={() => setThresholds(CCN_SCALE)}>
+                Escala CCN
+              </EuiButtonEmpty>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiButtonEmpty size='xs' onClick={() => setThresholds(LINEAR_SCALE)}>
+                20 · 40 · 60 · 80 · 100
+              </EuiButtonEmpty>
+            </EuiFlexItem>
+          </EuiFlexGroup>
           <EuiFlexGroup gutterSize='s' responsive={false}>
             {thresholds.map((threshold, index) => (
               <EuiFlexItem key={index}>
@@ -101,6 +117,7 @@ const ScaleEditor = ({ current, onClose, onSaved }: EditorProps) => {
               </EuiFlexItem>
             ))}
           </EuiFlexGroup>
+          </>
         </EuiFormRow>
         {error && <EuiCallOut size='s' color='danger' iconType='alert' title={error} />}
       </EuiModalBody>
@@ -140,7 +157,7 @@ export const MaturityScalesPanel = ({ configuration, onSaved }: { configuration:
           </EuiTitle>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <InfoTip content={`Porcentaje de elementos conformes que da cada nivel en las evidencias con recuento. Sin escala: ${thresholdsLabel(ENS_DEFAULT_SCALE)}.`} />
+          <InfoTip content={`Porcentaje mínimo de cumplimiento de cada nivel, en controles, requisitos y evidencias con recuento. Sin escala, la del CCN (CCN-STIC 844): ${thresholdsLabel(CCN_SCALE)}.`} />
         </EuiFlexItem>
         <EuiFlexItem />
         <EuiFlexItem grow={false}>

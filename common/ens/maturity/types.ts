@@ -3,8 +3,6 @@ import type { ENSTally } from '../core/tally';
 export const ENS_MATURITY_MAX = 5;
 export const ENS_MATURITY_MAX_ACCREDITED = 2;
 
-// The engine's scale until the configuration sets one: minimum percentage for L1 to L5.
-export const ENS_DEFAULT_SCALE = [20, 40, 60, 80, 100];
 
 export const ENS_MATURITY_LABELS: Record<number, string> = {
   0: 'Inexistente',
