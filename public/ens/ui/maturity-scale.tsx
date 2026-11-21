@@ -19,10 +19,11 @@ export const MaturityScale = ({ compliance, thresholds = CCN_SCALE }: { complian
         <EuiToolTip key={level.level} content={`L${level.level} ${level.name} · desde ${minimum} % · ${level.meaning}${required ? ` · exigido en ${compliance.category}` : ''}`}>
           <div style={{ width: 92 }}>
             <EuiText size='xs' color='subdued'>
-              <div style={{ height: 18, marginBottom: 6, fontWeight: 600, textAlign: 'center', whiteSpace: 'nowrap', color: required ? ENS_THEME.primary : undefined }}>
+              <div style={{ height: 18, fontWeight: 600, textAlign: 'center', whiteSpace: 'nowrap', color: required ? ENS_THEME.primary : undefined }}>
                 {required ? 'Exigido' : ''}
               </div>
             </EuiText>
+            <div style={{ height: 14 }} aria-hidden='true' />
             <div
               style={{
                 height: 30,
