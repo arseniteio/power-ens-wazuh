@@ -7,7 +7,7 @@ All notable changes to Power ENS are documented in this file. The format follows
 ### Added
 
 - A maturity seal (level and status in one mark, percentage in the tooltip) on controls, requirements, evidences and the compliance index; Madurez del control with the L0 to L5 scale, the required level and the machines below it.
-- Escalas de madurez loads the CCN table or 20, 40, 60, 80 and 100 with one button.
+- Escalas de madurez loads the CCN auditor table (20, 40, 60, 80, 100) with one button.
 
 - Evidences that count items show the count, the percentage and the level the engine set. Each judged measure shows Máquinas conformes.
 - An attested requirement shows its reference and links.
