@@ -29,6 +29,7 @@ All notable changes to Power ENS are documented in this file. The format follows
 - Saving the configuration keeps `maturity.scales`.
 - The motive of an evidence opens a panel with the check, each parameter it compares against (name, description, full value with search, origin) and the result per machine. Reasons are drawn from the engine's structured reason instead of parsing text; long lists stay whole, with search.
 - Non-conformities show the same structured motive and the parameters with their description.
+- Non-conformities read as a fixed grid (requirements, machines, motive, parameters compared, action), one per evidence with its machines grouped, with a direct action: configure the parameter, register the document in P-ATT or fix the machine.
 - One non-conformity per failed evidence lists every requirement it breaks, instead of one repeated card per requirement.
 
 ## [2.0.1] - 2026-11-19
