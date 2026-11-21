@@ -261,3 +261,10 @@ export const nonConformityMotive = (
     parameters: resolveParameterViews(configuration, controlId, ids, machines.filter(m => m.agentId)),
   };
 };
+
+export const scopedEvidence = (evidence: ENSEvidenceResult, agentIds?: string[]): ENSEvidenceResult => {
+  if (!agentIds?.length) return evidence;
+  const byMachine = machinesOf(evidence).filter(m => agentIds.includes(m.agentId));
+  const statuses = [...new Set(byMachine.map(m => m.status))];
+  return { ...evidence, byMachine, ...(statuses.length === 1 ? { status: statuses[0] } : {}) };
+};

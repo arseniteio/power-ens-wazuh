@@ -24,20 +24,16 @@ import {
 } from '@elastic/eui';
 import { ENSControl } from '../../types';
 // Import from the types file, never from the `../../core` barrel: it avoids the transitive TDZ cycle of Settings.
-import { describeScope, machinesLabel, compliantRequirementLabel, summarizeMotives } from './general-view';
+import { compliantRequirementLabel } from './general-view';
 import {
   getActiveControlConfiguration,
   getActiveENSConfiguration,
 } from '../../../../common/ens/configuration/services';
 import { ControlEvolutionChart } from './evolution-chart';
-import { NonConformityCard } from './nonconformity-card';
-import { classifyNonConformity } from './nonconformity-class';
-import type { KnownReasonParts } from '../../../../common/ens/evaluation/motive-parser';
 import type { MotiveViewHandlers } from './motive-view';
 import { describeParameterForMachine } from '../parameter-origins';
 import { useHostParameters } from '../use-host-parameters';
 import { statusBadgeColor } from '../../status-colors';
-import type { MotiveLine } from './motive-cell';
 import type { ENSTraceabilityResult } from '../../../../common/ens/core/evaluation/types';
 import type { ENSControlEvaluationResponse } from '../../../../common/ens/evaluation/types';
 import { traceabilityPageSource } from '../../../evaluation/traceability-paging';
@@ -61,7 +57,9 @@ import { EvidenceSeal } from './evidence-seal';
 import { scaleFor } from '../../../../common/ens/maturity/scale';
 import { DocumentaryEvidences } from './documentary-evidences';
 import { documentaryRequirements } from '../../../../common/ens/core/documentary';
-import { EvidenceMotiveFlyout, nonConformityMotive } from './evidence-motive';
+import { EvidenceMotiveFlyout, scopedEvidence } from './evidence-motive';
+import { NonConformityList } from './nonconformity-list';
+import { groupNonConformities } from '../../../../common/ens/core/nonconformity-groups';
 import { EvidenceMotiveCell } from './evidence-motive-cell';
 import { describeNotMeasuredOnAgent } from '../../../../common/ens/core/scope/measurement-planes';
 import {
@@ -120,7 +118,7 @@ export const ControlDetailENS = ({
   const [expandedTraceIds, setExpandedTraceIds] = useState<string[]>([]);
   const [detailTab, setDetailTab] = useState('evidences');
   const [guideTarget, setGuideTarget] = useState<GuideTarget | undefined>();
-  const [motiveEvidenceId, setMotiveEvidenceId] = useState<string | undefined>();
+  const [motive, setMotive] = useState<{ evidenceId: string; agentIds?: string[] } | undefined>();
 
   const scopeAgents = useActiveENSScopeAgents();
   const maturity = useOrganizationMaturity();
@@ -249,40 +247,15 @@ export const ControlDetailENS = ({
     }),
   );
 
-  const openNonConformitiesCount = nonConformityItems.length;
-
-  const measures = nonConformityItems.filter(item => item.origin === 'MEDIDA');
-
-  const documentary = measures.filter(item => item.documental);
-  const technicalMeasures = measures.filter(item => !item.documental);
-
-  const unevidenced = nonConformityItems.filter(
-    item => item.origin === 'NO_EVIDENCIADA',
-  );
+  const nonConformityGroups = groupNonConformities(complianceResult?.nonConformities || []);
+  const openNonConformitiesCount = nonConformityGroups.length;
+  const groupsOf = (kind: string) => nonConformityGroups.filter(group => group.kind === kind).length;
 
   const machinesWithNonConformity = new Set(
     nonConformityItems.flatMap(item =>
       item.agents.map(agent => agent.agentId),
     ),
   ).size;
-
-  const catalogGapsCount = unevidenced.filter(
-    item => item.cause === 'CATALOG',
-  ).length;
-
-  const collectionGapsCount = unevidenced.filter(
-    item => item.cause === 'COLLECTION',
-  ).length;
-
-  const unprovenMachines = new Set(
-    unevidenced.flatMap(item => item.agents.map(agent => agent.agentId)),
-  ).size;
-
-  const configuredControl = Boolean(getActiveControlConfiguration(control.id));
-  const classify = (item: (typeof nonConformityItems)[number]) =>
-    classifyNonConformity(item, { controlConfigured: configuredControl });
-
-  const knownParts: KnownReasonParts[] = [];
 
   const handlers: MotiveViewHandlers = {
     onParameter: parameterId =>
@@ -302,54 +275,10 @@ export const ControlDetailENS = ({
     },
   };
 
-  const structuredMotiveOf = (nonConformity: { evidenceIds: string[]; agents: { agentId: string }[] }) => {
-    const evidence = nonConformity.evidenceIds[0] ? findEvidence(nonConformity.evidenceIds[0]) : undefined;
-    const motive = evidence && nonConformityMotive(getActiveENSConfiguration(), control.id, evidence, nonConformity.agents.map(agent => agent.agentId));
-    return motive && { ...motive, onConfigure: handlers.onParameter };
-  };
-
   const findEvidence = (evidenceId: string) =>
     (complianceResult?.evidences || []).find(
       (item: any) => item.id === evidenceId,
     );
-
-  const evidenceMotives = (evidenceIds: string[]): MotiveLine[] => {
-    const lines: MotiveLine[] = [];
-
-    evidenceIds.forEach(evidenceId => {
-      const evidence = findEvidence(evidenceId);
-
-      if (!evidence) {
-        return;
-      }
-
-      const groups = evidence.observationGroups || [];
-
-      if (groups.length > 0) {
-        summarizeMotives(groups).visibles.forEach(group => {
-          lines.push({
-            text: group.text,
-            label: group.agents.length
-              ? `${evidenceId} · ${machinesLabel(
-                  group.agents,
-                  totalMachines,
-                )}`
-              : evidenceId,
-          });
-        });
-
-        return;
-      }
-
-      (evidence.observations || []).forEach(text => {
-        if (text && text.trim()) {
-          lines.push({ text: text.trim(), label: evidenceId });
-        }
-      });
-    });
-
-    return lines;
-  };
 
   const criticalityOf = (evidenceIds: string[]): string | undefined => {
     const order: Record<string, number> = { LOW: 1, MEDIUM: 2, HIGH: 3 };
@@ -380,13 +309,10 @@ export const ControlDetailENS = ({
     openNonConformitiesCount === 0
       ? 'Sin acciones pendientes'
       : [
-          technicalMeasures.length > 0 ? `Corregir ${technicalMeasures.length}` : '',
-          documentary.length > 0
-            ? `Renovar documentación ${documentary.length}`
-            : '',
-          unevidenced.length > 0
-            ? `Habilitar prueba ${unevidenced.length}`
-            : '',
+          groupsOf('measure') ? `Corregir ${groupsOf('measure')}` : '',
+          groupsOf('configuration') ? `Configurar ${groupsOf('configuration')}` : '',
+          groupsOf('collection') ? `Revisar recogida ${groupsOf('collection')}` : '',
+          groupsOf('documentary') ? `Registrar documento ${groupsOf('documentary')}` : '',
         ]
           .filter(Boolean)
           .join(' · ');
@@ -409,61 +335,16 @@ export const ControlDetailENS = ({
           : ''
       }`,
     },
-    {
-      label: 'Medidas',
-      value: `${measures.length}${
-        documentary.length > 0 ? ` · ${documentary.length} documental${documentary.length === 1 ? '' : 'es'}` : ''
-      }`,
-    },
-    {
-      label: 'No evidenciadas',
-      value: `${unevidenced.length}${
-        unprovenMachines > 0
-          ? ` · ${unprovenMachines} máquina${
-              unprovenMachines === 1 ? '' : 's'
-            }`
-          : ''
-      }`,
-    },
-    ...(catalogGapsCount > 0
-      ? [{ label: 'Del catálogo', value: String(catalogGapsCount) }]
-      : []),
-    ...(collectionGapsCount > 0
-      ? [{ label: 'Fallo de recogida', value: String(collectionGapsCount) }]
-      : []),
+    ...[
+      { label: 'Incumplimientos', value: groupsOf('measure') },
+      { label: 'Falta configuración', value: groupsOf('configuration') },
+      { label: 'Sin datos', value: groupsOf('collection') },
+      { label: 'Sin documento', value: groupsOf('documentary') },
+    ]
+      .filter(row => row.value > 0)
+      .map(row => ({ label: row.label, value: String(row.value) })),
     { label: 'Acción', value: actionSummary },
   ];
-
-  const remediationTotals = [
-    {
-      label: 'medidas · corregir el sistema',
-      value: technicalMeasures.length,
-      color: 'danger' as const,
-    },
-    {
-      label: 'documentales · renovar o completar la documentación',
-      value: documentary.length,
-      color: 'danger' as const,
-    },
-    {
-      label: 'no evidenciadas · habilitar la prueba',
-      value: unevidenced.length,
-      color: 'warning' as const,
-    },
-  ].filter(item => item.value > 0);
-
-  const remediationBreakdown = [
-    {
-      label: 'del catálogo · producto Power ENS',
-      value: catalogGapsCount,
-      color: 'default' as const,
-    },
-    {
-      label: 'fallo de recogida · operación Wazuh',
-      value: collectionGapsCount,
-      color: 'primary' as const,
-    },
-  ].filter(item => item.value > 0);
 
   const toTraceItem = (item: ENSTraceabilityResult, index: number) => ({
       key: `${item.source}-${item.reference}-${index}`,
@@ -1254,7 +1135,7 @@ export const ControlDetailENS = ({
               field: 'id',
               name: 'Motivo',
               render: (_: string, item: (typeof evidenceStatusItems)[number]) => (
-                <EvidenceMotiveCell evidence={item.evidence} onOpen={() => setMotiveEvidenceId(item.id)} />
+                <EvidenceMotiveCell evidence={item.evidence} onOpen={() => setMotive({ evidenceId: item.id })} />
               ),
             },
           ]}
@@ -1267,180 +1148,26 @@ export const ControlDetailENS = ({
         )}
 
         {detailTab === 'non-conformities' && (
-          <>
-            {pendingMeasurement ? (
-              <EuiCallOut
-                title={ENS_PENDING_MEASUREMENT_LABEL}
-                color='primary'
-                iconType='clock'
-              />
-            ) : openNonConformitiesCount === 0 ? (
-              <EuiCallOut
-                title='Sin no conformidades abiertas'
-                color='success'
-                iconType='check'
-              />
-            ) : (
-              <>
-                <EuiTitle size='xxs'>
-                  <h4>{openNonConformitiesCount} no conformidades abiertas</h4>
-                </EuiTitle>
-
-                <EuiSpacer size='s' />
-
-                <EuiFlexGroup gutterSize='xs' wrap responsive={false}>
-                  {remediationTotals.map(item => (
-                    <EuiFlexItem grow={false} key={item.label}>
-                      <EuiBadge color={item.color}>
-                        {item.value} {item.label}
-                      </EuiBadge>
-                    </EuiFlexItem>
-                  ))}
-                </EuiFlexGroup>
-
-                {remediationBreakdown.length > 0 && (
-                  <>
-                    <EuiSpacer size='s' />
-
-                    <EuiFlexGroup
-                      gutterSize='xs'
-                      alignItems='center'
-                      wrap
-                      responsive={false}
-                    >
-                      <EuiFlexItem grow={false}>
-                        <EuiText size='xs' color='subdued'>
-                          De las no evidenciadas:
-                        </EuiText>
-                      </EuiFlexItem>
-
-                      {remediationBreakdown.map(item => (
-                        <EuiFlexItem grow={false} key={item.label}>
-                          <EuiBadge color={item.color}>
-                            {item.value} {item.label}
-                          </EuiBadge>
-                        </EuiFlexItem>
-                      ))}
-                    </EuiFlexGroup>
-                  </>
-                )}
-              </>
-            )}
-        {nonConformityItems.length === 0 && (
-          <EuiText size='s' color='subdued'>
-            <p>
-              {pendingMeasurement
-                ? 'Sin medición'
-                : complianceResult.status === 'NO_APLICA'
-                ? `${control.id} no aplica en el nivel ${levelsText}: no hay no conformidades que medir.`
-                : 'Todo lo aplicable en este control se ha demostrado conforme.'}
-            </p>
-          </EuiText>
-        )}
-
-        {[
-          {
-            key: 'medidas',
-            title: `Medidas · ${technicalMeasures.length}`,
-            pie: 'Corregir el sistema auditado.',
-            items: technicalMeasures,
-          },
-          {
-            key: 'documentales',
-            title: `Documentales · ${documentary.length}`,
-            pie: 'Cuentan igual. La acción es renovar o completar la documentación.',
-            items: documentary,
-          },
-          {
-            key: 'no-evidenciadas',
-            title: `No evidenciadas · ${unevidenced.length}`,
-            pie: 'Cuentan igual. La acción es habilitar la prueba.',
-            items: unevidenced,
-          },
-        ]
-          .filter(block => block.items.length > 0)
-          .map(block => (
-            <div key={block.key}>
-              <EuiSpacer size='m' />
-
-              <EuiTitle size='xxs'>
-                <h4>{block.title}</h4>
-              </EuiTitle>
-
-              <EuiText size='xs' color='subdued'>
-                {block.pie}
-              </EuiText>
-
-              <EuiSpacer size='s' />
-
-              <EuiFlexGroup wrap>
-                {block.items.map(nonConformity => {
-                  const kind = classify(nonConformity);
-
-                  const involvedEvidences =
-                    nonConformity.evidenceIds.length > 0
-                      ? nonConformity.evidenceIds
-                      : nonConformity.evidence
-                      ? [nonConformity.evidence]
-                      : [];
-
-                  const motiveRows: MotiveLine[] = [
-                    ...evidenceMotives(nonConformity.evidenceIds),
-                    ...(nonConformity.finding
-                      ? [
-                          {
-                            text: nonConformity.finding,
-                            label: 'Motor',
-                          },
-                        ]
-                      : []),
-                  ];
-
-                  const criticality = criticalityOf(nonConformity.evidenceIds);
-
-                  const scope = describeScope(
-                    nonConformity.agents,
-                    totalMachines,
-                  );
-
-                  const scopeLabel =
-                    nonConformity.cause === 'CATALOG'
-                      ? 'Ámbito'
-                      : nonConformity.origin === 'MEDIDA'
-                      ? 'Observado en'
-                      : 'Sin demostrar en';
-
-                  const scopeText =
-                    nonConformity.cause === 'CATALOG'
-                      ? 'Todas las máquinas · no depende de ninguna'
-                      : scope || '';
-
-                  return (
-                    <EuiFlexItem
-                      key={nonConformity.id}
-                      style={{ minWidth: 380 }}
-                    >
-                      <NonConformityCard
-                        item={nonConformity}
-                        classification={kind}
-                        criticality={criticality}
-                        scopeLabel={scopeLabel}
-                        scopeText={scopeText}
-                        motiveRows={motiveRows}
-                        involvedEvidences={involvedEvidences}
-                        controlId={control.id}
-                        known={knownParts}
-                        handlers={handlers}
-                        onGuide={setGuideTarget}
-                        structured={structuredMotiveOf(nonConformity)}
-                      />
-                    </EuiFlexItem>
-                  );
-                })}
-              </EuiFlexGroup>
-            </div>
-          ))}
-          </>
+          pendingMeasurement ? (
+            <EuiCallOut title={ENS_PENDING_MEASUREMENT_LABEL} color='primary' iconType='clock' />
+          ) : nonConformityItems.length === 0 ? (
+            <EuiCallOut
+              title={complianceResult.status === 'NO_APLICA' ? `${control.id} no aplica en el nivel ${levelsText}` : 'Sin no conformidades abiertas'}
+              color='success'
+              iconType='check'
+            />
+          ) : (
+            <NonConformityList
+              items={complianceResult?.nonConformities || []}
+              controlId={control.id}
+              configuration={getActiveENSConfiguration()}
+              findEvidence={findEvidence}
+              requirementTitle={id => (complianceResult?.requirements || []).find((r: any) => r.id === id)?.title}
+              criticalityOf={criticalityOf}
+              onConfigure={handlers.onParameter!}
+              onOpenMotive={(evidenceId, agentIds) => setMotive({ evidenceId, agentIds })}
+            />
+          )
         )}
 
         {detailTab === 'evolution' && (
@@ -1524,12 +1251,12 @@ export const ControlDetailENS = ({
           </>
         )}
 
-        {motiveEvidenceId && findEvidence(motiveEvidenceId) && (
+        {motive && findEvidence(motive.evidenceId) && (
           <EvidenceMotiveFlyout
             controlId={control.id}
-            evidence={findEvidence(motiveEvidenceId)}
+            evidence={scopedEvidence(findEvidence(motive.evidenceId), motive.agentIds)}
             configuration={getActiveENSConfiguration()}
-            onClose={() => setMotiveEvidenceId(undefined)}
+            onClose={() => setMotive(undefined)}
             onConfigure={handlers.onParameter}
           />
         )}
