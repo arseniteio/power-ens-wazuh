@@ -8,7 +8,7 @@ import type { ENSControlListEntry, ENSMachineTally } from './controls-list-model
 import { describeTally } from './controls-list-model';
 import { AddControlWithDefaultsButton } from './add-control-button';
 import { ENS_PENDING_MEASUREMENT_LABEL } from '../../../common/ens/catalog';
-import { statusLabel } from '../../../common/ens/core/status-label';
+import { MaturitySeal } from '../ui/maturity-seal';
 
 interface ControlRowProps {
   entry: ENSControlListEntry;
@@ -63,7 +63,7 @@ export const ControlListHeader = () => (
   </EuiFlexGroup>
 );
 
-export const ControlRow = ({ entry, isLoading, error, statusColor, statusBadge, onSelect, onConfigurationChanged }: ControlRowProps) => {
+export const ControlRow = ({ entry, isLoading, error, statusColor, onSelect, onConfigurationChanged }: ControlRowProps) => {
   const { id: controlId, title, levels, summary } = entry;
 
   const row = (dot: string, statusCell: React.ReactNode, machinesCell?: React.ReactNode, ncCell?: React.ReactNode, muted = false) => (
@@ -117,7 +117,7 @@ export const ControlRow = ({ entry, isLoading, error, statusColor, statusBadge, 
 
   return row(
     statusColor(status),
-    <EuiBadge color={statusBadge(status)}>{statusLabel(status)}</EuiBadge>,
+    <MaturitySeal status={status} compliance={summary?.compliance} />,
     entry.machines ? <MachineTallyBar tally={entry.machines} /> : undefined,
     <EuiText size='s' color={nonConformities ? 'danger' : 'subdued'} title={unproven ? `${unproven} sin evidencia` : undefined}>
       <strong>{nonConformities || '—'}</strong>

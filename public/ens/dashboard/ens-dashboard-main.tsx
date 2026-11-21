@@ -44,6 +44,8 @@ import { downloadCsv } from '../download-csv';
 import { metricsCsv } from '../../../common/ens/maturity/metrics-export';
 import { assessmentsOf } from '../../../common/ens/maturity/assessments';
 import { categoryLabel } from '../../../common/ens/core/control-level';
+import { judgeCompliance } from '../../../common/ens/maturity/compliance-level';
+import { MaturitySeal } from '../ui/maturity-seal';
 
 interface DashboardResponse {
   dashboard: ReturnType<typeof buildENSDashboardModel>;
@@ -162,12 +164,18 @@ const IndexPanel = ({ data, counts, delta }: { data: DashboardResponse; counts: 
     NO_APLICA: requirements.notApplicable,
   });
   const level = getActiveENSConfiguration()?.global?.ensLevel;
+  const organization = compliance.measured && level ? judgeCompliance(compliance.score, level) : undefined;
 
   return (
     <EuiPanel hasBorder paddingSize='l' style={{ height: '100%' }}>
       <EuiFlexGroup gutterSize='xl' alignItems='center' responsive={false} wrap>
         <EuiFlexItem grow={false}>
           <IndexRing score={compliance.measured ? compliance.score : undefined} />
+          {organization && (
+            <div style={{ textAlign: 'center', marginTop: 8 }}>
+              <MaturitySeal status={organization.status} compliance={organization} />
+            </div>
+          )}
         </EuiFlexItem>
         <EuiFlexItem style={{ minWidth: 280 }}>
           <EuiTitle size='xs'>

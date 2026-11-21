@@ -1,3 +1,4 @@
+import type { ENSCompliance } from '../maturity/compliance-level';
 import type { ENSComplianceResult, ENSNonConformity } from '../core/evaluation/types';
 import type { ENSComplianceSummary } from '../core/compliance-state/types';
 
@@ -33,6 +34,7 @@ export interface ENSControlSummaryEntry {
   controlId: string;
   status: string;
   score?: number;
+  compliance?: ENSCompliance;
   evaluated: boolean;
   pending?: boolean;
   requirementsNotMet: number;

@@ -13,6 +13,7 @@ const controlSummaryOf = (controlId: string, result?: ENSComplianceResult) => {
     controlId,
     status: result?.status || 'NO_EVALUABLE',
     score: result?.score,
+    ...(result?.compliance ? { compliance: result.compliance } : {}),
     evaluated: Boolean(result),
     requirementsNotMet: requirements.filter(requirement => requirement.status !== 'CUMPLE').length,
     requirementsNotEvidenced: requirements.filter(
