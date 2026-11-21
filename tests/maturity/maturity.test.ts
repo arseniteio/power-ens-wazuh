@@ -72,8 +72,8 @@ describe('organization maturity', () => {
 
   test('the report shows accredited, declared and incoherence', () => {
     const rows = maturityReportRows({ accredited: 1, machines: 3, period_days: 30, incoherent: true }, { measureId: 'op.acc.1', level: 3, target: 3 });
-    assert.match(rows[0].value, /L1 Inicial.*3 máquinas/);
-    assert.match(rows[1].value, /L3 Proceso definido/);
+    assert.match(rows[0].value, /L1 Inicial \/ Ad-hoc.*3 máquinas/);
+    assert.match(rows[1].value, /L3 Definido/);
     assert.ok(rows.some(row => row.label === 'Coherencia'));
     assert.equal(maturityReportRows(undefined, undefined)[1].value, 'sin valorar');
   });

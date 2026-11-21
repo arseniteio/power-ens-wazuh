@@ -52,6 +52,6 @@ describe('a fleet with a machine without verdict', () => {
     const rows = [row('001', 'CUMPLE', 100), row('002', 'CUMPLE', 100), row('003', 'NO_EVALUABLE')];
     const consolidated = consolidateRows('op.acc.1', rows);
     assert.equal(consolidated?.score, 67);
-    assert.equal(consolidated?.status, 'PARCIAL');
+    assert.equal(consolidated?.compliance?.level, 3);
   });
 });

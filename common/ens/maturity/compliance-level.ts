@@ -18,6 +18,7 @@ export interface ENSMaturityLevelDefinition {
   level: number;
   name: string;
   percent: number;
+  meaning: string;
 }
 
 export const MATURITY_LEVELS: ENSMaturityLevelDefinition[] = table.levels;
@@ -42,3 +43,5 @@ export const judgeCompliance = (percent: number, level: ENSLevel | string, thres
 };
 
 export const maturityLevelName = (level: number): string => MATURITY_LEVELS.find(entry => entry.level === level)?.name || '';
+
+export const maturityLevelMeaning = (level: number): string => MATURITY_LEVELS.find(entry => entry.level === level)?.meaning || '';

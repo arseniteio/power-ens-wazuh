@@ -14,7 +14,9 @@ describe('the CMM compliance rule', () => {
     }
   });
 
-  test('uses the CCN table by default', () => {
-    assert.deepEqual(CCN_SCALE, [10, 50, 80, 90, 100]);
+  test('uses the CCN auditor table by default: 60 % meets MEDIO, 80 % meets ALTO', () => {
+    assert.deepEqual(CCN_SCALE, [20, 40, 60, 80, 100]);
+    assert.equal(judgeCompliance(60, 'MEDIO')?.status, 'CUMPLE');
+    assert.equal(judgeCompliance(80, 'ALTO')?.status, 'CUMPLE');
   });
 });

@@ -1,17 +1,11 @@
 import type { ENSTally } from '../core/tally';
+import { MATURITY_LEVELS } from './compliance-level';
 
 export const ENS_MATURITY_MAX = 5;
 export const ENS_MATURITY_MAX_ACCREDITED = 2;
 
 
-export const ENS_MATURITY_LABELS: Record<number, string> = {
-  0: 'Inexistente',
-  1: 'Inicial',
-  2: 'Reproducible pero intuitivo',
-  3: 'Proceso definido',
-  4: 'Gestionado y medible',
-  5: 'Optimizado',
-};
+export const ENS_MATURITY_LABELS: Record<number, string> = Object.fromEntries(MATURITY_LEVELS.map(level => [level.level, level.name]));
 
 export const ENS_MATURITY_NOTE =
   'Continuidad: días seguidos con evidencia de Wazuh en los últimos 30, L0 a L2. Valorado: declaración documentada, L0 a L5. El nivel del cumplimiento sale del porcentaje, en el detalle de cada control.';

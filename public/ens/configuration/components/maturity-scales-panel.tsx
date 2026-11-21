@@ -25,7 +25,6 @@ import { removeScale, scalesOf, setScale, thresholdsProblem } from '../../../../
 import type { ENSMaturityScale } from '../../../../common/ens/maturity/types';
 import { CCN_SCALE } from '../../../../common/ens/maturity/compliance-level';
 
-const LINEAR_SCALE = [20, 40, 60, 80, 100];
 import { InfoTip } from '../../ui/info-tip';
 import { ControlChoice } from './control-choice';
 
@@ -93,12 +92,7 @@ const ScaleEditor = ({ current, onClose, onSaved }: EditorProps) => {
           <EuiFlexGroup gutterSize='s' responsive={false}>
             <EuiFlexItem grow={false}>
               <EuiButtonEmpty size='xs' onClick={() => setThresholds(CCN_SCALE)}>
-                Escala CCN
-              </EuiButtonEmpty>
-            </EuiFlexItem>
-            <EuiFlexItem grow={false}>
-              <EuiButtonEmpty size='xs' onClick={() => setThresholds(LINEAR_SCALE)}>
-                20 · 40 · 60 · 80 · 100
+                Tabla del CCN
               </EuiButtonEmpty>
             </EuiFlexItem>
           </EuiFlexGroup>
@@ -157,7 +151,7 @@ export const MaturityScalesPanel = ({ configuration, onSaved }: { configuration:
           </EuiTitle>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <InfoTip content={`Porcentaje mínimo de cumplimiento de cada nivel, en controles, requisitos y evidencias con recuento. Sin escala, la del CCN (CCN-STIC 844): ${thresholdsLabel(CCN_SCALE)}.`} />
+          <InfoTip content={`Porcentaje mínimo de cumplimiento de cada nivel, en controles, requisitos y evidencias con recuento. Sin escala, la tabla del CCN: ${thresholdsLabel(CCN_SCALE)}.`} />
         </EuiFlexItem>
         <EuiFlexItem />
         <EuiFlexItem grow={false}>

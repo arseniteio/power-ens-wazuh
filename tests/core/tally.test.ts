@@ -75,7 +75,7 @@ describe('a requirement over several machines', () => {
     const requirement = consolidateAgentComplianceResultByControl(agents, 'op.acc.1')?.requirements.find(r => r.id === 'op.acc.1.1');
 
     assert.deepEqual(requirement?.machines, { met: 2, total: 3, percent: 66 });
-    assert.equal(requirement?.status, 'PARCIAL');
-    assert.equal(requirement?.compliance?.level, 2);
+    assert.equal(requirement?.status, 'CUMPLE');
+    assert.equal(requirement?.compliance?.level, 3);
   });
 });
