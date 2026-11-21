@@ -8,7 +8,7 @@ export interface ENSMaturityReportRow {
 
 export const maturityReportRows = (engine: ENSEngineMaturity | undefined, declared: ENSMaturityAssessment | undefined): ENSMaturityReportRow[] => [
   {
-    label: 'Acreditado por la evidencia',
+    label: 'Continuidad de la evidencia (30 días)',
     value:
       engine?.accredited === undefined
         ? 'sin medición'

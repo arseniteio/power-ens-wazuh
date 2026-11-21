@@ -33,7 +33,6 @@ import {
 import { dateTimeLabel } from '../../../common/ens/core/date-label';
 import { Choice } from '../ui/choice';
 import { InfoTip } from '../ui/info-tip';
-import { formatTally } from '../../../common/ens/core/tally';
 
 const LEVEL_OPTIONS = [
   { value: '', text: 'Sin valorar' },
@@ -151,16 +150,11 @@ export const MeasureMaturity = ({
       <EuiSpacer size='s' />
       <EuiFlexGroup gutterSize='s' wrap responsive={false}>
         <EuiFlexItem grow={false}>
-          <EuiBadge color='hollow'>{`Acreditado: ${maturity?.accredited === undefined ? 'sin medición' : maturityLabel(maturity.accredited)}`}</EuiBadge>
+          <EuiBadge color='hollow'>{`Continuidad 30 días: ${maturity?.accredited === undefined ? 'sin medición' : maturityLabel(maturity.accredited)}`}</EuiBadge>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiBadge color={assessed === undefined ? 'default' : 'primary'}>{`Valorado: ${assessed === undefined ? 'sin valorar' : maturityLabel(assessed)}`}</EuiBadge>
         </EuiFlexItem>
-        {maturity?.tally && (
-          <EuiFlexItem grow={false}>
-            <EuiBadge color='hollow'>{`Máquinas conformes: ${formatTally(maturity.tally)}`}</EuiBadge>
-          </EuiFlexItem>
-        )}
         {target !== undefined && (
           <EuiFlexItem grow={false}>
             <EuiBadge color={(assessed ?? maturity?.accredited ?? 0) < target ? 'warning' : 'success'}>{`Objetivo: L${target}`}</EuiBadge>
@@ -169,7 +163,7 @@ export const MeasureMaturity = ({
       </EuiFlexGroup>
       <EuiSpacer size='s' />
       <EuiText size='xs' color='subdued'>
-        {maturity?.machines ? <p>{`Acreditado: mínimo de ${maturity.machines} máquina${maturity.machines === 1 ? '' : 's'}, ${maturity.period_days || 30} días`}</p> : null}
+        {maturity?.machines ? <p>{`Continuidad: mínimo de ${maturity.machines} máquina${maturity.machines === 1 ? '' : 's'}, ${maturity.period_days || 30} días`}</p> : null}
         {declared?.assessedBy && <p>{`Valorado: ${declared.assessedBy}${declared.assessedAt ? `, ${dateTimeLabel(declared.assessedAt)}` : ''}${declared.references ? ` · ${declared.references}` : ''}`}</p>}
       </EuiText>
       {maturity?.incoherent && (

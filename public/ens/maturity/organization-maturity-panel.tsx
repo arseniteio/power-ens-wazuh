@@ -79,7 +79,7 @@ export const OrganizationMaturityPanel = ({
         <>
           <EuiFlexGroup gutterSize='m' responsive={false}>
             <EuiFlexItem>
-              <EuiStat title={maturityLabel(data.summary.global_accredited)} description='Acreditado por la evidencia' titleSize='s' />
+              <EuiStat title={maturityLabel(data.summary.global_accredited)} description='Continuidad de la evidencia (30 días)' titleSize='s' />
             </EuiFlexItem>
             <EuiFlexItem>
               <EuiStat title={maturityLabel(data.summary.global_assessed)} description='Valorado' titleSize='s' />
@@ -92,7 +92,7 @@ export const OrganizationMaturityPanel = ({
             noItemsMessage='No hay datos.'
             columns={[
               { field: 'level', name: 'Nivel', render: (level: LevelRow['level']) => `L${level} ${ENS_MATURITY_LABELS[level]}` },
-              { field: 'accredited', name: 'Acreditado por la evidencia', align: 'right', width: '170px' },
+              { field: 'accredited', name: 'Continuidad (30 días)', align: 'right', width: '170px' },
               { field: 'assessed', name: 'Valorado', align: 'right', width: '90px' },
             ]}
           />

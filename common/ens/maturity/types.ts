@@ -16,7 +16,7 @@ export const ENS_MATURITY_LABELS: Record<number, string> = {
 };
 
 export const ENS_MATURITY_NOTE =
-  'Acreditado: evidencia de Wazuh, L0 a L2. Valorado: declaración documentada, L0 a L5.';
+  'Continuidad: días seguidos con evidencia de Wazuh en los últimos 30, L0 a L2. Valorado: declaración documentada, L0 a L5. El nivel del cumplimiento sale del porcentaje, en el detalle de cada control.';
 
 export const incoherenceText = (assessed?: number, accredited?: number): string =>
   `Valorado L${assessed ?? '?'} · acreditado L${accredited ?? 0}: evidencia discontinua en los últimos 30 días`;
