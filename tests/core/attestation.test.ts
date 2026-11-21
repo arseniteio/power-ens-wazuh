@@ -31,3 +31,16 @@ describe('a documentary requirement', () => {
     assert.deepEqual(requirement?.attestation, { reference: 'Política eIDAS', links: ['https://intranet/eidas.pdf'] });
   });
 });
+
+describe('documentary evidences', () => {
+  test('are the applicable requirements without technical evidence', async () => {
+    const { documentaryRequirements } = await import('../../common/ens/core/documentary');
+    const requirements = [
+      { id: 'a', status: 'CUMPLE', evidenceIds: [], attestation: { reference: 'PR-20', links: ['https://x/pr-20.pdf'] } },
+      { id: 'b', status: 'NO_CUMPLE', evidenceIds: undefined },
+      { id: 'c', status: 'NO_APLICA', evidenceIds: [] },
+      { id: 'd', status: 'CUMPLE', evidenceIds: ['EV-01'] },
+    ] as any;
+    assert.deepEqual(documentaryRequirements(requirements).map((r: any) => r.id), ['a', 'b']);
+  });
+});

@@ -55,6 +55,8 @@ import type { GuideTarget } from './control-guide';
 import { ProvenancedText, RequirementTextsPanel, TemplateCorrespondencePanel } from './requirement-texts';
 import { InfoTip } from '../../ui/info-tip';
 import { AttestationLinks } from './attestation-links';
+import { DocumentaryEvidences } from './documentary-evidences';
+import { documentaryRequirements } from '../../../../common/ens/core/documentary';
 import { EvidenceMotiveFlyout, nonConformityMotive } from './evidence-motive';
 import { EvidenceMotiveCell } from './evidence-motive-cell';
 import { formatTally } from '../../../../common/ens/core/tally';
@@ -928,7 +930,7 @@ export const ControlDetailENS = ({
     { title: String(openNonConformitiesCount), description: 'No conformidades abiertas', color: openNonConformitiesCount ? 'danger' : 'success' },
   ];
   const detailTabs = [
-    { id: 'evidences', name: `Evidencias · ${evidenceStatusItems.length}` },
+    { id: 'evidences', name: `Evidencias · ${evidenceStatusItems.length + documentaryRequirements(complianceResult?.requirements).length}` },
     { id: 'non-conformities', name: `No conformidades · ${openNonConformitiesCount}` },
     { id: 'evolution', name: 'Evolución' },
     { id: 'traceability', name: 'Trazabilidad' },
@@ -1200,7 +1202,7 @@ export const ControlDetailENS = ({
                     {ENS_PENDING_MEASUREMENT_LABEL}
                   </EuiBadge>
                 ) : (
-                  <>
+                  <div>
                     <EuiBadge
                       color={getBadgeColor(status)}
                       iconType={getStatusIcon(status)}
@@ -1209,10 +1211,10 @@ export const ControlDetailENS = ({
                     </EuiBadge>
                     {item.tally && (
                       <EuiText size='xs' color='subdued'>
-                        {formatTally(item.tally)}
+                        <div style={{ marginTop: 2 }}>{formatTally(item.tally)}</div>
                       </EuiText>
                     )}
-                  </>
+                  </div>
                 ),
             },
             {
@@ -1234,7 +1236,11 @@ export const ControlDetailENS = ({
               field: 'level',
               name: 'Nivel',
               width: '110px',
-              render: (level: string) => <EuiBadge color='hollow'>{level}</EuiBadge>,
+              render: (level: string) => (
+                <EuiText size='xs'>
+                  <span>{level}</span>
+                </EuiText>
+              ),
             },
             {
               field: 'id',
@@ -1244,6 +1250,10 @@ export const ControlDetailENS = ({
               ),
             },
           ]}
+        />
+        <DocumentaryEvidences
+          requirements={documentaryRequirements(complianceResult?.requirements)}
+          onConfigure={handlers.onParameter}
         />
           </>
         )}
