@@ -420,6 +420,14 @@ const evidenceFleetStatus = (scope: FleetScope, statuses: ENSComplianceStatus[])
   return compliance ? { status: compliance.status, compliance } : { status: consolidateENSStatuses(statuses) };
 };
 
+// Every applicable machine weighs the same; one without a score (no verdict yet) counts as 0 %
+// so a silent machine never lifts the fleet.
+const applicableAverage = (entries: ENSAgentResultEntry[]): number | undefined => {
+  const applicable = entries.filter(entry => entry.result.status !== 'NO_APLICA');
+  if (!applicable.length) return averageScore(entries);
+  return Math.round(applicable.reduce((sum, entry) => sum + (typeof entry.result.score === 'number' ? entry.result.score : 0), 0) / applicable.length);
+};
+
 const controlFleetStatus = (scope: FleetScope, entries: ENSAgentResultEntry[], score: number | undefined): Pick<ENSComplianceResult, 'status' | 'compliance'> => {
   const statuses = entries.map(entry => entry.result.status);
   if (entries.length === 1) {
@@ -433,7 +441,7 @@ const controlFleetStatus = (scope: FleetScope, entries: ENSAgentResultEntry[], s
 const consolidateControlResult = (entries: ENSAgentResultEntry[]): ENSComplianceResult => {
   const template = entries[0].result;
   const scope: FleetScope = { controlId: template.control.id, level: template.level };
-  const score = averageScore(entries);
+  const score = applicableAverage(entries);
 
   return {
     ...template,

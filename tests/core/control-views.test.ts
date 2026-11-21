@@ -46,3 +46,12 @@ describe('the panel state', () => {
     assert.equal(state.controlSummary.totalControls, 2);
   });
 });
+
+describe('a fleet with a machine without verdict', () => {
+  test('counts that machine as 0 %', () => {
+    const rows = [row('001', 'CUMPLE', 100), row('002', 'CUMPLE', 100), row('003', 'NO_EVALUABLE')];
+    const consolidated = consolidateRows('op.acc.1', rows);
+    assert.equal(consolidated?.score, 67);
+    assert.equal(consolidated?.status, 'PARCIAL');
+  });
+});
