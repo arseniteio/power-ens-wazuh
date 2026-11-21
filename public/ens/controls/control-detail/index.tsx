@@ -24,14 +24,12 @@ import {
 } from '@elastic/eui';
 import { ENSControl } from '../../types';
 // Import from the types file, never from the `../../core` barrel: it avoids the transitive TDZ cycle of Settings.
-import type { ENSObservationGroup } from '../../../../common/ens/core/evaluation/types';
 import { describeScope, machinesLabel, compliantRequirementLabel, summarizeMotives } from './general-view';
 import {
   getActiveControlConfiguration,
   getActiveENSConfiguration,
 } from '../../../../common/ens/configuration/services';
 import { ControlEvolutionChart } from './evolution-chart';
-import { MotiveCell } from './motive-cell';
 import { NonConformityCard } from './nonconformity-card';
 import { classifyNonConformity } from './nonconformity-class';
 import type { KnownReasonParts } from '../../../../common/ens/evaluation/motive-parser';
@@ -57,6 +55,8 @@ import type { GuideTarget } from './control-guide';
 import { ProvenancedText, RequirementTextsPanel, TemplateCorrespondencePanel } from './requirement-texts';
 import { InfoTip } from '../../ui/info-tip';
 import { AttestationLinks } from './attestation-links';
+import { EvidenceMotiveFlyout, nonConformityMotive } from './evidence-motive';
+import { EvidenceMotiveCell } from './evidence-motive-cell';
 import { formatTally } from '../../../../common/ens/core/tally';
 import { describeNotMeasuredOnAgent } from '../../../../common/ens/core/scope/measurement-planes';
 import {
@@ -115,6 +115,7 @@ export const ControlDetailENS = ({
   const [expandedTraceIds, setExpandedTraceIds] = useState<string[]>([]);
   const [detailTab, setDetailTab] = useState('evidences');
   const [guideTarget, setGuideTarget] = useState<GuideTarget | undefined>();
+  const [motiveEvidenceId, setMotiveEvidenceId] = useState<string | undefined>();
 
   const scopeAgents = useActiveENSScopeAgents();
   const maturity = useOrganizationMaturity();
@@ -210,6 +211,7 @@ export const ControlDetailENS = ({
 
   const evidenceStatusItems = (complianceResult?.evidences || []).map(evidence => ({
     id: evidence.id,
+    evidence,
     title: evidence.title,
     description: evidence.description,
     tally: evidence.tally,
@@ -293,6 +295,12 @@ export const ControlDetailENS = ({
       const fromHost = hostParameter(control.id, parameterId);
       return info && { id: info.id, label: info.label, value: fromHost?.value ?? info.value, origin: fromHost?.origin ?? info.origin };
     },
+  };
+
+  const structuredMotiveOf = (nonConformity: { evidenceIds: string[]; agents: { agentId: string }[] }) => {
+    const evidence = nonConformity.evidenceIds[0] ? findEvidence(nonConformity.evidenceIds[0]) : undefined;
+    const motive = evidence && nonConformityMotive(getActiveENSConfiguration(), control.id, evidence, nonConformity.agents.map(agent => agent.agentId));
+    return motive && { ...motive, onConfigure: handlers.onParameter };
   };
 
   const findEvidence = (evidenceId: string) =>
@@ -1229,47 +1237,11 @@ export const ControlDetailENS = ({
               render: (level: string) => <EuiBadge color='hollow'>{level}</EuiBadge>,
             },
             {
-              field: 'motives',
+              field: 'id',
               name: 'Motivo',
-              render: (
-                motives: ENSObservationGroup[],
-                item: (typeof evidenceStatusItems)[number],
-              ) => {
-                if (motives.length === 0) {
-                  return (
-                    <MotiveCell
-                      lines={(item.motive || '')
-                        .split(' · ')
-                        .map(text => text.trim())
-                        .filter(Boolean)
-                        .map(text => ({ text }))}
-                      title={`Motivo · ${item.id}`}
-                      evidenceId={item.id}
-                      known={knownParts}
-                      handlers={handlers}
-                    />
-                  );
-                }
-
-                const { visibles: visibleItems, hidden } = summarizeMotives(motives);
-
-                return (
-                  <MotiveCell
-                    lines={visibleItems.map(group => ({
-                      text: group.text,
-                      label: machinesLabel(
-                        group.agents,
-                        totalMachines
-                      ),
-                    }))}
-                    hidden={hidden}
-                    title={`Motivo · ${item.id}`}
-                    evidenceId={item.id}
-                    known={knownParts}
-                    handlers={handlers}
-                  />
-                );
-              },
+              render: (_: string, item: (typeof evidenceStatusItems)[number]) => (
+                <EvidenceMotiveCell evidence={item.evidence} onOpen={() => setMotiveEvidenceId(item.id)} />
+              ),
             },
           ]}
         />
@@ -1442,6 +1414,7 @@ export const ControlDetailENS = ({
                         known={knownParts}
                         handlers={handlers}
                         onGuide={setGuideTarget}
+                        structured={structuredMotiveOf(nonConformity)}
                       />
                     </EuiFlexItem>
                   );
@@ -1531,6 +1504,16 @@ export const ControlDetailENS = ({
           <RequirementTextsPanel controlId={control.id} />
           <TemplateCorrespondencePanel controlId={control.id} />
           </>
+        )}
+
+        {motiveEvidenceId && findEvidence(motiveEvidenceId) && (
+          <EvidenceMotiveFlyout
+            controlId={control.id}
+            evidence={findEvidence(motiveEvidenceId)}
+            configuration={getActiveENSConfiguration()}
+            onClose={() => setMotiveEvidenceId(undefined)}
+            onConfigure={handlers.onParameter}
+          />
         )}
 
         {guideTarget && (

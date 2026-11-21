@@ -30,7 +30,7 @@ const summarizeParameterValue = (value: unknown): { text: string; empty: boolean
   return { text: text.length > MAX ? `${text.slice(0, MAX).trimEnd()}…` : text, empty: false };
 };
 
-const describeValueOrigin = (origin: ENSResolvedValueOrigin | undefined, empty: boolean): string => {
+export const describeValueOrigin = (origin: ENSResolvedValueOrigin | undefined, empty: boolean): string => {
   if (!origin) return 'el control no está en la configuración activa';
   if (origin.source === 'agent') return 'valor personalizado de esta máquina';
   if (origin.source === 'template') {

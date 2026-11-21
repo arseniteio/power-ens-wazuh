@@ -208,6 +208,8 @@ export const buildENSResultFromVerdicts = (
       title: definition.title,
       description: definition.description,
       ...(verdict?.tally ? { tally: verdict.tally } : {}),
+      ...(causeOf(verdict) ? { cause: causeOf(verdict) } : {}),
+      ...(verdict?.reason_code ? { reasonCode: verdict.reason_code, reasonArgs: verdict.reason_args || {} } : {}),
       observations: [reasonOf(verdict) || noVerdict],
       requirements: definition.requirements,
       levels: definition.levels,

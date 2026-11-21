@@ -82,6 +82,17 @@ export interface ENSRequirementResult {
   evidenceIds?: string[];
 }
 
+export interface ENSEvidenceMachineResult {
+  agentId: string;
+  agentName?: string;
+  status: ENSComplianceStatus;
+  cause?: ENSGapCause;
+  reasonCode?: string;
+  reasonArgs?: Record<string, unknown>;
+  reason?: string;
+  tally?: ENSTally;
+}
+
 export interface ENSEvidenceResult {
   id: string;
   controlId: string;
@@ -90,6 +101,12 @@ export interface ENSEvidenceResult {
   description: string;
 
   tally?: ENSTally;
+
+  cause?: ENSGapCause;
+  reasonCode?: string;
+  reasonArgs?: Record<string, unknown>;
+
+  byMachine?: ENSEvidenceMachineResult[];
 
   observations: string[];
 

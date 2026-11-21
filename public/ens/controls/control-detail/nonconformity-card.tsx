@@ -40,6 +40,11 @@ import { GuideCode } from './control-guide';
 import type { GuideTarget } from './control-guide';
 import { ENS_THEME } from '../../theme-colors';
 import { statusLabel } from '../../../../common/ens/core/status-label';
+import type { ReasonDisplay } from '../../../../common/ens/evaluation/reason-display';
+import { ReasonView } from './reason-view';
+import type { ParameterLookup } from './reason-view';
+import { ParameterPanel } from './parameter-panel';
+import type { ParameterView } from './parameter-panel';
 
 interface NonConformityItem {
   id: string;
@@ -68,6 +73,14 @@ interface NonConformityCardProps {
   known?: KnownReasonParts[];
   handlers?: MotiveViewHandlers;
   onGuide?: (target: GuideTarget) => void;
+  structured?: StructuredMotive;
+}
+
+export interface StructuredMotive {
+  display: ReasonDisplay;
+  lookup: ParameterLookup;
+  parameters: ParameterView[];
+  onConfigure?: (parameterId: string) => void;
 }
 
 const QUESTION_PREFIX = 'Pregunta de auditoría:';
@@ -177,6 +190,7 @@ export const NonConformityCard = ({
   known = [],
   handlers = {},
   onGuide,
+  structured,
 }: NonConformityCardProps) => {
   const [panelOpen, setPanelOpen] = useState(false);
 
@@ -239,7 +253,20 @@ export const NonConformityCard = ({
               </>
             )}
           </p>
-          <p title={reading.titular}>{headlineText}</p>
+          {structured ? (
+            <div style={{ marginTop: 4 }}>
+              {structured.display.missingConfiguration && (
+                <>
+                  <EuiBadge color='hollow' iconType='gear'>
+                    Falta configuración
+                  </EuiBadge>{' '}
+                </>
+              )}
+              <ReasonView doc={structured.display.doc} lookup={structured.lookup} />
+            </div>
+          ) : (
+            <p title={reading.titular}>{headlineText}</p>
+          )}
         </EuiText>
 
         <EuiSpacer size='xs' />
@@ -267,7 +294,7 @@ export const NonConformityCard = ({
           {context.join(' · ')}
         </EuiText>
 
-        {(layout.rest || layout.detail || culprit?.secondary !== undefined) && (
+        {!structured && (layout.rest || layout.detail || culprit?.secondary !== undefined) && (
           <>
             <EuiSpacer size='s' />
             <EuiText size='xs'>
@@ -291,7 +318,7 @@ export const NonConformityCard = ({
           </>
         )}
 
-        {reading.otherNonCompliant.length > 0 && (
+        {!structured && reading.otherNonCompliant.length > 0 && (
           <>
             <EuiSpacer size='s' />
             {reading.otherNonCompliant.map((part, i) => (
@@ -413,7 +440,30 @@ export const NonConformityCard = ({
               <h3>Motivo</h3>
             </EuiTitle>
             <EuiSpacer size='xs' />
-            {reading.readLines.length > 0 ? (
+            {structured ? (
+              <>
+                <EuiText size='s'>
+                  <div>
+                    <ReasonView doc={structured.display.doc} lookup={structured.lookup} />
+                  </div>
+                </EuiText>
+                {structured.parameters.length > 0 && (
+                  <>
+                    <EuiSpacer size='m' />
+                    <EuiTitle size='xxs'>
+                      <h3>Parámetros de comparación</h3>
+                    </EuiTitle>
+                    <EuiSpacer size='xs' />
+                    {structured.parameters.map(view => (
+                      <React.Fragment key={view.id}>
+                        <ParameterPanel view={view} onConfigure={structured.onConfigure} />
+                        <EuiSpacer size='s' />
+                      </React.Fragment>
+                    ))}
+                  </>
+                )}
+              </>
+            ) : reading.readLines.length > 0 ? (
               reading.readLines.map(({ line, motive }, index) => (
                 <MotiveView key={`${index}`} parsed={motive} label={line.label} handlers={handlers} />
               ))

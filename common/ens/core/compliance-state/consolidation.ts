@@ -311,6 +311,15 @@ const consolidateEvidences = (entries: ENSAgentResultEntry[]): ENSEvidenceResult
       relatedRules: uniqueValues(evidenceEntries.flatMap(({ evidence }) => evidence.relatedRules)),
       lastSeen: getLatestIsoDate(evidenceEntries.map(({ evidence }) => evidence.lastSeen)),
       tally: sumTallies(evidenceEntries.map(({ evidence }) => evidence.tally)),
+      byMachine: evidenceEntries.map(({ entry, evidence }) => ({
+        agentId: entry.agentId,
+        ...(entry.agentName ? { agentName: entry.agentName } : {}),
+        status: evidence.status,
+        ...(evidence.cause ? { cause: evidence.cause } : {}),
+        ...(evidence.reasonCode ? { reasonCode: evidence.reasonCode, reasonArgs: evidence.reasonArgs } : {}),
+        ...(evidence.observations?.[0] ? { reason: evidence.observations[0] } : {}),
+        ...(evidence.tally ? { tally: evidence.tally } : {}),
+      })),
 
       observations: observationGroups.map(formatObservationGroup),
       observationGroups,
