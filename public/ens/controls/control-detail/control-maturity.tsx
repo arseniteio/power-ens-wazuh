@@ -16,13 +16,13 @@ const StatusBar = ({ machines }: { machines: ENSMachineControlResult[] }) => {
   const counts = ENS_STATUS_ORDER.map(status => ({ status, count: machines.filter(m => m.status === status).length })).filter(c => c.count);
   return (
     <>
-      <div style={{ display: 'flex', height: 10, borderRadius: 5, overflow: 'hidden' }}>
+      <div style={{ display: 'flex', height: 10, borderRadius: 5, overflow: 'hidden', marginTop: 4 }}>
         {counts.map(c => (
           <div key={c.status} title={`${statusLabel(c.status)}: ${c.count}`} style={{ flex: c.count, background: statusColor(c.status) }} />
         ))}
       </div>
       <EuiText size='xs'>
-        <p style={{ marginTop: 4 }}>
+        <p style={{ marginTop: 8 }}>
           {counts.map((c, i) => (
             <React.Fragment key={c.status}>
               {i > 0 && ' · '}
@@ -60,7 +60,7 @@ const BelowRequired = ({ machines, onOpenMachine }: { machines: ENSMachineContro
         </>
       )}
       {visible.map(machine => (
-        <EuiFlexGroup key={machine.agentId} gutterSize='s' alignItems='center' responsive={false}>
+        <EuiFlexGroup key={machine.agentId} gutterSize='m' alignItems='center' responsive={false} style={{ padding: '3px 0' }}>
           <EuiFlexItem grow={false} style={{ minWidth: 104 }}>
             <MaturitySeal status={machine.status} compliance={machine.compliance} />
           </EuiFlexItem>
@@ -104,7 +104,7 @@ export const ControlMaturity = ({
 
   return (
     <EuiPanel hasBorder>
-      <EuiFlexGroup gutterSize='l' wrap responsive={false} alignItems='flexStart'>
+      <EuiFlexGroup gutterSize='xl' wrap responsive={false} alignItems='flexStart'>
         <EuiFlexItem grow={false} style={{ minWidth: 200 }}>
           <EuiFlexGroup gutterSize='xs' alignItems='center' responsive={false}>
             <EuiFlexItem grow={false}>
@@ -123,10 +123,11 @@ export const ControlMaturity = ({
             </EuiFlexItem>
           </EuiFlexGroup>
           <EuiSpacer size='s' />
-          <div style={{ fontSize: 34, fontWeight: 300, lineHeight: '38px' }}>{`${compliance.percent} %`}</div>
+          <div style={{ fontSize: 34, fontWeight: 300, lineHeight: '40px' }}>{`${compliance.percent} %`}</div>
           <EuiText size='xs' color='subdued'>
-            <p style={{ margin: '2px 0 6px' }}>{fleet ? `Cumplimiento medio · ${machines.length} máquinas` : 'Cumplimiento'}</p>
+            <p style={{ margin: '4px 0 0' }}>{fleet ? `Cumplimiento medio · ${machines.length} máquinas` : 'Cumplimiento'}</p>
           </EuiText>
+          <EuiSpacer size='m' />
           <MaturitySeal status={result.status} compliance={compliance} />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
@@ -139,9 +140,9 @@ export const ControlMaturity = ({
             </EuiText>
             <EuiSpacer size='xs' />
             <StatusBar machines={machines} />
-            <EuiSpacer size='s' />
+            <EuiSpacer size='m' />
             <EuiText size='xs' color='subdued'>
-              <span>{below.length ? `Por debajo del nivel exigido · ${below.length}` : ''}</span>
+              <p style={{ marginBottom: 6 }}>{below.length ? `Por debajo del nivel exigido · ${below.length}` : ''}</p>
             </EuiText>
             <BelowRequired machines={below} onOpenMachine={onOpenMachine} />
           </EuiFlexItem>

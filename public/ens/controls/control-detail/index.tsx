@@ -1018,7 +1018,7 @@ export const ControlDetailENS = ({
                         alignItems='center'
                         responsive={false}
                         style={{
-                          padding: '4px 0',
+                          padding: '7px 0',
                           borderBottom: '1px solid #F1F4FA',
                         }}
                       >
@@ -1043,8 +1043,8 @@ export const ControlDetailENS = ({
                         </EuiFlexItem>
 
                         {isAggregatedView && requirement.machines && (
-                          <EuiFlexItem grow={false} style={{ minWidth: 190 }}>
-                            <EuiFlexGroup gutterSize='s' alignItems='center' responsive={false}>
+                          <EuiFlexItem grow={false} style={{ width: 210, flexShrink: 0 }}>
+                            <EuiFlexGroup gutterSize='m' alignItems='center' responsive={false}>
                               <EuiFlexItem grow={false}>
                                 <MaturitySeal status={requirement.status} compliance={requirement.compliance} />
                               </EuiFlexItem>
@@ -1125,11 +1125,11 @@ export const ControlDetailENS = ({
                   {auditorSheet.map(pair => (
                     <EuiFlexGroup
                       key={pair.label}
-                      gutterSize='s'
+                      gutterSize='m'
                       responsive={false}
-                      style={{ padding: '2px 0' }}
+                      style={{ padding: '4px 0' }}
                     >
-                      <EuiFlexItem grow={false} style={{ minWidth: 128 }}>
+                      <EuiFlexItem grow={false} style={{ width: 210, flexShrink: 0 }}>
                         <EuiText size='xs' color='subdued'>
                           {pair.label}
                         </EuiText>
