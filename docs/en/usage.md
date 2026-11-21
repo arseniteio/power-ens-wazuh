@@ -21,7 +21,7 @@ Pendiente lists what needs a decision: machines in no group and parameters witho
 
 Organización holds the data that several controls share, entered once: authorised personnel, preproduction environment, change and incident tools, CCN-authorised algorithms, retention periods, controlled zones, remote access channels, certified products, staff training, awareness activities, privileged groups and the statement of applicability. Each control reads the rows of its use. It also holds the values of each control that apply to the whole organisation. Open a control and press Completar configuración to fill in what is missing. A control also lets a template be assigned to some machines.
 
-Organización also holds Ajustes de nivel and Escalas de madurez. An adjustment judges one control, on every machine or on one, at a lower level than the one in force, and needs a reason. A scale sets the minimum percentage of conforming items for L1 to L5 in the evidences that count items; without one the engine uses 20, 40, 60, 80 and 100 %. L2 meets BÁSICO, L3 MEDIO and L4 ALTO.
+Organización also holds Ajustes de nivel and Escalas de madurez. An adjustment judges one control, on every machine or on one, at a lower level than the one in force, and needs a reason. A scale sets the minimum percentage of conforming items for L1 to L5 in the evidences that count items; without one the engine uses the CCN table (CCN-STIC 844): 10, 50, 80, 90 and 100 %. Escala CCN and 20 · 40 · 60 · 80 · 100 load either table. L2 meets BÁSICO, L3 MEDIO and L4 ALTO.
 
 General holds the client, the system category (BÁSICO, MEDIO or ALTO), the groups in scope (Grupos evaluables) and Grupos por control. Until Guardar configuración global is pressed for the first time, the engine and the plugin use the default of the catalog, `common/ens/catalog/default-configuration.json`: category MEDIO and the `ens` group in scope. Save to change them.
 
@@ -51,6 +51,8 @@ Informes builds the report of each control for an auditor, with its requirements
 
 ## Reading a status
 
-Cumple means measured and correct. No cumple means measured and wrong, and the reason names what failed. No evaluable means it could not be measured: a parameter is missing, or a source did not arrive. No aplica means it is outside the system category, or the control or machine is out of scope.
+Controls, requirements and evidences carry a maturity seal: the CMM level on the left and the status it gives on the right, with the percentage and the required level in its tooltip. The status comes from the level: Cumple when it reaches the level the control requires (L2 at BÁSICO, L3 at MEDIO, L4 at ALTO), Parcial below it, No cumple at 0 %. Across machines the percentage is the average of the machines, so 9 compliant machines out of 10 is 90 %, L4, Cumple; the control detail lists the machines below the required level with a link to each. Madurez del control shows the percentage, the seal and the scale from L0 to L5 with the required level marked.
+
+For an evidence on one machine, Cumple means measured and correct. No cumple means measured and wrong, and the reason names what failed. No evaluable means it could not be measured: a parameter is missing, or a source did not arrive. No aplica means it is outside the system category, or the control or machine is out of scope.
 
 A requirement with an evidence that is not evaluable does not comply. What cannot be proven does not count as compliant. The full rules are in [Verdicts](https://github.com/arseniteio/oscompliance-ens-wazuh/blob/main/docs/en/verdicts.md).

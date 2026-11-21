@@ -21,7 +21,7 @@ Pendiente lista lo que necesita una decisión: las máquinas sin grupo y los par
 
 Organización guarda, una sola vez, los datos que comparten varios controles: personal autorizado, entorno de preproducción, herramientas de cambios e incidentes, algoritmos autorizados por el CCN, plazos de retención, zonas controladas, canales de acceso remoto, productos certificados, formación del personal, actividades de concienciación, grupos con privilegio y declaración de aplicabilidad. Cada control lee las filas de su uso. Guarda también los valores de cada control que valen para toda la organización. Abre un control y pulsa Completar configuración para rellenar lo que falta. Desde un control también se puede asignar una plantilla a algunas máquinas.
 
-Organización guarda también los Ajustes de nivel y las Escalas de madurez. Un ajuste juzga un control, en todas las máquinas o en una, a un nivel inferior al vigente, y necesita un motivo. Una escala fija el porcentaje mínimo de elementos conformes para L1 a L5 en las evidencias que cuentan elementos; sin escala, el motor usa 20, 40, 60, 80 y 100 %. L2 cumple en BÁSICO, L3 en MEDIO y L4 en ALTO.
+Organización guarda también los Ajustes de nivel y las Escalas de madurez. Un ajuste juzga un control, en todas las máquinas o en una, a un nivel inferior al vigente, y necesita un motivo. Una escala fija el porcentaje mínimo de elementos conformes para L1 a L5 en las evidencias que cuentan elementos; sin escala, el motor usa la tabla del CCN (CCN-STIC 844): 10, 50, 80, 90 y 100 %. Escala CCN y 20 · 40 · 60 · 80 · 100 cargan una u otra. L2 cumple en BÁSICO, L3 en MEDIO y L4 en ALTO.
 
 General guarda el cliente, la categoría del sistema (BÁSICO, MEDIO o ALTO), los grupos en alcance (Grupos evaluables) y Grupos por control. Hasta que se pulsa Guardar configuración global por primera vez, el motor y el plugin usan la configuración por defecto del catálogo, `common/ens/catalog/default-configuration.json`: categoría MEDIO y el grupo `ens` en alcance. Guarda para cambiarlos.
 
@@ -51,6 +51,8 @@ Informes genera el informe de cada control para un auditor, con sus requisitos, 
 
 ## Cómo leer un estado
 
-Cumple significa medido y correcto. No cumple significa medido e incorrecto, y el motivo nombra lo que falla. No evaluable significa que no se ha podido medir: falta un parámetro o no ha llegado una fuente. No aplica significa que queda fuera de la categoría del sistema, o que el control o la máquina están fuera de alcance.
+Controles, requisitos y evidencias llevan un sello de madurez: el nivel CMM a la izquierda y el estado que da a la derecha, con el porcentaje y el nivel exigido en su tooltip. El estado sale del nivel: Cumple si llega al que exige el control (L2 en BÁSICO, L3 en MEDIO, L4 en ALTO), Parcial por debajo y No cumple en el 0 %. Con varias máquinas el porcentaje es la media de las máquinas, así que 9 máquinas conformes de 10 es un 90 %, L4, Cumple; el detalle del control lista las máquinas por debajo del nivel exigido con un enlace a cada una. Madurez del control muestra el porcentaje, el sello y la escala de L0 a L5 con el nivel exigido marcado.
+
+En una evidencia de una máquina, Cumple significa medido y correcto. No cumple significa medido e incorrecto, y el motivo nombra lo que falla. No evaluable significa que no se ha podido medir: falta un parámetro o no ha llegado una fuente. No aplica significa que queda fuera de la categoría del sistema, o que el control o la máquina están fuera de alcance.
 
 Un requisito con una evidencia no evaluable no cumple. Lo que no se puede demostrar no cuenta como cumplido. Las reglas completas están en [Veredictos](https://github.com/arseniteio/oscompliance-ens-wazuh/blob/main/docs/es/verdicts.md).

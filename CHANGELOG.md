@@ -6,6 +6,9 @@ All notable changes to Power ENS are documented in this file. The format follows
 
 ### Added
 
+- A maturity seal (level and status in one mark, percentage in the tooltip) on controls, requirements, evidences and the compliance index; Madurez del control with the L0 to L5 scale, the required level and the machines below it.
+- Escalas de madurez loads the CCN table or 20, 40, 60, 80 and 100 with one button.
+
 - Evidences that count items show the count, the percentage and the level the engine set. Each judged measure shows Máquinas conformes.
 - An attested requirement shows its reference and links.
 - The fleet view shows, per requirement, the machines where it complies.
@@ -18,6 +21,8 @@ All notable changes to Power ENS are documented in this file. The format follows
 
 ### Changed
 
+- Across machines a control, a requirement or an evidence is judged by the CMM level of its percentage with the engine's rule, instead of taking the worst machine: 9 compliant machines out of 10 is Cumple. A machine without a score counts as 0 %.
+- The day-based level of Madurez de la organización is named Continuidad de la evidencia (30 días).
 - The evidence table shows the evidence title; the template description moves to an info icon.
 - Parameter descriptions move from the help text to an info icon next to the label.
 - The system category reads BÁSICO, MEDIO or ALTO; dimension levels stay BAJO, MEDIO or ALTO.
