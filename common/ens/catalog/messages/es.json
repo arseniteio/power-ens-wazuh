@@ -26,6 +26,7 @@
   "configuration.source_template": "plantilla {id}",
   "configuration.value": "«{value}»",
   "configuration.value_more": "«{value}» y {more} más",
+  "control.compliance": "{compliant} de {applicable} requisitos aplicables cumplen ({percent} %): madurez L{level}, se exige L{required} en {category}; medidos: {measured}",
   "control.disabled": "control desactivado en la configuración",
   "control.none_applies": "no aplica ningún requisito",
   "control.summary": "requisitos aplicables que cumplen: {compliant} de {applicable}; medidos: {measured}",

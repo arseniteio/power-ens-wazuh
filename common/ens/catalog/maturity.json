@@ -1,0 +1,26 @@
+{
+  "source": "CCN-STIC 844 (percentages) and CCN-STIC 808 (minimum level per category)",
+  "levels": [
+    { "level": 0, "name": "Inexistente", "percent": 0 },
+    { "level": 1, "name": "Inicial", "percent": 10 },
+    { "level": 2, "name": "Reproducible pero intuitivo", "percent": 50 },
+    { "level": 3, "name": "Proceso definido", "percent": 80 },
+    { "level": 4, "name": "Gestionado y medible", "percent": 90 },
+    { "level": 5, "name": "Optimizado", "percent": 100 }
+  ],
+  "required": { "BAJO": 2, "MEDIO": 3, "ALTO": 4 },
+  "cases": [
+    { "percent": 0, "level": "MEDIO", "expectLevel": 0, "expectStatus": "NON_COMPLIANT" },
+    { "percent": 9, "level": "MEDIO", "expectLevel": 0, "expectStatus": "PARTIAL" },
+    { "percent": 10, "level": "BAJO", "expectLevel": 1, "expectStatus": "PARTIAL" },
+    { "percent": 50, "level": "BAJO", "expectLevel": 2, "expectStatus": "COMPLIANT" },
+    { "percent": 60, "level": "MEDIO", "expectLevel": 2, "expectStatus": "PARTIAL" },
+    { "percent": 79, "level": "MEDIO", "expectLevel": 2, "expectStatus": "PARTIAL" },
+    { "percent": 80, "level": "MEDIO", "expectLevel": 3, "expectStatus": "COMPLIANT" },
+    { "percent": 89, "level": "ALTO", "expectLevel": 3, "expectStatus": "PARTIAL" },
+    { "percent": 90, "level": "ALTO", "expectLevel": 4, "expectStatus": "COMPLIANT" },
+    { "percent": 95, "level": "ALTO", "expectLevel": 4, "expectStatus": "COMPLIANT" },
+    { "percent": 100, "level": "ALTO", "expectLevel": 5, "expectStatus": "COMPLIANT" },
+    { "percent": 60, "level": "MEDIO", "scale": [20, 40, 60, 80, 100], "expectLevel": 3, "expectStatus": "COMPLIANT" }
+  ]
+}
