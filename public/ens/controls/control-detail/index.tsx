@@ -55,11 +55,14 @@ import type { GuideTarget } from './control-guide';
 import { ProvenancedText, RequirementTextsPanel, TemplateCorrespondencePanel } from './requirement-texts';
 import { InfoTip } from '../../ui/info-tip';
 import { AttestationLinks } from './attestation-links';
+import { MaturitySeal } from '../../ui/maturity-seal';
+import { ControlMaturity } from './control-maturity';
+import { EvidenceSeal } from './evidence-seal';
+import { scaleFor } from '../../../../common/ens/maturity/scale';
 import { DocumentaryEvidences } from './documentary-evidences';
 import { documentaryRequirements } from '../../../../common/ens/core/documentary';
 import { EvidenceMotiveFlyout, nonConformityMotive } from './evidence-motive';
 import { EvidenceMotiveCell } from './evidence-motive-cell';
-import { formatTally } from '../../../../common/ens/core/tally';
 import { describeNotMeasuredOnAgent } from '../../../../common/ens/core/scope/measurement-planes';
 import {
   ENS_PENDING_MEASUREMENT_LABEL,
@@ -389,7 +392,7 @@ export const ControlDetailENS = ({
           .join(' · ');
 
   const auditorSheet: { label: string; value: string }[] = [
-    { label: 'Score', value: `${engineScoreText} · ${engineStatus}` },
+    { label: 'Cumplimiento', value: `${engineScoreText}${complianceResult?.compliance ? ` · L${complianceResult.compliance.level}` : ''} · ${statusLabel(engineStatus)}` },
     {
       label: isAggregatedView
         ? 'Demostrados · requisito × máquina'
@@ -745,10 +748,7 @@ export const ControlDetailENS = ({
           <EuiFlexGroup gutterSize='s' responsive={false} wrap alignItems='center'>
             {data?.result && (
               <EuiFlexItem grow={false}>
-                <EuiBadge color={getBadgeColor(data.result.status)} iconType={getStatusIcon(data.result.status)}>
-                  {statusLabel(data.result.status)}
-                  {typeof data.result.score === 'number' ? ` · ${data.result.score}%` : ''}
-                </EuiBadge>
+                <MaturitySeal status={data.result.status} compliance={data.result.compliance} />
               </EuiFlexItem>
             )}
           </EuiFlexGroup>
@@ -924,7 +924,7 @@ export const ControlDetailENS = ({
   }
 
   const kpis = [
-    { title: engineScoreText, description: `Cumplimiento · ${statusLabel(engineStatus)}`, color: getBadgeColor(engineStatus) },
+    ...(complianceResult?.compliance ? [] : [{ title: engineScoreText, description: `Cumplimiento · ${statusLabel(engineStatus)}`, color: getBadgeColor(engineStatus) }]),
     { title: `${compliantRequirements}/${denominatorRequirements}`, description: 'Requisitos cumpliendo' },
     { title: `${evidenceSummary.compliant}/${evaluableEvidences}`, description: 'Evidencias conformes' },
     { title: String(openNonConformitiesCount), description: 'No conformidades abiertas', color: openNonConformitiesCount ? 'danger' : 'success' },
@@ -960,6 +960,17 @@ export const ControlDetailENS = ({
         <EvaluationStatusLine meta={data?.meta} refreshing={evaluation.isRefreshing} onRetry={evaluation.retry} />
 
         <EuiSpacer size='m' />
+
+        {complianceResult?.compliance && (
+          <>
+            <ControlMaturity
+              result={complianceResult}
+              thresholds={scaleFor(getActiveENSConfiguration(), control.id, displayedAgent)}
+              onOpenMachine={machineId => updateUrl({ agentId: machineId })}
+            />
+            <EuiSpacer size='m' />
+          </>
+        )}
 
         <EuiFlexGroup gutterSize='m' responsive={false} wrap>
           {kpis.map(kpi => (
@@ -1032,10 +1043,17 @@ export const ControlDetailENS = ({
                         </EuiFlexItem>
 
                         {isAggregatedView && requirement.machines && (
-                          <EuiFlexItem grow={false} style={{ minWidth: 110 }}>
-                            <EuiText size='xs' color='subdued'>
-                              {`Máquinas ${formatTally(requirement.machines)}`}
-                            </EuiText>
+                          <EuiFlexItem grow={false} style={{ minWidth: 190 }}>
+                            <EuiFlexGroup gutterSize='s' alignItems='center' responsive={false}>
+                              <EuiFlexItem grow={false}>
+                                <MaturitySeal status={requirement.status} compliance={requirement.compliance} />
+                              </EuiFlexItem>
+                              <EuiFlexItem grow={false}>
+                                <EuiText size='xs' color='subdued'>
+                                  <span>{`${requirement.machines.met}/${requirement.machines.total} máquinas`}</span>
+                                </EuiText>
+                              </EuiFlexItem>
+                            </EuiFlexGroup>
                           </EuiFlexItem>
                         )}
 
@@ -1043,9 +1061,11 @@ export const ControlDetailENS = ({
                           {isCompliant && requirement.attestation ? (
                             <AttestationLinks attestation={requirement.attestation} />
                           ) : isCompliant ? (
-                            <EuiText size='xs' color='subdued'>
-                              {compliantRequirementLabel(requirement)}
-                            </EuiText>
+                            isAggregatedView && requirement.compliance ? null : (
+                              <EuiText size='xs' color='subdued'>
+                                {compliantRequirementLabel(requirement)}
+                              </EuiText>
+                            )
                           ) : culprits.length ? (
                             <EuiFlexGroup
                               gutterSize='xs'
@@ -1202,19 +1222,7 @@ export const ControlDetailENS = ({
                     {ENS_PENDING_MEASUREMENT_LABEL}
                   </EuiBadge>
                 ) : (
-                  <div>
-                    <EuiBadge
-                      color={getBadgeColor(status)}
-                      iconType={getStatusIcon(status)}
-                    >
-                      {statusLabel(status)}
-                    </EuiBadge>
-                    {item.tally && (
-                      <EuiText size='xs' color='subdued'>
-                        <div style={{ marginTop: 2 }}>{formatTally(item.tally)}</div>
-                      </EuiText>
-                    )}
-                  </div>
+                  <EvidenceSeal evidence={item.evidence} />
                 ),
             },
             {
