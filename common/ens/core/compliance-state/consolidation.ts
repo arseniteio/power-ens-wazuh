@@ -12,12 +12,30 @@ import type {
 } from '../evaluation/types';
 import type { ENSAgentComplianceState } from './types';
 import { scoreByStatus } from '../evaluation/utils/score';
+import type { ENSLevel } from '../../configuration/types';
+import { getActiveENSConfiguration } from '../../configuration/services/configuration-state-service';
+import { judgeCompliance } from '../../maturity/compliance-level';
+import type { ENSCompliance } from '../../maturity/compliance-level';
+import { scaleFor } from '../../maturity/scale';
 
 interface ENSAgentResultEntry {
   agentId: string;
   agentName?: string;
   result: ENSComplianceResult;
 }
+
+interface FleetScope {
+  controlId: string;
+  level: ENSLevel;
+}
+
+// A fleet complies by its CMM level, not by its worst machine: 9 of 10 machines is 90 %, L4,
+// and meets ALTO. Only when nothing was measured does the old reading stay.
+const fleetCompliance = (scope: FleetScope, percent: number | undefined, statuses: ENSComplianceStatus[]): ENSCompliance | undefined => {
+  const applicable = statuses.filter(status => status !== 'NO_APLICA');
+  if (percent === undefined || !applicable.length || applicable.every(status => status === 'NO_EVALUABLE')) return undefined;
+  return judgeCompliance(percent, scope.level, scaleFor(getActiveENSConfiguration(), scope.controlId));
+};
 
 const machinesMeeting = (statuses: ENSComplianceStatus[]): ENSTally | undefined => {
   const applicable = statuses.filter(status => status !== 'NO_APLICA');
@@ -212,7 +230,7 @@ const averageScore = (entries: ENSAgentResultEntry[]): number | undefined => {
 export const agentHasEvaluatedResults = (agent: ENSAgentComplianceState): boolean =>
   agent.results.some((result) => result.measuredRequirements > 0);
 
-const consolidateRequirements = (entries: ENSAgentResultEntry[]): ENSRequirementResult[] => {
+const consolidateRequirements = (entries: ENSAgentResultEntry[], scope: FleetScope): ENSRequirementResult[] => {
   const requirementIds = uniqueValues(
     entries.flatMap((entry) => entry.result.requirements.map((requirement) => requirement.id))
   );
@@ -242,9 +260,10 @@ const consolidateRequirements = (entries: ENSAgentResultEntry[]): ENSRequirement
       )
     );
 
-    const consolidatedStatus = consolidateENSStatuses(
-      requirementEntries.map(({ requirement }) => requirement.status)
-    );
+    const statuses = requirementEntries.map(({ requirement }) => requirement.status);
+    const machines = machinesMeeting(statuses);
+    const compliance = fleetCompliance(scope, machines?.percent, statuses);
+    const consolidatedStatus = compliance?.status ?? consolidateENSStatuses(statuses);
 
     const attested =
       consolidatedStatus === 'CUMPLE' &&
@@ -265,7 +284,8 @@ const consolidateRequirements = (entries: ENSAgentResultEntry[]): ENSRequirement
         ({ requirement }) => requirement.evidenced !== false
       ),
       ...(attested ? { attested: true } : {}),
-      machines: machinesMeeting(requirementEntries.map(({ requirement }) => requirement.status)),
+      machines,
+      ...(compliance ? { compliance } : {}),
       ...(attested ? attestationAmong(requirementEntries.map(({ requirement }) => requirement)) : {}),
       ...(documental ? { documental: true } : {}),
       level: uniqueValues(requirementEntries.flatMap(({ requirement }) => requirement.level)),
@@ -276,7 +296,7 @@ const consolidateRequirements = (entries: ENSAgentResultEntry[]): ENSRequirement
   });
 };
 
-const consolidateEvidences = (entries: ENSAgentResultEntry[]): ENSEvidenceResult[] => {
+const consolidateEvidences = (entries: ENSAgentResultEntry[], scope: FleetScope): ENSEvidenceResult[] => {
   const evidenceIds = uniqueValues(
     entries.flatMap((entry) => entry.result.evidences.map((evidence) => evidence.id))
   );
@@ -301,7 +321,7 @@ const consolidateEvidences = (entries: ENSAgentResultEntry[]): ENSEvidenceResult
 
     return {
       ...template,
-      status: consolidateENSStatuses(evidenceEntries.map(({ evidence }) => evidence.status)),
+      ...evidenceFleetStatus(scope, evidenceEntries.map(({ evidence }) => evidence.status)),
       requirements: uniqueValues(evidenceEntries.flatMap(({ evidence }) => evidence.requirements)),
       levels: uniqueValues(evidenceEntries.flatMap(({ evidence }) => evidence.levels)),
       sourceTypes: uniqueValues(evidenceEntries.flatMap(({ evidence }) => evidence.sourceTypes)),
@@ -395,8 +415,25 @@ const consolidateObservations = (entries: ENSAgentResultEntry[]): string[] =>
     )
   ).map(formatObservationGroup);
 
+const evidenceFleetStatus = (scope: FleetScope, statuses: ENSComplianceStatus[]): Pick<ENSEvidenceResult, 'status' | 'compliance'> => {
+  const compliance = fleetCompliance(scope, machinesMeeting(statuses)?.percent, statuses);
+  return compliance ? { status: compliance.status, compliance } : { status: consolidateENSStatuses(statuses) };
+};
+
+const controlFleetStatus = (scope: FleetScope, entries: ENSAgentResultEntry[], score: number | undefined): Pick<ENSComplianceResult, 'status' | 'compliance'> => {
+  const statuses = entries.map(entry => entry.result.status);
+  if (entries.length === 1) {
+    const only = entries[0].result;
+    return { status: only.status, ...(only.compliance ? { compliance: only.compliance } : {}) };
+  }
+  const compliance = fleetCompliance(scope, score, statuses);
+  return compliance ? { status: compliance.status, compliance } : { status: consolidateENSStatuses(statuses) };
+};
+
 const consolidateControlResult = (entries: ENSAgentResultEntry[]): ENSComplianceResult => {
   const template = entries[0].result;
+  const scope: FleetScope = { controlId: template.control.id, level: template.level };
+  const score = averageScore(entries);
 
   return {
     ...template,
@@ -406,8 +443,15 @@ const consolidateControlResult = (entries: ENSAgentResultEntry[]): ENSCompliance
 
     consolidatedAgents: uniqueByKey(entries.map(toAgentRef), (agent) => agent.agentId),
 
-    status: consolidateENSStatuses(entries.map((entry) => entry.result.status)),
-    score: averageScore(entries),
+    ...controlFleetStatus(scope, entries, score),
+    score,
+    machineResults: entries.map(entry => ({
+      agentId: entry.agentId,
+      ...(entry.agentName ? { agentName: entry.agentName } : {}),
+      status: entry.result.status,
+      ...(typeof entry.result.score === 'number' ? { score: entry.result.score } : {}),
+      ...(entry.result.compliance ? { compliance: entry.result.compliance } : {}),
+    })),
     coverage: averageApplicableResultValue(entries, (result) => result.coverage),
 
     applicableRequirements: entries.reduce(
@@ -429,13 +473,13 @@ const consolidateControlResult = (entries: ENSAgentResultEntry[]): ENSCompliance
     lastEvidenceAt: getLatestIsoDate(entries.map((entry) => entry.result.lastEvidenceAt)),
     nextReviewAt: getEarliestIsoDate(entries.map((entry) => entry.result.nextReviewAt)),
 
-    requirements: consolidateRequirements(entries),
+    requirements: consolidateRequirements(entries, scope),
 
     parameters: template.parameters.map((parameter) => ({
       ...parameter,
     })),
 
-    evidences: consolidateEvidences(entries),
+    evidences: consolidateEvidences(entries, scope),
 
     missingParameters: uniqueValues(entries.flatMap((entry) => entry.result.missingParameters)),
     missingEvidences: uniqueValues(entries.flatMap((entry) => entry.result.missingEvidences)),

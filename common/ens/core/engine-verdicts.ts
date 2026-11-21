@@ -42,6 +42,7 @@ export interface ENSEngineVerdict {
   measured_requirements?: number;
   unmeasured_requirements?: string[];
   tally?: ENSTally;
+  compliance?: { percent: number; level: number; required: number; category: string };
 }
 
 const STATUS: Record<string, ENSComplianceStatus> = {
@@ -275,6 +276,7 @@ export const buildENSResultFromVerdicts = (
     level,
     status,
     score: status === 'NO_APLICA' ? undefined : controlVerdict?.score ?? 0,
+    ...(controlVerdict?.compliance ? { compliance: { ...controlVerdict.compliance, status } } : {}),
     coverage: controlVerdict?.coverage ?? 0,
     applicableRequirements: controlVerdict?.applicable_requirements ?? applicable.length,
     measuredRequirements: controlVerdict?.measured_requirements ?? applicable.length - unmeasured.length,

@@ -98,7 +98,7 @@ describe('the evaluation of the whole scope', () => {
     const run = await service.run(clients, control('op.acc.1'));
     const view = run.views.get('op.acc.1');
     assert.equal(view?.rows.length, 2);
-    assert.equal(view?.result?.status, 'PARCIAL');
+    assert.equal(view?.result?.status, 'CUMPLE');
   });
 
   test('builds the summary with every catalog control', async () => {
@@ -106,7 +106,7 @@ describe('the evaluation of the whole scope', () => {
     const run = await service.run(clients, { include: 'summary', timeZone: 'UTC' });
     const response: any = buildEvaluationResponse(run);
     assert.equal(response.controls.length, ENGINE_CATALOG.length);
-    assert.equal(response.controls.find((c: any) => c.controlId === 'op.acc.1').status, 'PARCIAL');
+    assert.equal(response.controls.find((c: any) => c.controlId === 'op.acc.1').status, 'CUMPLE');
     assert.deepEqual(response.agents.map((a: any) => a.agentId).sort(), [MANAGER.id, AGENT.id]);
   });
 

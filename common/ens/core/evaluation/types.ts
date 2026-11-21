@@ -1,4 +1,5 @@
 import type { ENSTally } from '../tally';
+import type { ENSCompliance } from '../../maturity/compliance-level';
 
 export interface ENSAgentRef {
   agentId: string;
@@ -73,6 +74,8 @@ export interface ENSRequirementResult {
 
   machines?: ENSTally;
 
+  compliance?: ENSCompliance;
+
   documental?: boolean;
 
   observations: string[];
@@ -107,6 +110,8 @@ export interface ENSEvidenceResult {
   reasonArgs?: Record<string, unknown>;
 
   byMachine?: ENSEvidenceMachineResult[];
+
+  compliance?: ENSCompliance;
 
   observations: string[];
 
@@ -166,6 +171,14 @@ export interface ENSTraceabilityResult {
   timestamp?: string;
 }
 
+export interface ENSMachineControlResult {
+  agentId: string;
+  agentName?: string;
+  status: ENSComplianceStatus;
+  score?: number;
+  compliance?: ENSCompliance;
+}
+
 export interface ENSComplianceResult {
   control: {
     id: string;
@@ -182,6 +195,10 @@ export interface ENSComplianceResult {
   status: ENSComplianceStatus;
 
   score?: number;
+
+  compliance?: ENSCompliance;
+
+  machineResults?: ENSMachineControlResult[];
 
   coverage: number;
 

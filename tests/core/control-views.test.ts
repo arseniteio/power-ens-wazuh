@@ -9,10 +9,20 @@ describe('a control seen over several machines', () => {
     assert.equal(consolidateRows('op.acc.1', []), undefined);
   });
 
-  test('takes the worst status and the average score', () => {
-    const consolidated = consolidateRows('op.acc.1', [row('001', 'CUMPLE', 100), row('002', 'NO_CUMPLE', 0)]);
-    assert.equal(consolidated?.status, 'NO_CUMPLE');
-    assert.equal(consolidated?.score, 50);
+  test('judges the fleet by the CMM level of its average score', () => {
+    const half = consolidateRows('op.acc.1', [row('001', 'CUMPLE', 100), row('002', 'NO_CUMPLE', 0)]);
+    assert.equal(half?.score, 50);
+    assert.equal(half?.compliance?.level, 2);
+    assert.equal(half?.status, 'PARCIAL');
+  });
+
+  test('complies when 9 of 10 machines do: one machine does not sink the fleet', () => {
+    const rows = Array.from({ length: 10 }, (_, i) => (i === 9 ? row('010', 'NO_CUMPLE', 0) : row(`00${i}`, 'CUMPLE', 100)));
+    const consolidated = consolidateRows('op.acc.1', rows);
+    assert.equal(consolidated?.score, 90);
+    assert.equal(consolidated?.status, 'CUMPLE');
+    assert.deepEqual(consolidated?.compliance && { level: consolidated.compliance.level, required: consolidated.compliance.required }, { level: 4, required: 3 });
+    assert.equal(consolidated?.machineResults?.filter(machine => machine.status !== 'CUMPLE').length, 1);
   });
 
   test('names the machines it summarises', () => {
