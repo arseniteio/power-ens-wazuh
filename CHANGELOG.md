@@ -22,6 +22,8 @@ All notable changes to Power ENS are documented in this file. The format follows
 - Parameter descriptions move from the help text to an info icon next to the label.
 - The system category reads BÁSICO, MEDIO or ALTO; dimension levels stay BAJO, MEDIO or ALTO.
 - Saving the configuration keeps `maturity.scales`.
+- The motive of an evidence opens a panel with the check, each parameter it compares against (name, description, full value with search, origin) and the result per machine. Reasons are drawn from the engine's structured reason instead of parsing text; long lists stay whole, with search.
+- Non-conformities show the same structured motive and the parameters with their description.
 - One non-conformity per failed evidence lists every requirement it breaks, instead of one repeated card per requirement.
 
 ## [2.0.1] - 2026-11-19
