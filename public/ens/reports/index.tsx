@@ -16,6 +16,7 @@ import {
   EuiButtonEmpty,
   EuiCallOut,
   EuiStat,
+  EuiLink,
 } from '@elastic/eui';
 import { useRouterSearch } from '../../routing/use-router-search';
 import { useEnsEvaluation } from '../../evaluation/use-evaluation';
@@ -29,7 +30,7 @@ import { canExportReport, reportViewState } from './report-view-state';
 import { describeParameterForMachine } from '../controls/parameter-origins';
 import { useHostParameters } from '../controls/use-host-parameters';
 // Import from the types file, never from the `../core` barrel: it avoids the transitive TDZ cycle of Settings.
-import type { ENSComplianceResult, ENSRequirementResult } from '../../../common/ens/core/evaluation/types';
+import type { ENSAttestation, ENSComplianceResult, ENSRequirementResult } from '../../../common/ens/core/evaluation/types';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { getENSReportModelDefinition, listENSControlsWithoutReportModel } from './registry';
@@ -237,6 +238,7 @@ const ControlReport = ({
     title: requirement.title,
     status: requirement.status,
     test: testLabel(requirement),
+    attestation: requirement.attestation,
     level: requirement.level.join(', ') || '-',
     evidences: (requirement.evidenceIds || []).join(', ') || '-',
     observationList: requirement.observations || [],
@@ -320,7 +322,7 @@ const ControlReport = ({
       field: 'status',
       name: 'Estado',
       width: '190px',
-      render: (status: string, item: { test: string }) => (
+      render: (status: string, item: { test: string; attestation?: ENSAttestation }) => (
         <>
           <EuiBadge color={ensReportStatusBadgeColor(status)}>{statusLabel(status)}</EuiBadge>
           {item.test ? (
@@ -328,6 +330,24 @@ const ControlReport = ({
               {item.test}
             </EuiText>
           ) : null}
+          {item.attestation && (
+            <EuiText size='xs'>
+              <div>{item.attestation.reference}</div>
+              {item.attestation.links.map(link =>
+                /^https?:\/\//i.test(link) ? (
+                  <div key={link}>
+                    <EuiLink href={link} target='_blank' external>
+                      {link}
+                    </EuiLink>
+                  </div>
+                ) : (
+                  <div key={link}>
+                    <code>{link}</code>
+                  </div>
+                )
+              )}
+            </EuiText>
+          )}
         </>
       ),
     },
@@ -671,6 +691,16 @@ const ControlReport = ({
                     },
                     ...(requirement.test
                       ? [{ text: `\n${requirement.test}`, color: PDF_SECONDARY_COLOR }]
+                      : []),
+                    ...(requirement.attestation
+                      ? [
+                          { text: `\n${requirement.attestation.reference}`, color: PDF_SECONDARY_COLOR },
+                          ...requirement.attestation.links.map(link =>
+                            /^https?:\/\//i.test(link)
+                              ? { text: `\n${link}`, link, color: '#006bb4', decoration: 'underline' }
+                              : { text: `\n${link}`, color: PDF_SECONDARY_COLOR }
+                          ),
+                        ]
                       : []),
                   ],
                 },
