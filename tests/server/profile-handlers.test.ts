@@ -25,7 +25,7 @@ const createStubClient = (user: any, docs: StoredDoc[] = []) => {
   const client = {
     docs,
     bulkBodies,
-    indices: { exists: async () => ({ body: true }), create: async () => ({ body: {} }) },
+    indices: { exists: async () => ({ body: true }), create: async () => ({ body: {} }), putMapping: async () => ({ body: {} }) },
     transport: { request: async () => ({ body: user }) },
     search: async () => ({ body: { hits: { hits: docs.map(doc => ({ ...doc })) } } }),
     bulk: async ({ body }: any) => {

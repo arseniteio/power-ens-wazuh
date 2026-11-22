@@ -1,13 +1,24 @@
 import type { Logger } from '../../../../src/core/server';
 import {
+  deleteENSSystem,
   ENSConfigurationConflictError,
   ENSConfigurationDocumentVersion,
   ENSConfigurationStoredDocument,
+  listENSSystems,
   parseConfigurationVersion,
   persistENSConfiguration,
   readActiveENSConfigurationWithVersion,
   readENSConfigurationHistory,
 } from './configuration-storage';
+import {
+  DEFAULT_ENS_SYSTEM,
+  describeSystemScopeIssue,
+  isDefaultSystem,
+  isValidSystemId,
+  sharedScopeGroups,
+  systemOf,
+} from '../../common/ens/systems';
+import type { ENSSystemSummary } from '../../common/ens/systems';
 import { resolveCurrentUser } from './current-user';
 import {
   checkAgentsConfigurationKeys,
@@ -53,6 +64,20 @@ const keptScales = (sent?: ENSMaturityScale[], stored?: ENSMaturityScale[]): { s
   return scales?.length ? { scales } : {};
 };
 
+const NO_SYSTEM_ID = 'El identificador del sistema tiene de 1 a 40 letras minúsculas, cifras o guiones, y no puede ser «default».';
+
+const requestedSystem = (request: any): string | undefined => {
+  const system = systemOf(request?.query?.system);
+  return isDefaultSystem(system) || isValidSystemId(system) ? system : undefined;
+};
+
+// A new system starts from the organisation data and the parameters of the default one, with an
+// empty scope: its machines, their own values and its maturity assessments are not copied.
+const newSystemConfiguration = (base: Record<string, any>): Record<string, unknown> => {
+  const { agents: _agents, maturity: _maturity, auditTrail: _trail, levelAdjustments: _adjustments, ...rest } = base;
+  return { ...rest, scope: { mode: 'group', groupIds: [], agentIds: [], controlGroups: false } };
+};
+
 export const createConfigurationHandlers = ({ logger, securityEnabled }: Options) => {
   const internal = (context: any) => context.core.opensearch.client.asInternalUser;
   const actual = (context: any) => context.core.opensearch.client.asCurrentUser;
@@ -75,9 +100,12 @@ export const createConfigurationHandlers = ({ logger, securityEnabled }: Options
     }
   };
 
-  const getActive = async (context: any, _request: any, response: any) => {
+  const getActive = async (context: any, request: any, response: any) => {
+    const system = requestedSystem(request);
+    if (!system) return failure(response, 400, NO_SYSTEM_ID);
     try {
-      const { document: doc, version } = await readActiveENSConfigurationWithVersion(internal(context), logger);
+      const { document: doc, version } = await readActiveENSConfigurationWithVersion(internal(context), logger, system);
+      if (!doc && !isDefaultSystem(system)) return failure(response, 404, `El sistema ENS «${system}» no existe.`);
       return correct(response, { configuration: doc?.configuration ?? null, metadata: metadata(doc, version) });
     } catch (error: any) {
       logger.error(`Could not read the active ENS configuration: ${error?.message || error}`);
@@ -86,10 +114,15 @@ export const createConfigurationHandlers = ({ logger, securityEnabled }: Options
   };
 
   const save = async (context: any, request: any, response: any) => {
+    const system = requestedSystem(request);
+    if (!system) return failure(response, 400, NO_SYSTEM_ID);
     const bodyText = request?.body;
     if (!bodyText || !bodyText.configuration || typeof bodyText.configuration !== 'object' || Array.isArray(bodyText.configuration)) {
       return failure(response, 400, 'Hace falta una configuración ENS válida.');
     }
+
+    const scopeIssue = describeSystemScopeIssue(system, bodyText.configuration.scope);
+    if (scopeIssue) return failure(response, 400, scopeIssue);
 
     const agentErrors = [
       ...validateAgentsConfigurationShape(bodyText.configuration.agents),
@@ -124,7 +157,12 @@ export const createConfigurationHandlers = ({ logger, securityEnabled }: Options
     const username = access.user!.username;
 
     try {
-      const { document: previous, version } = await readActiveENSConfigurationWithVersion(internal(context), logger);
+      const { document: previous, version } = await readActiveENSConfigurationWithVersion(internal(context), logger, system);
+      if (!previous && !isDefaultSystem(system)) return failure(response, 404, `El sistema ENS «${system}» no existe.`);
+      const shared = sharedScopeGroups(system, bodyText.configuration.scope, await listENSSystems(internal(context), logger));
+      if (shared.length) {
+        return failure(response, 400, `No se guarda: otro sistema ya usa los grupos ${shared.join(', ')}. Una máquina solo puede estar en un sistema.`);
+      }
       const expectsNone = bodyText.expectedVersion === null;
       const expected = parseConfigurationVersion(bodyText.expectedVersion);
       if (
@@ -199,7 +237,7 @@ export const createConfigurationHandlers = ({ logger, securityEnabled }: Options
         ],
       };
 
-      const last = previous ? (await readENSConfigurationHistory(internal(context), logger, 1))[0] : undefined;
+      const last = previous ? (await readENSConfigurationHistory(internal(context), logger, 1, system))[0] : undefined;
       const previousOutsideHistory =
         previous && JSON.stringify(last?.configuration ?? null) !== JSON.stringify(previous.configuration)
           ? { configuration: previous.configuration, author: text(previous2.updatedBy) || previous.updatedBy }
@@ -211,9 +249,10 @@ export const createConfigurationHandlers = ({ logger, securityEnabled }: Options
         configurationValue,
         username,
         previousOutsideHistory,
-        previous ? version : 'absent'
+        previous ? version : 'absent',
+        { id: system, name: previous?.system?.name || system }
       );
-      logger.info(`ENS configuration saved by ${username}`);
+      logger.info(`ENS configuration of system ${system} saved by ${username}`);
       if (savedValue.historyError) {
         logger.error(`ENS configuration saved by ${username}, but its history entry was not written: ${savedValue.historyError}`);
       }
@@ -233,12 +272,14 @@ export const createConfigurationHandlers = ({ logger, securityEnabled }: Options
     }
   };
 
-  const history = async (context: any, _request: any, response: any) => {
+  const history = async (context: any, request: any, response: any) => {
+    const system = requestedSystem(request);
+    if (!system) return failure(response, 400, NO_SYSTEM_ID);
     const access = await administrator(context, response, 'read the history');
     if (access.error) return access.error;
 
     try {
-      const docs = await readENSConfigurationHistory(internal(context), logger, 100);
+      const docs = await readENSConfigurationHistory(internal(context), logger, 100, system);
       return correct(response, docs.map(doc => ({ configuration: doc.configuration, metadata: metadata(doc) })));
     } catch (error: any) {
       logger.error(`Could not read the ENS configuration history: ${error?.message || error}`);
@@ -246,5 +287,67 @@ export const createConfigurationHandlers = ({ logger, securityEnabled }: Options
     }
   };
 
-  return { getActive, save, history };
+  const systems = async (context: any, _request: any, response: any) => {
+    try {
+      const list = await listENSSystems(internal(context), logger);
+      return correct(response, list.map(({ id, name }): ENSSystemSummary => ({ id, name })));
+    } catch (error: any) {
+      logger.error(`Could not list the ENS systems: ${error?.message || error}`);
+      return failure(response, 500, 'No se pudieron leer los sistemas ENS; el detalle está en el log del dashboard.');
+    }
+  };
+
+  const createSystem = async (context: any, request: any, response: any) => {
+    const id = text(request?.body?.id) || '';
+    const name = text(request?.body?.name) || id;
+    if (!isValidSystemId(id)) return failure(response, 400, NO_SYSTEM_ID);
+
+    const access = await administrator(context, response, 'create a system');
+    if (access.error) return access.error;
+    const username = access.user!.username;
+
+    try {
+      if ((await listENSSystems(internal(context), logger)).some(system => system.id === id)) {
+        return failure(response, 409, `Ya existe un sistema ENS con el identificador «${id}».`);
+      }
+      const { document: base } = await readActiveENSConfigurationWithVersion(internal(context), logger, DEFAULT_ENS_SYSTEM);
+      const now = new Date().toISOString();
+      const reason = `Sistema ENS «${name}» creado a partir del sistema principal.`;
+      const configuration = {
+        ...newSystemConfiguration(base?.configuration || {}),
+        createdAt: now,
+        createdBy: username,
+        updatedAt: now,
+        updatedBy: username,
+        changeReason: reason,
+        auditTrail: [{ action: 'CREATED', user: username, date: now, summary: reason }],
+      };
+      await persistENSConfiguration(internal(context), logger, configuration, username, undefined, 'absent', { id, name });
+      logger.info(`ENS system ${id} created by ${username}`);
+      return correct(response, { id, name });
+    } catch (error: any) {
+      if (error instanceof ENSConfigurationConflictError) return failure(response, 409, `Ya existe un sistema ENS con el identificador «${id}».`);
+      logger.error(`Could not create the ENS system ${id}: ${error?.message || error}`);
+      return failure(response, 500, 'No se pudo crear el sistema ENS; el detalle está en el log del dashboard.');
+    }
+  };
+
+  const deleteSystem = async (context: any, request: any, response: any) => {
+    const id = text(request?.params?.id) || '';
+    if (!isValidSystemId(id)) return failure(response, 400, 'El sistema principal no se puede eliminar.');
+
+    const access = await administrator(context, response, 'delete a system');
+    if (access.error) return access.error;
+
+    try {
+      if (!(await deleteENSSystem(internal(context), logger, id))) return failure(response, 404, `El sistema ENS «${id}» no existe.`);
+      logger.info(`ENS system ${id} deleted by ${access.user!.username}; its history and verdicts are kept`);
+      return correct(response, { id });
+    } catch (error: any) {
+      logger.error(`Could not delete the ENS system ${id}: ${error?.message || error}`);
+      return failure(response, 500, 'No se pudo eliminar el sistema ENS; el detalle está en el log del dashboard.');
+    }
+  };
+
+  return { getActive, save, history, systems, createSystem, deleteSystem };
 };

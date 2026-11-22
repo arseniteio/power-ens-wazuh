@@ -1,14 +1,22 @@
 import { randomBytes } from 'crypto';
 import type { Logger } from '../../../../src/core/server';
 import { ENS_CONFIGURATION_INDEX } from '../../common/constants';
+import {
+  configurationDocumentId,
+  DEFAULT_ENS_SYSTEM,
+  DEFAULT_ENS_SYSTEM_NAME,
+  isDefaultSystem,
+  systemFilter,
+} from '../../common/ens/systems';
+import type { ENSSystemScope, ENSSystemSummary } from '../../common/ens/systems';
 import { assertCompleteResponse } from './evaluation/search';
 
-const ENS_CONFIGURATION_ACTIVE_DOCUMENT_ID = 'active';
-
-export type ENSConfigurationDocumentType = 'ACTIVE_CONFIGURATION' | 'CONFIGURATION_HISTORY';
+export type ENSConfigurationDocumentType = 'ACTIVE_CONFIGURATION' | 'SYSTEM_CONFIGURATION' | 'CONFIGURATION_HISTORY';
 
 export interface ENSConfigurationStoredDocument {
   documentType: ENSConfigurationDocumentType;
+  system?: ENSSystemSummary;
+  systemId?: string;
   configuration: Record<string, unknown>;
   createdAt?: string;
   createdBy?: string;
@@ -25,10 +33,26 @@ const isIndexAlreadyCreatedError = (error: any): boolean => {
   );
 };
 
+const systemProperties = {
+  systemId: { type: 'keyword' },
+  system: { properties: { id: { type: 'keyword' }, name: { type: 'keyword' } } },
+};
+
+let systemMappingEnsured = false;
+
+// Indices created before ENS systems existed get the system fields mapped as keywords before a
+// document carries them, so a term query on a hyphenated id still matches.
+async function ensureSystemMapping(client: any): Promise<void> {
+  if (systemMappingEnsured) return;
+  await client.indices.putMapping({ index: ENS_CONFIGURATION_INDEX, body: { properties: systemProperties } });
+  systemMappingEnsured = true;
+}
+
 export async function ensureENSConfigurationIndex(client: any, logger: Logger): Promise<void> {
   const exists = await client.indices.exists({ index: ENS_CONFIGURATION_INDEX });
 
   if (exists.body) {
+    await ensureSystemMapping(client);
     return;
   }
 
@@ -40,6 +64,7 @@ export async function ensureENSConfigurationIndex(client: any, logger: Logger): 
         mappings: {
           properties: {
             documentType: { type: 'keyword' },
+            ...systemProperties,
             createdAt: { type: 'date' },
             createdBy: { type: 'keyword' },
             updatedAt: { type: 'date' },
@@ -50,6 +75,7 @@ export async function ensureENSConfigurationIndex(client: any, logger: Logger): 
       },
     });
 
+    systemMappingEnsured = true;
     logger.info(`Index ${ENS_CONFIGURATION_INDEX} created`);
   } catch (error) {
     if (!isIndexAlreadyCreatedError(error)) {
@@ -77,7 +103,8 @@ export const parseConfigurationVersion = (value: any): ENSConfigurationDocumentV
 
 export async function readActiveENSConfigurationWithVersion(
   client: any,
-  logger: Logger
+  logger: Logger,
+  system: string = DEFAULT_ENS_SYSTEM
 ): Promise<{ document?: ENSConfigurationStoredDocument; version?: ENSConfigurationDocumentVersion }> {
   await ensureENSConfigurationIndex(client, logger);
 
@@ -87,7 +114,7 @@ export async function readActiveENSConfigurationWithVersion(
     body: {
       size: 1,
       seq_no_primary_term: true,
-      query: { ids: { values: [ENS_CONFIGURATION_ACTIVE_DOCUMENT_ID] } },
+      query: { ids: { values: [configurationDocumentId(system)] } },
     },
   });
 
@@ -99,15 +126,50 @@ export async function readActiveENSConfigurationWithVersion(
 
 export async function readActiveENSConfiguration(
   client: any,
-  logger: Logger
+  logger: Logger,
+  system: string = DEFAULT_ENS_SYSTEM
 ): Promise<ENSConfigurationStoredDocument | undefined> {
-  return (await readActiveENSConfigurationWithVersion(client, logger)).document;
+  return (await readActiveENSConfigurationWithVersion(client, logger, system)).document;
+}
+
+export async function listENSSystems(client: any, logger: Logger): Promise<ENSSystemScope[]> {
+  await ensureENSConfigurationIndex(client, logger);
+
+  const result = await client.search({
+    index: ENS_CONFIGURATION_INDEX,
+    ignore_unavailable: true,
+    body: {
+      size: 1000,
+      query: { terms: { documentType: ['ACTIVE_CONFIGURATION', 'SYSTEM_CONFIGURATION'] } },
+      _source: ['documentType', 'system', 'configuration.scope'],
+    },
+  });
+
+  assertCompleteResponse(result.body, 'los sistemas ENS');
+  const systems: ENSSystemScope[] = [{ id: DEFAULT_ENS_SYSTEM, name: DEFAULT_ENS_SYSTEM_NAME }];
+  for (const hit of result.body?.hits?.hits || []) {
+    const doc = hit._source || {};
+    const scope = doc.configuration?.scope;
+    if (doc.documentType === 'ACTIVE_CONFIGURATION') systems[0].scope = scope;
+    else if (doc.system?.id) systems.push({ id: doc.system.id, name: doc.system.name || doc.system.id, scope });
+  }
+  return [systems[0], ...systems.slice(1).sort((a, b) => a.id.localeCompare(b.id))];
+}
+
+export async function deleteENSSystem(client: any, logger: Logger, system: string): Promise<boolean> {
+  await ensureENSConfigurationIndex(client, logger);
+  const result = await client.delete(
+    { index: ENS_CONFIGURATION_INDEX, id: configurationDocumentId(system), refresh: 'wait_for' },
+    { ignore: [404] }
+  );
+  return result.body?.result === 'deleted';
 }
 
 export async function readENSConfigurationHistory(
   client: any,
   logger: Logger,
-  size: number = 100
+  size: number = 100,
+  system: string = DEFAULT_ENS_SYSTEM
 ): Promise<ENSConfigurationStoredDocument[]> {
   await ensureENSConfigurationIndex(client, logger);
 
@@ -115,7 +177,7 @@ export async function readENSConfigurationHistory(
     index: ENS_CONFIGURATION_INDEX,
     body: {
       size,
-      query: { term: { documentType: 'CONFIGURATION_HISTORY' } },
+      query: { bool: { filter: [{ term: { documentType: 'CONFIGURATION_HISTORY' } }, systemFilter(system, 'systemId')] } },
       sort: [{ createdAt: { order: 'desc' } }],
     },
   });
@@ -130,7 +192,8 @@ export async function persistENSConfiguration(
   configuration: Record<string, unknown>,
   username: string,
   previous?: { configuration: Record<string, unknown>; author?: string },
-  expected?: ENSConfigurationDocumentVersion | 'absent'
+  expected?: ENSConfigurationDocumentVersion | 'absent',
+  system: ENSSystemSummary = { id: DEFAULT_ENS_SYSTEM, name: DEFAULT_ENS_SYSTEM_NAME }
 ): Promise<ENSConfigurationStoredDocument & { version?: ENSConfigurationDocumentVersion; historyError?: string }> {
   await ensureENSConfigurationIndex(client, logger);
 
@@ -142,6 +205,7 @@ export async function persistENSConfiguration(
         JSON.stringify({ create: { _index: ENS_CONFIGURATION_INDEX, _id: ['history', now - 1, randomBytes(6).toString('hex')].join('-') } }),
         JSON.stringify({
           documentType: 'CONFIGURATION_HISTORY',
+          systemId: system.id,
           configuration: previous.configuration,
           createdAt: new Date(now - 1).toISOString(),
           createdBy: previous.author || 'desconocido',
@@ -150,7 +214,8 @@ export async function persistENSConfiguration(
     : [];
 
   const activeDocument: ENSConfigurationStoredDocument = {
-    documentType: 'ACTIVE_CONFIGURATION',
+    documentType: isDefaultSystem(system.id) ? 'ACTIVE_CONFIGURATION' : 'SYSTEM_CONFIGURATION',
+    ...(isDefaultSystem(system.id) ? {} : { system }),
     configuration,
     updatedAt: timestamp,
     updatedBy: username,
@@ -158,12 +223,13 @@ export async function persistENSConfiguration(
 
   const historyDocument: ENSConfigurationStoredDocument = {
     documentType: 'CONFIGURATION_HISTORY',
+    systemId: system.id,
     configuration,
     createdAt: timestamp,
     createdBy: username,
   };
 
-  const target = { _index: ENS_CONFIGURATION_INDEX, _id: ENS_CONFIGURATION_ACTIVE_DOCUMENT_ID };
+  const target = { _index: ENS_CONFIGURATION_INDEX, _id: configurationDocumentId(system.id) };
   const action =
     expected === 'absent'
       ? { create: target }

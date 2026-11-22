@@ -335,7 +335,7 @@ export const createFakeIndexer = (
       docs.push({ _id: `doc-${docs.length + 1}`, _index: index, _source: body });
       return { body: { result: 'created' } };
     },
-    indices: { exists: async () => ({ body: true }), create: async () => ({ body: {} }) },
+    indices: { exists: async () => ({ body: true }), create: async () => ({ body: {} }), putMapping: async () => ({ body: {} }) },
     transport: {
       request: async ({ path }: any) => {
         if (path === '/_plugins/_security/authinfo') return { body: options.user || { user_name: 'ana', roles: ['readall'] } };
