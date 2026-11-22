@@ -4,6 +4,8 @@ All notable changes to Power ENS are documented in this file. The format follows
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-11-22
+
 ### Added
 
 - A maturity seal (level and status in one mark, percentage in the tooltip) on controls, requirements, evidences and the compliance index; Madurez del control with the L0 to L5 scale, the required level and the machines below it.
@@ -108,7 +110,8 @@ First release.
 - `set-parameters.py`, which loads control and machine parameters from a JSON file.
 - Plugin builds for OpenSearch Dashboards 2.19.5 (Wazuh 4.14.7) and 2.19.6 (Wazuh 4.14.8 and 4.14.9), and `dashboard.Dockerfile` for Wazuh on Docker.
 
-[Unreleased]: https://github.com/arseniteio/power-ens-wazuh/compare/v2.0.1...HEAD
+[Unreleased]: https://github.com/arseniteio/power-ens-wazuh/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/arseniteio/power-ens-wazuh/compare/v2.0.1...v2.1.0
 [2.0.1]: https://github.com/arseniteio/power-ens-wazuh/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/arseniteio/power-ens-wazuh/compare/v1.2.0...v2.0.0
 [1.2.0]: https://github.com/arseniteio/power-ens-wazuh/compare/v1.1.0...v1.2.0
