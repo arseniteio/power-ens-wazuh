@@ -15,6 +15,9 @@ All notable changes to Power ENS are documented in this file. The format follows
 - The configuration accepts and keeps `levelAdjustments`.
 - Configuración, Organización edits level adjustments and maturity scales.
 
+- Several ENS systems per installation: General, Sistemas ENS creates and deletes them, and Sistema ENS chooses the one every view, report and save applies to. Each system has its own configuration document; the one saved before stays as Sistema principal. Configuration, evaluation and maturity read the selected system, and a system's scope cannot share a Wazuh group with another one.
+- op.mon.3 P-03 and op.exp.8 P-12 take a value per machine or group, with the organisation value as the fallback.
+
 ### Fixed
 
 - A non-conformity on one machine names that machine.

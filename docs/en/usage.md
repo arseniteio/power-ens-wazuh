@@ -33,6 +33,8 @@ A parameter nobody has set is never replaced by an assumption: the evidences tha
 
 With Grupos por control on, the engine creates one Wazuh group per control, `ens-excluir-<control>`. A machine added to one of those groups is left out of that control. In Detalle del control, a user with `power_ens_admin` or `all_access` presses Excluir de este control to move the machine to that group, and must write a reason. Power ENS records the machine, control, reason, user and date in the `wazuh-ens-exclusions` index. Volver a incluir reverses it, also with a reason. The manager belongs to no group and cannot be excluded.
 
+An installation can hold several ENS systems, each with its own category, scope, parameters, Organización data and maturity. General, Sistemas ENS creates one from an id (lowercase letters, digits and hyphens) and a name; it starts with the data and parameters of Sistema principal and an empty scope, without the machines' own values or the maturity assessments. A system other than Sistema principal must name its Wazuh groups, and two systems cannot share a group: each machine belongs to one system, and Sistema principal keeps the machines no other system claims. With more than one system, Sistema ENS at the top of every tab chooses the one shown; every view, report and save applies to that system. Eliminar removes the selected system; its machines return to Sistema principal and its history and verdicts are kept. The manager is judged in every system. `config/set-parameters.py` and the other scripts in `config/` act on Sistema principal.
+
 ## Results
 
 Panel shows the state of the deployment: the maturity of the organization, compliance per control and family, the findings by kind, and how the score has changed over time.
