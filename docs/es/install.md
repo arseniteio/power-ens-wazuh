@@ -20,7 +20,7 @@ grep -m1 '"version"' /usr/share/wazuh-dashboard/package.json
 Descarga de la versión publicada el zip para esa versión, los scripts y las sumas de comprobación, y compruébalos. Cada línea debe terminar en `OK`.
 
 ```bash
-v=2.0.1
+v=2.1.0
 url=https://github.com/arseniteio/power-ens-wazuh/releases/download/v$v
 curl -fLO "$url/power-ens-$v-osd-2.19.6.zip" -O "$url/SHA256SUMS"
 curl -fLO "$url/deploy-plugin.sh" -O "$url/create-admin-role.sh" -O "$url/dashboard.Dockerfile"

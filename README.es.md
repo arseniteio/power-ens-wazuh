@@ -15,7 +15,7 @@ El script de instalación de OSCompliance ENS instala el plugin en cada nodo de 
 Para instalar solo el plugin, descarga en cada nodo de dashboard el zip de tu dashboard, `osd-2.19.5` para Wazuh 4.14.7 y `osd-2.19.6` para 4.14.8 y 4.14.9, compruébalo e instálalo.
 
 ```bash
-v=2.0.1
+v=2.1.0
 url=https://github.com/arseniteio/power-ens-wazuh/releases/download/v$v
 curl -fLO "$url/power-ens-$v-osd-2.19.6.zip" -O "$url/deploy-plugin.sh" -O "$url/SHA256SUMS"
 sha256sum -c --ignore-missing SHA256SUMS
