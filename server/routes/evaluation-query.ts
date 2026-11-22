@@ -1,4 +1,5 @@
 const EVALUATION_QUERY_FIELDS: Record<string, number> = {
+  system: 64,
   agentId: 64,
   controlId: 64,
   include: 16,

@@ -1,16 +1,17 @@
 import { ENS_VERDICTS_INDEX } from '../../constants';
+import { DEFAULT_ENS_SYSTEM, systemFilter } from '../systems';
 import type { ENSEngineMaturity, ENSOrganizationMaturity } from './types';
 
 export const ENS_ALL_MEASURES = 'ENS';
 
 const PAGE = 1000;
 
-export const buildOrganizationMaturityRequest = () => ({
+export const buildOrganizationMaturityRequest = (system: string = DEFAULT_ENS_SYSTEM) => ({
   index: ENS_VERDICTS_INDEX,
   ignore_unavailable: true,
   body: {
     size: PAGE,
-    query: { bool: { filter: [{ term: { scope: 'organization' } }, { range: { '@timestamp': { gte: 'now-3d' } } }] } },
+    query: { bool: { filter: [systemFilter(system), { term: { scope: 'organization' } }, { range: { '@timestamp': { gte: 'now-3d' } } }] } },
     sort: [{ '@timestamp': 'desc' }],
   },
 });

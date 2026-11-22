@@ -24,7 +24,8 @@ import type { ENSAgentScope } from '../../../common/ens/core/scope/types';
 import { planENSTimelineCuts, startOfDayIn } from '../../../common/ens/core/timeline/timeline-cuts';
 import type { ENSTimelineCutPlan } from '../../../common/ens/core/timeline/timeline-cuts';
 import { ENS_EVALUATION_LIMITS } from '../../../common/ens/evaluation/limits';
-import { readActiveENSConfiguration } from '../configuration-storage';
+import { listENSSystems, readActiveENSConfiguration } from '../configuration-storage';
+import { configurationDocumentId, isDefaultSystem, isValidSystemId, machinesOfSystem, systemOf } from '../../../common/ens/systems';
 import { resolveCurrentUser } from '../current-user';
 import { Cancellable, CancelSignal, EVALUATION_TTL_MS, EvaluationCache, Semaphore } from './cache';
 import { searchComplete, throwIfCancelled } from './search';
@@ -44,6 +45,7 @@ import { overviewQueryFlags, perControlOfPoint, perControlOfResults } from './ov
 type ENSEvaluationInclude = 'summary' | 'results' | 'dashboard' | 'control' | 'overview';
 
 interface ENSEvaluationQuery {
+  system?: string;
   agentId?: string;
   controlId?: string;
   include: ENSEvaluationInclude;
@@ -107,11 +109,16 @@ export const normalizeQuery = (query: Record<string, unknown>): ENSEvaluationQue
   if (include === 'overview' && controlId) {
     throw new ENSBadRequestError('La Vista general es de todos los controles: sin «controlId».');
   }
+  const system = systemOf(query.system);
+  if (!isDefaultSystem(system) && !isValidSystemId(system)) {
+    throw new ENSBadRequestError(`«${system}» no es un identificador de sistema ENS válido.`);
+  }
   const days = query.timelineDays === undefined || query.timelineDays === '' ? 0 : Number(query.timelineDays);
   if (!Number.isInteger(days) || days < 0 || days > ENS_EVALUATION_LIMITS.maxTimelineDays) {
     throw new ENSBadRequestError(`Los días de la serie van de 0 a ${ENS_EVALUATION_LIMITS.maxTimelineDays}.`);
   }
   return {
+    system,
     agentId,
     controlId,
     include: (include as ENSEvaluationInclude) || (controlId ? 'control' : 'summary'),
@@ -123,6 +130,7 @@ export const normalizeQuery = (query: Record<string, unknown>): ENSEvaluationQue
 
 interface ENSEvaluationContext {
   now: Date;
+  system: string;
   userKey: string;
   configuration: ENSConfigurationVersion;
   configurationKey: string;
@@ -168,13 +176,13 @@ const storedRowBytes = (row: StoredRow): number =>
 
 const withoutTraceability = (result: ENSComplianceResult): ENSComplianceResult => ({ ...result, traceability: [] });
 
-const readConfigurationStamp = async (client: any): Promise<string | undefined> => {
+const readConfigurationStamp = async (client: any, system: string): Promise<string | undefined> => {
   const body = await searchComplete(
     client,
     {
       index: ENS_CONFIGURATION_INDEX,
       ignore_unavailable: true,
-      body: { size: 1, seq_no_primary_term: true, query: { ids: { values: ['active'] } }, _source: ['updatedAt', 'configuration.updatedAt'] },
+      body: { size: 1, seq_no_primary_term: true, query: { ids: { values: [configurationDocumentId(system)] } }, _source: ['updatedAt', 'configuration.updatedAt'] },
     },
     'la configuración ENS'
   );
@@ -247,25 +255,26 @@ export const createEvaluationService = ({
   const coldFailures = new Map<string, { error: unknown; at: number }>();
 
 
-  const loadConfiguration = async (clients: ENSEvaluationClients, stamp: string) => {
-    const cached = configurations.get('active', stamp);
+  const loadConfiguration = async (clients: ENSEvaluationClients, system: string, stamp: string) => {
+    const cached = configurations.get(system, stamp);
     if (cached) return cached;
-    const stored = await readActiveENSConfiguration(clients.asInternalUser, logger);
+    const stored = await readActiveENSConfiguration(clients.asInternalUser, logger, system);
+    if (!stored && !isDefaultSystem(system)) throw new ENSBadRequestError(`El sistema ENS «${system}» no existe.`);
     const configuration = stored?.configuration
       ? normalizeOrganizationData(toTemplateModel(assertENSConfigurationVersion(stored.configuration))).configuration
       : (defaultENSConfigurationTemplate as ENSConfigurationVersion);
     const entry = { configuration, updatedAt: stored?.updatedAt || (configuration as any).updatedAt, key: sha(stamp, stored?.configuration || 'default') };
-    configurations.set('active', stamp, entry);
+    configurations.set(system, stamp, entry);
     return entry;
   };
 
-  const loadVerdictsProbe = async (clients: ENSEvaluationClients, userKey: string, from: string): Promise<ENSVerdictsProbe> => {
+  const loadVerdictsProbe = async (clients: ENSEvaluationClients, userKey: string, from: string, system: string): Promise<ENSVerdictsProbe> => {
     const cached = verdictProbes.get(userKey, 'verdicts');
     if (cached) return cached;
     const probe: ENSVerdictsProbe = {};
     let after: Record<string, string> | undefined;
     do {
-      const body = await searchComplete(clients.asCurrentUser, buildVerdictsProbeRequest(catalogControlIds(), from, after), 'los veredictos del motor');
+      const body = await searchComplete(clients.asCurrentUser, buildVerdictsProbeRequest(catalogControlIds(), from, after, system), 'los veredictos del motor');
       after = addVerdictsProbePage(probe, body);
     } while (after);
     verdictProbes.set(userKey, 'verdicts', probe);
@@ -285,22 +294,25 @@ export const createEvaluationService = ({
   const loadContext = async (clients: ENSEvaluationClients, query: ENSEvaluationQuery): Promise<ENSEvaluationContext> => {
     const now = clock();
     const user = await resolveCurrentUser(clients.asCurrentUser, securityEnabled);
-    const userKey = `${user.username}|${[...user.roles].sort().join(',')}`;
-    const stamp = await readConfigurationStamp(clients.asInternalUser);
-    const stored = await loadConfiguration(clients, stamp || 'default');
+    const system = systemOf(query.system);
+    const userKey = `${system}|${user.username}|${[...user.roles].sort().join(',')}`;
+    const stamp = await readConfigurationStamp(clients.asInternalUser, system);
+    const stored = await loadConfiguration(clients, system, stamp || 'default');
+    const systems = await listENSSystems(clients.asInternalUser, logger);
     const inventory = await loadInventory(clients, userKey, now);
     const configuration = withInventoryTypes(stored.configuration, inventory.agents);
     const configurationKey = sha(stored.key, configuration.agents || null);
     const updatedAt = stored.updatedAt;
-    const scope = resolveENSScopeAgents(inventory.agents, configuration.scope);
+    const scope = machinesOfSystem(system, resolveENSScopeAgents(inventory.agents, configuration.scope), inventory.agents, systems);
     if (query.agentId && !scope.some(agent => agent.id === query.agentId)) {
       throw new ENSBadRequestError(`La máquina ${query.agentId} no está en un grupo ENS evaluable.`);
     }
     const window = resolveEvaluationWindow(configuration.global.evaluationPeriod, now);
-    const verdicts = await loadVerdictsProbe(clients, userKey, window.from);
+    const verdicts = await loadVerdictsProbe(clients, userKey, window.from, system);
 
     return {
       now,
+      system,
       userKey,
       configuration,
       configurationKey,
@@ -351,8 +363,8 @@ export const createEvaluationService = ({
       const newest = ctx.verdicts[controlId]?.[agentId]?.newest as string;
       const subject = `${controlId} en ${agentId}`;
       const [latest, daily] = await Promise.all([
-        searchComplete(clients.asCurrentUser, buildLatestPassRequest(controlId, agentId, newest), `los veredictos de ${subject}`),
-        searchComplete(clients.asCurrentUser, buildDailyVerdictsRequest(controlId, agentId, ctx.window.from, ctx.now.toISOString(), ctx.timeZone), `la serie de ${subject}`),
+        searchComplete(clients.asCurrentUser, buildLatestPassRequest(controlId, agentId, newest, ctx.system), `los veredictos de ${subject}`),
+        searchComplete(clients.asCurrentUser, buildDailyVerdictsRequest(controlId, agentId, ctx.window.from, ctx.now.toISOString(), ctx.timeZone, ctx.system), `la serie de ${subject}`),
       ]);
       throwIfCancelled(signal);
       ensConfigurationRepository.replaceActive(ctx.configuration);

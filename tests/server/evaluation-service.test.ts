@@ -144,7 +144,7 @@ describe('the evaluation of the whole scope', () => {
 
 describe('a request', () => {
   test('defaults to the summary in UTC', () => {
-    assert.deepEqual(normalizeQuery({}), { agentId: undefined, controlId: undefined, include: 'summary', timelineDays: 0, timeZone: 'UTC' });
+    assert.deepEqual(normalizeQuery({}), { system: 'default', agentId: undefined, controlId: undefined, include: 'summary', timelineDays: 0, timeZone: 'UTC' });
   });
 
   test('pads a numeric machine id', () => {
@@ -173,5 +173,61 @@ describe('a large deployment', () => {
   test('finds the oldest stamp among hundreds of thousands of rows', () => {
     const stamps = Array.from({ length: 300000 }, (_value, index) => 1_800_000_000_000 - index);
     assert.equal(smallest(stamps), 1_800_000_000_000 - 299999);
+  });
+});
+
+describe('the evaluation of an ENS system', () => {
+  const PILOT = { id: '047', name: 'pilot-lb' };
+
+  const labWithTwoSystems = () => {
+    const clock = createClock();
+    const pilotConfiguration = activeConfiguration(configuration => {
+      configuration.scope = { mode: 'group', agentIds: [], groupIds: ['pilot'] };
+    });
+    const inPilot = (docs: any[]) => docs.map(doc => ({ ...doc, _source: { ...doc._source, system: 'pilot' } }));
+    const docs = [
+      activeConfiguration(configuration => {
+        configuration.scope = { mode: 'global', agentIds: [], groupIds: [] };
+      }),
+      {
+        ...pilotConfiguration,
+        _id: 'system-pilot',
+        _source: { ...pilotConfiguration._source, documentType: 'SYSTEM_CONFIGURATION', system: { id: 'pilot', name: 'Piloto' } },
+      },
+      inventoryDoc(AGENT, clock),
+      inventoryDoc(PILOT, clock, ['ens', 'pilot']),
+      inventoryDoc(MANAGER, clock),
+      ...enginePass({ at: clock.hoursAgo(2), status: 'PARTIAL', score: 75 }),
+      ...enginePass({ machine: MANAGER, at: clock.hoursAgo(2), status: 'COMPLIANT', score: 100 }),
+      ...inPilot(enginePass({ machine: PILOT, at: clock.hoursAgo(2), status: 'COMPLIANT', score: 100 })),
+      ...inPilot(enginePass({ machine: MANAGER, at: clock.hoursAgo(1), status: 'NON_COMPLIANT', score: 0 })),
+    ];
+    return createLab(docs, clock);
+  };
+
+  test('judges only the machines of that system, and the manager in each one', async () => {
+    const { clients, service } = labWithTwoSystems();
+
+    const main = await service.run(clients, { ...control('op.acc.1'), system: 'default' });
+    const pilot = await service.run(clients, { ...control('op.acc.1'), system: 'pilot' });
+
+    const machines = (run: any) => run.views.get('op.acc.1')?.rows.map((row: any) => row.agentId).sort();
+    assert.deepEqual(machines(main), ['000', '001']);
+    assert.deepEqual(machines(pilot), ['000', '047']);
+  });
+
+  test('reads the verdicts each system wrote for the manager', async () => {
+    const { clients, service } = labWithTwoSystems();
+
+    const main = await service.run(clients, { ...control('op.acc.1'), system: 'default', agentId: MANAGER.id });
+    const pilot = await service.run(clients, { ...control('op.acc.1'), system: 'pilot', agentId: MANAGER.id });
+
+    assert.equal(main.views.get('op.acc.1')?.result?.status, 'CUMPLE');
+    assert.equal(pilot.views.get('op.acc.1')?.result?.status, 'NO_CUMPLE');
+  });
+
+  test('refuses a system that does not exist', async () => {
+    const { clients, service } = labWithTwoSystems();
+    await assert.rejects(service.run(clients, { ...control('op.acc.1'), system: 'ghost' }), /no existe/);
   });
 });

@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { setAssessment, stampAssessments, validateMaturityShape } from '../../common/ens/maturity/assessments';
-import { organizationMaturityOf } from '../../common/ens/maturity/queries';
+import { buildOrganizationMaturityRequest, organizationMaturityOf } from '../../common/ens/maturity/queries';
 import { ENS_DECLARED_MEASURES } from '../../common/ens/maturity/declared-measures';
 import { ENSCatalog } from '../../common/ens/catalog';
 import { maturityReportRows } from '../../public/ens/maturity/maturity-report';
@@ -131,5 +131,16 @@ describe('editing scales', () => {
     assert.equal(removeScale(two, { controlId: 'mp.info.6', thresholds: [] }).maturity?.scales, undefined);
     assert.equal(thresholdsProblem([20, 40, 60, 80, 100]), undefined);
     assert.ok(thresholdsProblem([20, 40, 30, 80, 100]));
+  });
+});
+
+describe('the organization maturity of an ENS system', () => {
+  test('reads only the verdicts of that system, the older ones without a system being the default', () => {
+    const filters = (system?: string) => buildOrganizationMaturityRequest(system).body.query.bool.filter;
+
+    assert.deepEqual(filters('pilot')[0], { term: { system: 'pilot' } });
+    assert.deepEqual(filters()[0], {
+      bool: { minimum_should_match: 1, should: [{ term: { system: 'default' } }, { bool: { must_not: [{ exists: { field: 'system' } }] } }] },
+    });
   });
 });
