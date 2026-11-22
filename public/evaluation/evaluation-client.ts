@@ -1,6 +1,7 @@
 import { POWER_ENS_EVALUATION_PATH } from '../../common/constants';
 import { withRequestTimeout } from '../../common/platform/request-timeout';
 import { getHttp } from '../services';
+import { systemQuery } from '../../common/ens/selected-system';
 import { RequestLimiter } from './refresh-policy';
 import type { ENSTraceabilityPageResponse } from '../../common/ens/evaluation/types';
 
@@ -26,7 +27,7 @@ const browserTimeZone = (): string | undefined => {
 
 const evaluationQuery = (params: Record<string, unknown>) =>
   Object.fromEntries(
-    Object.entries({ ...params, timeZone: browserTimeZone() }).filter(([, value]) => value !== undefined && value !== '')
+    Object.entries({ ...params, ...systemQuery(), timeZone: browserTimeZone() }).filter(([, value]) => value !== undefined && value !== '')
   );
 
 const withMotive = (error: any): Error => {

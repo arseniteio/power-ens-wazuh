@@ -1,5 +1,6 @@
 import { ENSRequestTimeoutError, ENS_REQUEST_TIMEOUT_MS, withRequestTimeout } from '../../../platform/request-timeout';
 import { POWER_ENS_CONFIGURATION_PATH } from '../../../constants';
+import { systemQuery } from '../../selected-system';
 
 import { ENSConfigurationVersion } from '../types';
 import { normalizeOrganizationData } from '../organization/organization-data-migration';
@@ -8,7 +9,7 @@ const ENS_CONFIGURATION_API_PATH = POWER_ENS_CONFIGURATION_PATH;
 
 interface ENSConfigurationHttp {
   get<T>(path: string, options?: { signal?: AbortSignal; query?: Record<string, string> }): Promise<T>;
-  put<T>(path: string, options?: { body?: string; signal?: AbortSignal }): Promise<T>;
+  put<T>(path: string, options?: { body?: string; signal?: AbortSignal; query?: Record<string, string> }): Promise<T>;
   post<T>(path: string, options?: { body?: string; signal?: AbortSignal }): Promise<T>;
 }
 
@@ -103,7 +104,7 @@ export async function getENSConfiguration(): Promise<
   const response =
     await withRequestTimeout(
       signal => getHttp().get<ENSConfigurationApiResponse>(
-        ENS_CONFIGURATION_API_PATH, { signal },
+        ENS_CONFIGURATION_API_PATH, { signal, query: systemQuery() },
       ),
       'configuración ENS',
     ).catch(error => {
@@ -140,6 +141,7 @@ export async function saveENSConfiguration(
         {
           body: JSON.stringify(requestBody),
           signal,
+          query: systemQuery(),
         },
       ),
       'guardado de la configuración ENS',
