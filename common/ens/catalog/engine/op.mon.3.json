@@ -478,7 +478,7 @@
       "if_not_configured": "EV-03 solo exige alguna regla de correlación."
     },
     "P-03": {
-      "class": "organisation",
+      "class": "system",
       "name": "horas_maximas_sin_eventos",
       "label": "Horas máximas sin eventos de la máquina",
       "description": "Horas que una máquina puede pasar sin enviar eventos al manager.",

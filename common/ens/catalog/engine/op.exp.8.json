@@ -813,7 +813,7 @@
       "if_not_configured": "EV-11 queda sin demostrar."
     },
     "P-12": {
-      "class": "organisation",
+      "class": "system",
       "name": "antiguedad_maxima_keepalive_horas",
       "label": "Silencio máximo tolerado de un servidor (horas)",
       "description": "Horas que puede pasar una máquina sin comunicar con el manager ni dejar registro de monitorización.",
