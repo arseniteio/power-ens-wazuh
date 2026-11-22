@@ -84,7 +84,11 @@ describe('ENS systems', () => {
     assert.ok(lab.fake.docs.some(doc => doc._source.documentType === 'CONFIGURATION_HISTORY' && doc._source.systemId === 'pilot'));
 
     const listed = await lab.handlers.systems(lab.context, {}, response);
-    assert.deepEqual(listed.data, [{ id: 'default', name: 'Sistema principal' }, { id: 'pilot', name: 'Piloto' }]);
+    assert.deepEqual(
+      listed.data.map(({ id, name }: any) => ({ id, name })),
+      [{ id: 'default', name: 'Sistema principal' }, { id: 'pilot', name: 'Piloto' }]
+    );
+    assert.deepEqual(listed.data[0].scope, production.scope);
   });
 
   test('refuses an invalid or repeated id', async () => {

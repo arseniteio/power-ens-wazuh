@@ -18,7 +18,7 @@ import {
   sharedScopeGroups,
   systemOf,
 } from '../../common/ens/systems';
-import type { ENSSystemSummary } from '../../common/ens/systems';
+import type { ENSSystemScope } from '../../common/ens/systems';
 import { resolveCurrentUser } from './current-user';
 import {
   checkAgentsConfigurationKeys,
@@ -290,7 +290,7 @@ export const createConfigurationHandlers = ({ logger, securityEnabled }: Options
   const systems = async (context: any, _request: any, response: any) => {
     try {
       const list = await listENSSystems(internal(context), logger);
-      return correct(response, list.map(({ id, name }): ENSSystemSummary => ({ id, name })));
+      return correct(response, list.map(({ id, name, scope }): ENSSystemScope => ({ id, name, ...(scope ? { scope } : {}) })));
     } catch (error: any) {
       logger.error(`Could not list the ENS systems: ${error?.message || error}`);
       return failure(response, 500, 'No se pudieron leer los sistemas ENS; el detalle está en el log del dashboard.');

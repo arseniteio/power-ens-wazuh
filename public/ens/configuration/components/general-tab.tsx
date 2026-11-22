@@ -5,6 +5,7 @@ import type { ENSConfigurationVersion } from '../../../../common/ens/configurati
 import { GlobalConfigurationPanel } from './global-configuration-panel';
 import { EvaluableGroupsPanel } from './evaluable-groups-panel';
 import { ControlGroupsPanel } from './control-groups-panel';
+import { SystemsPanel } from './systems-panel';
 
 interface GeneralTabProps {
   configuration: ENSConfigurationVersion;
@@ -14,6 +15,10 @@ interface GeneralTabProps {
 export const GeneralTab = ({ configuration, onConfigurationSaved }: GeneralTabProps) => {
   return (
     <>
+      <SystemsPanel />
+
+      <EuiSpacer size='l' />
+
       <GlobalConfigurationPanel configuration={configuration.global} onConfigurationSaved={onConfigurationSaved} />
 
       <EuiSpacer size='l' />

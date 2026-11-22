@@ -5,6 +5,7 @@ import { LoadingSpinner } from '../platform/loading-spinner';
 import { useRouterSearch, useSetRouterSearch } from '../routing/use-router-search';
 import { ENS_TABS, resolveTab } from './tabs';
 import { MachineSelector } from './machine-selector';
+import { SystemSelector } from './system-selector';
 import { TabErrorBoundary } from './tab-error-boundary';
 import { isAgentInScope } from './agent-in-scope';
 import { useActiveENSScopeAgents } from '../ens/scope/use-active-scope-agents';
@@ -37,6 +38,7 @@ export const EnsApp = () => {
 
   const content = tab.withBootstrap ? (
     <ENSConfigurationBootstrap>
+      <SystemSelector />
       <MachineSelector />
       <EuiSpacer size="m" />
       <TabErrorBoundary key={tab.id} tabName={tab.name} resetKey={retry}>

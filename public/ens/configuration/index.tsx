@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { EuiButton, EuiCallOut, EuiPage, EuiSpacer } from '@elastic/eui';
 
 import { LoadingSpinner } from '../../platform/loading-spinner';
-import { loadENSAgentInventory } from '../../agents/load-agent-inventory';
+import { loadENSSystems, loadSystemAgentInventory } from '../systems/system-runtime';
+import { SystemSelector } from '../../app/system-selector';
 import type { ENSAgentScope } from '../../../common/ens/core/scope';
 import { getENSScopeHydrationState, hydrateENSScope, retryENSScopeHydration } from '../../../common/ens/core/scope';
 
@@ -19,6 +20,7 @@ const ConfigurationShell = React.lazy(() =>
 const hydrateENSRuntime = async (
   force: boolean = false
 ): Promise<ENSAgentScope[]> => {
+  await loadENSSystems();
   const configuration = force
     ? await retryENSConfigurationHydration()
     : await hydrateENSConfiguration();
@@ -26,11 +28,11 @@ const hydrateENSRuntime = async (
   return force
     ? retryENSScopeHydration(
         configuration.scope,
-        loadENSAgentInventory
+        loadSystemAgentInventory
       )
     : hydrateENSScope(
         configuration.scope,
-        loadENSAgentInventory
+        loadSystemAgentInventory
       );
 };
 
@@ -148,6 +150,8 @@ export const ENSConfigurationBootstrap = ({
 
 export const ConfigurationENS = () => (
   <ENSConfigurationBootstrap>
+    <SystemSelector />
+    <EuiSpacer size='m' />
     <ConfigurationShell />
   </ENSConfigurationBootstrap>
 );
