@@ -27,6 +27,7 @@ All notable changes to Power ENS are documented in this file. The format follows
 
 - op.mon.3 P-03 and op.exp.8 P-12 take a value per machine or group, with the organisation value as the fallback.
 - Madurez de la organización shows Sin valorar while no measure has a declared level, names it Madurez valorada, leaves the L3 to L5 rows of Continuidad empty with an info icon, and the dashboard marks the seal under the index as Nivel del índice.
+- Table values show as tables with their column headers in Datos de la organización and in the parameters of Detalle del control; text summaries and reports separate cells with «·» instead of «|».
 - Across machines a control, a requirement or an evidence is judged by the CMM level of its percentage with the engine's rule, instead of taking the worst machine: 9 compliant machines out of 10 is Cumple. A machine without a score counts as 0 %.
 - The day-based level of Madurez de la organización is named Continuidad de la evidencia (30 días).
 - The evidence table shows the evidence title; the template description moves to an info icon.
