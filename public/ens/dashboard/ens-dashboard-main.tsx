@@ -174,6 +174,9 @@ const IndexPanel = ({ data, counts, delta }: { data: DashboardResponse; counts: 
           {organization && (
             <div style={{ textAlign: 'center', marginTop: 8 }}>
               <MaturitySeal status={organization.status} compliance={organization} />
+              <EuiText size='xs' color='subdued'>
+                <p>Nivel del índice</p>
+              </EuiText>
             </div>
           )}
         </EuiFlexItem>

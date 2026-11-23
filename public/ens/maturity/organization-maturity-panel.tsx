@@ -15,12 +15,18 @@ interface LevelRow {
   assessed: number;
 }
 
+// The evidence accredits up to L2; L3 to L5 exist only as a documented valuation.
+const ACCREDITED_MAX = 2;
+
 const rowsOf = (data: ENSOrganizationMaturity): LevelRow[] =>
   Array.from({ length: ENS_MATURITY_MAX + 1 }, (_, level) => ({
     level,
-    accredited: level > 2 ? '—' : data.summary?.accredited_counts?.[level] ?? 0,
+    accredited: level > ACCREDITED_MAX ? '' : data.summary?.accredited_counts?.[level] ?? 0,
     assessed: data.summary?.assessed_counts?.[level] ?? 0,
   }));
+
+const assessedTitle = (data: ENSOrganizationMaturity): string =>
+  (data.summary?.assessed_counts || []).some(count => count > 0) ? maturityLabel(data.summary?.global_assessed) : 'Sin valorar';
 
 const footerOf = (data: ENSOrganizationMaturity): string => {
   const s = data.summary || {};
@@ -82,7 +88,7 @@ export const OrganizationMaturityPanel = ({
               <EuiStat title={maturityLabel(data.summary.global_accredited)} description='Continuidad de la evidencia (30 días)' titleSize='s' />
             </EuiFlexItem>
             <EuiFlexItem>
-              <EuiStat title={maturityLabel(data.summary.global_assessed)} description='Valorado' titleSize='s' />
+              <EuiStat title={assessedTitle(data)} description='Madurez valorada' titleSize='s' />
             </EuiFlexItem>
           </EuiFlexGroup>
           <EuiSpacer size='s' />
@@ -92,8 +98,17 @@ export const OrganizationMaturityPanel = ({
             noItemsMessage='No hay datos.'
             columns={[
               { field: 'level', name: 'Nivel', render: (level: LevelRow['level']) => `L${level} ${ENS_MATURITY_LABELS[level]}` },
-              { field: 'accredited', name: 'Continuidad (30 días)', align: 'right', width: '170px' },
-              { field: 'assessed', name: 'Valorado', align: 'right', width: '90px' },
+              {
+                field: 'accredited',
+                name: (
+                  <>
+                    Continuidad (30 días) <InfoTip content='La evidencia de Wazuh acredita de L0 a L2. L3 a L5 solo se valoran.' />
+                  </>
+                ),
+                align: 'right',
+                width: '190px',
+              },
+              { field: 'assessed', name: 'Valorada', align: 'right', width: '90px' },
             ]}
           />
           <EuiSpacer size='s' />
