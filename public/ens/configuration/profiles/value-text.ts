@@ -1,5 +1,6 @@
 import type { ENSResolvedParameter, ENSValueSource } from '../../../../common/ens/profiles/resolve';
 import { isEmptyValue } from '../../../../common/ens/profiles/resolve';
+import { tableRowText } from '../../../../common/ens/configuration/table-rows';
 
 const MAX = 220;
 
@@ -14,7 +15,7 @@ export const valueText = (parameter: Pick<ENSResolvedParameter, 'value' | 'match
   if (items) {
     const rows = items.map(item => String(item).trim()).filter(Boolean);
     const unit = parameter.type === 'table' ? (rows.length === 1 ? 'fila' : 'filas') : rows.length === 1 ? 'valor' : 'valores';
-    return `${rows.length} ${unit}: ${clip(rows.join(parameter.type === 'table' ? '; ' : ', '))}`;
+    return `${rows.length} ${unit}: ${clip(parameter.type === 'table' ? rows.map(tableRowText).join('; ') : rows.join(', '))}`;
   }
   return clip(String(value));
 };

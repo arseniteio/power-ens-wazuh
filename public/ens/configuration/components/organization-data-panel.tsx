@@ -18,6 +18,7 @@ import type {
   ENSAgentParameterValue,
   ENSConfigurationVersion,
   ENSControlParameter,
+  ENSParameterColumn,
 } from '../../../../common/ens/configuration/types';
 import {
   getPendingOrganizationMigration,
@@ -48,6 +49,7 @@ import {
 import { ParameterRendererFactory } from '../form-engine';
 import { useRouterSearch } from '../../../routing/use-router-search';
 import { ConfirmModal, errorMessage } from './confirm-modal';
+import { TableRows } from '../../ui/table-rows';
 
 interface OrganizationDataPanelProps {
   configuration: ENSConfigurationVersion;
@@ -58,8 +60,9 @@ const organizationItemAnchorId = (itemId: string): string => `ens-org-${itemId}`
 
 const MAX_LINES = 8;
 
-const ValueLines = ({ value }: { value?: ENSControlParameter['value'] }) => {
+const ValueLines = ({ value, columns }: { value?: ENSControlParameter['value']; columns?: ENSParameterColumn[] }) => {
   const lines = organizationValueLines(value);
+  if (lines.length && columns?.length) return <TableRows rows={lines} columns={columns} />;
   if (!lines.length) {
     return (
       <EuiText size='s' color='subdued'>
@@ -297,7 +300,7 @@ export const OrganizationDataPanel = ({ configuration, onConfigurationSaved }: O
                       {candidate.keeps.length ? ` · Lo mantienen: ${candidate.keeps.join(', ')}` : ''}
                     </p>
                   </EuiText>
-                  <ValueLines value={candidate.value} />
+                  <ValueLines value={candidate.value} columns={state.item.columns} />
                   {refused.length > 0 && (
                     <EuiText size='xs' color='danger'>
                       <p>{`No se puede elegir tal cual: ${refused.map(issue => `${issue.source}: ${issue.reason}`).join('; ')}. Escribir el valor en «Editar».`}</p>
@@ -402,7 +405,7 @@ export const OrganizationDataPanel = ({ configuration, onConfigurationSaved }: O
                     <p>Sin valor común</p>
                   </EuiText>
                 ) : (
-                  <ValueLines value={state.value} />
+                  <ValueLines value={state.value} columns={state.item.columns} />
                 )}
                 <EuiButton size='s' onClick={() => startEditing(state)}>
                   Editar

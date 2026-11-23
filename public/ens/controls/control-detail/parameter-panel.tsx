@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { EuiBadge, EuiButtonEmpty, EuiFieldSearch, EuiFlexGroup, EuiFlexItem, EuiPanel, EuiSpacer, EuiText } from '@elastic/eui';
 
-import type { ENSConfigurationVersion } from '../../../../common/ens/configuration/types';
+import type { ENSConfigurationVersion, ENSParameterColumn } from '../../../../common/ens/configuration/types';
+import { TableRows } from '../../ui/table-rows';
 import { resolveControlConfigurationWithOrigins } from '../../../../common/ens/configuration/agents/configuration-resolver';
 import { describeValueOrigin } from '../parameter-origins';
 
@@ -25,6 +26,7 @@ export interface ParameterView {
   id: string;
   label: string;
   description: string;
+  columns?: ENSParameterColumn[];
   groups: ParameterValueGroup[];
 }
 
@@ -47,12 +49,14 @@ export const resolveParameterViews = (
     const groups = new Map<string, ParameterValueGroup>();
     let label = id;
     let description = '';
+    let columns: ENSParameterColumn[] | undefined;
     for (const machine of machines.length ? machines : [{ agentId: '' }]) {
       const resolved = resolveControlConfigurationWithOrigins(configuration, controlId, machine.agentId || undefined);
       const parameter = resolved?.configuration.parameters.find(p => p.id === id);
       if (!resolved || !parameter) continue;
       label = parameter.label || parameter.name;
       description = parameter.description;
+      columns = parameter.type === 'table' ? parameter.columns : undefined;
       const rows = rowsOf(parameter.value);
       const origin = describeValueOrigin(resolved.origins[id], rows.length === 0);
       const regex = parameter.matchMode === 'regex';
@@ -61,7 +65,7 @@ export const resolveParameterViews = (
       if (machine.agentId) group.machines.push(machine);
       groups.set(key, group);
     }
-    return groups.size ? [{ id, label, description, groups: [...groups.values()] }] : [];
+    return groups.size ? [{ id, label, description, columns, groups: [...groups.values()] }] : [];
   });
 
 const MachineList = ({ machines }: { machines: MachineRef[] }) => {
@@ -79,7 +83,7 @@ const MachineList = ({ machines }: { machines: MachineRef[] }) => {
   );
 };
 
-const ValueRows = ({ rows, regex }: { rows: string[]; regex: boolean }) => {
+const ValueRows = ({ rows, regex, columns }: { rows: string[]; regex: boolean; columns?: ENSParameterColumn[] }) => {
   const [showAll, setShowAll] = useState(false);
   const [filter, setFilter] = useState('');
   const filtered = useMemo(() => {
@@ -98,6 +102,9 @@ const ValueRows = ({ rows, regex }: { rows: string[]; regex: boolean }) => {
         <code>{rows[0]}</code>
       </EuiText>
     );
+  }
+  if (columns?.length) {
+    return <TableRows rows={filtered} columns={columns} preview={showAll || filter ? filtered.length : VALUES_PREVIEW} />;
   }
   return (
     <>
@@ -158,7 +165,7 @@ export const ParameterPanel = ({ view, onConfigure }: { view: ParameterView; onC
         </EuiText>
         {view.groups.length > 1 && group.machines.length > 0 && <MachineList machines={group.machines} />}
         <EuiSpacer size='xs' />
-        <ValueRows rows={group.rows} regex={group.regex} />
+        <ValueRows rows={group.rows} regex={group.regex} columns={view.columns} />
       </div>
     ))}
   </EuiPanel>

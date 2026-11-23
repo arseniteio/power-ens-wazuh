@@ -1,4 +1,5 @@
 import { ENGINE_CATALOG } from '../../../common/ens/catalog/engine-catalog';
+import { valuesText } from '../../../common/ens/configuration/table-rows';
 import { statusLabel } from '../../../common/ens/core/status-label';
 import type { ENSComplianceResult, ENSEvidenceResult } from '../../../common/ens/core/evaluation/types';
 
@@ -47,7 +48,7 @@ const worstOf = (statuses: ENSReportFieldStatus[]): ENSReportFieldStatus =>
   statuses.length ? SEVERITY.find(status => statuses.includes(status)) || 'SIN_DATOS' : 'SIN_DATOS';
 
 const formatValue = (value: unknown): string => {
-  if (Array.isArray(value)) return value.length ? value.join(', ') : 'Sin valor';
+  if (Array.isArray(value)) return value.length ? valuesText(value) : 'Sin valor';
   if (value === undefined || value === null || value === '') return 'Sin valor';
   if (typeof value === 'boolean') return value ? 'Sí' : 'No';
   return String(value);
