@@ -8,36 +8,26 @@ All notable changes to Power ENS are documented in this file. The format follows
 
 ### Added
 
-- A maturity seal (level and status in one mark, percentage in the tooltip) on controls, requirements, evidences and the compliance index; Madurez del control with the L0 to L5 scale, the required level and the machines below it.
-- Escalas de madurez loads the CCN auditor table (20, 40, 60, 80, 100) with one button.
+- Several ENS systems per installation. Each system has its own category, scope, parameters, organisation data and maturity, and each machine belongs to one system. "Sistemas ENS", in "Configuración" > "General", creates and deletes systems, and the "Sistema ENS" selector chooses the one every view, report and save applies to. An installation without additional systems works as before.
+- CMM maturity across the interface. Controls, requirements, evidences and the compliance index show a seal with their level and status, and "Detalle del control" shows "Madurez del control" with the L0 to L5 scale, the required level and the machines below it.
+- Maturity scales and level adjustments in "Configuración" > "Organización". "Tabla del CCN" loads the CCN auditor scale with one button.
+- Evidences that count items show the count, the percentage and the resulting level. Each judged measure shows "Máquinas conformes".
+- Attested requirements show their reference and links, and the fleet view shows the machines where each requirement is met.
 
-- Evidences that count items show the count, the percentage and the level the engine set. Each judged measure shows Máquinas conformes.
-- An attested requirement shows its reference and links.
-- The fleet view shows, per requirement, the machines where it complies.
-- The configuration accepts and keeps `levelAdjustments`.
-- Configuración, Organización edits level adjustments and maturity scales.
+### Changed
 
-- Several ENS systems per installation: General, Sistemas ENS creates and deletes them, and Sistema ENS chooses the one every view, report and save applies to. Each system has its own configuration document; the one saved before stays as Sistema principal. Configuration, evaluation and maturity read the selected system, and a system's scope cannot share a Wazuh group with another one.
+- Across machines, a control, a requirement or an evidence is judged by the maturity level of its percentage instead of by its worst machine.
+- Non-conformities show one entry per failed evidence, with the requirements it breaks, the machines, the reason, the parameters compared and a direct action: configure the parameter, register the document or fix the machine.
+- The reason of an evidence opens a panel with the check, the parameters it compares and the result on each machine.
+- Table values are shown as tables with their column headers.
+- "Madurez de la organización" separates the continuity of the evidence from the assessed maturity, and shows "Sin valorar" until a measure is assessed.
+- Descriptions of parameters and evidences move to an information icon.
+- The silence tolerated before a machine counts as unmonitored can be set per machine or group.
+- The system category reads "BÁSICO", "MEDIO" or "ALTO".
 
 ### Fixed
 
 - A non-conformity on one machine names that machine.
-
-### Changed
-
-- op.mon.3 P-03 and op.exp.8 P-12 take a value per machine or group, with the organisation value as the fallback.
-- Madurez de la organización shows Sin valorar while no measure has a declared level, names it Madurez valorada, leaves the L3 to L5 rows of Continuidad empty with an info icon, and the dashboard marks the seal under the index as Nivel del índice.
-- Table values show as tables with their column headers in Datos de la organización and in the parameters of Detalle del control; text summaries and reports separate cells with «·» instead of «|».
-- Across machines a control, a requirement or an evidence is judged by the CMM level of its percentage with the engine's rule, instead of taking the worst machine: 9 compliant machines out of 10 is Cumple. A machine without a score counts as 0 %.
-- The day-based level of Madurez de la organización is named Continuidad de la evidencia (30 días).
-- The evidence table shows the evidence title; the template description moves to an info icon.
-- Parameter descriptions move from the help text to an info icon next to the label.
-- The system category reads BÁSICO, MEDIO or ALTO; dimension levels stay BAJO, MEDIO or ALTO.
-- Saving the configuration keeps `maturity.scales`.
-- The motive of an evidence opens a panel with the check, each parameter it compares against (name, description, full value with search, origin) and the result per machine. Reasons are drawn from the engine's structured reason instead of parsing text; long lists stay whole, with search.
-- Non-conformities show the same structured motive and the parameters with their description.
-- Non-conformities read as a fixed grid (requirements, machines, motive, parameters compared, action), one per evidence with its machines grouped, with a direct action: configure the parameter, register the document in P-ATT or fix the machine.
-- One non-conformity per failed evidence lists every requirement it breaks, instead of one repeated card per requirement.
 
 ## [2.0.1] - 2026-11-19
 
