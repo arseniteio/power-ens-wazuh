@@ -297,7 +297,7 @@ const GroupMachines = ({
 
   return (
     <>
-      <EuiFieldSearch fullWidth placeholder='Nombre, sistema o servicio' value={text} onChange={event => (setText(event.target.value), setPage(0))} />
+      <EuiFieldSearch fullWidth placeholder='Nombre, grupo, sistema o servicio' value={text} onChange={event => (setText(event.target.value), setPage(0))} />
       <EuiSpacer size='s' />
       {selected.length > 0 && (
         <>

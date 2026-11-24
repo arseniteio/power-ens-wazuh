@@ -28,6 +28,8 @@ const caseless = (field: string, value: string): Query => ({ term: { [field]: { 
 
 const escapeWildcard = (text: string): string => text.replace(/[\\*?]/g, '\\$&');
 
+const HOST_TEXT_FIELDS = ['agent.name', 'hostname', 'agent.id', 'groups', 'distro', 'services'];
+
 const textQuery = (text: string): Query | undefined => {
   const words = text.trim().split(/\s+/).filter(Boolean);
   if (!words.length) return undefined;
@@ -35,7 +37,7 @@ const textQuery = (text: string): Query | undefined => {
     bool: {
       filter: words.map(word => ({
         bool: {
-          should: ['agent.name', 'hostname', 'agent.id'].map(field => ({
+          should: HOST_TEXT_FIELDS.map(field => ({
             wildcard: { [field]: { value: `*${escapeWildcard(word)}*`, case_insensitive: true } },
           })),
           minimum_should_match: 1,

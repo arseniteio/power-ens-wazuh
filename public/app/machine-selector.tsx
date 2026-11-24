@@ -22,6 +22,8 @@ import { FilterBar } from '../ens/ui/filter-bar';
 
 const PAGE_SIZE = 10;
 const SEARCH_DELAY_MS = 300;
+// With thousands of machines there can be hundreds of Wazuh groups: the rest are reached through the search box.
+const SHOWN_WAZUH_GROUPS = 12;
 
 const FAMILY_LABELS: Record<string, string> = { debian: 'Debian', rhel: 'RHEL', suse: 'SUSE', arch: 'Arch', alpine: 'Alpine', linux: 'Linux', windows: 'Windows', darwin: 'macOS' };
 
@@ -59,20 +61,56 @@ const useHostSearch = (text: string, filters: ENSHostFilters, page: number) => {
   return { result, loading, error };
 };
 
+interface TagOption {
+  value: string;
+  label: string;
+  count: number;
+}
+
+const TagFilter = ({ title, what, options, active, onChange }: { title: string; what: string; options: TagOption[]; active: string; onChange: (value: string) => void }) =>
+  options.length === 0 ? null : (
+    <>
+      <EuiSpacer size='s' />
+      <EuiFlexGroup gutterSize='xs' alignItems='center' wrap responsive={false}>
+        <EuiFlexItem grow={false}>
+          <EuiText size='xs' color='subdued'>
+            <span>{title}</span>
+          </EuiText>
+        </EuiFlexItem>
+        {options.map(option => (
+          <EuiFlexItem grow={false} key={option.value}>
+            <EuiBadge
+              color={active === option.value ? 'primary' : 'hollow'}
+              onClick={() => onChange(active === option.value ? '' : option.value)}
+              onClickAriaLabel={`Filtrar por ${what} ${option.label}`}
+            >
+              {`${option.label} (${option.count})`}
+            </EuiBadge>
+          </EuiFlexItem>
+        ))}
+      </EuiFlexGroup>
+    </>
+  );
+
 const MachineTable = ({ onPick }: { onPick: (agentId: string) => void }) => {
   const [query, setQuery] = useState('');
   const [family, setFamily] = useState('');
   const [group, setGroup] = useState('');
+  const [wazuhGroup, setWazuhGroup] = useState('');
   const [page, setPage] = useState(0);
   const text = useDebounced(query);
-  const filters: ENSHostFilters = { ...(family ? { family } : {}), ...(group ? { profile: group } : {}) };
+  const filters: ENSHostFilters = { ...(family ? { family } : {}), ...(group ? { profile: group } : {}), ...(wazuhGroup ? { group: wazuhGroup } : {}) };
   const { result, loading, error } = useHostSearch(text, filters, page);
 
-  useEffect(() => setPage(0), [text, family, group]);
+  useEffect(() => setPage(0), [text, family, group, wazuhGroup]);
 
   const groupOptions = (result?.profiles || [])
     .map(profile => ({ value: profile.id, label: profile.name, count: result?.facets.profile[profile.id] || 0 }))
     .filter(option => option.count || option.value === group);
+
+  const wazuhGroupOptions = (result?.facets.group || [])
+    .filter((bucket, index) => index < SHOWN_WAZUH_GROUPS || bucket.value === wazuhGroup)
+    .map(bucket => ({ value: bucket.value, label: bucket.value, count: bucket.count }));
 
   const columns: Array<EuiBasicTableColumn<ENSHostRow>> = [
     {
@@ -105,32 +143,11 @@ const MachineTable = ({ onPick }: { onPick: (agentId: string) => void }) => {
         onFilter={setFamily}
         query={query}
         onQuery={setQuery}
-        placeholder='Nombre, agente o nombre de host'
+        placeholder='Nombre, agente, host, grupo o servicio'
         ariaLabel='Buscar máquina'
       />
-      {groupOptions.length > 0 && (
-        <>
-          <EuiSpacer size='s' />
-          <EuiFlexGroup gutterSize='xs' alignItems='center' wrap responsive={false}>
-            <EuiFlexItem grow={false}>
-              <EuiText size='xs' color='subdued'>
-                <span>Grupo:</span>
-              </EuiText>
-            </EuiFlexItem>
-            {groupOptions.map(option => (
-              <EuiFlexItem grow={false} key={option.value}>
-                <EuiBadge
-                  color={group === option.value ? 'primary' : 'hollow'}
-                  onClick={() => setGroup(group === option.value ? '' : option.value)}
-                  onClickAriaLabel={`Filtrar por el grupo ${option.label}`}
-                >
-                  {`${option.label} (${option.count})`}
-                </EuiBadge>
-              </EuiFlexItem>
-            ))}
-          </EuiFlexGroup>
-        </>
-      )}
+      <TagFilter title='Grupo de Wazuh:' what='el grupo de Wazuh' options={wazuhGroupOptions} active={wazuhGroup} onChange={setWazuhGroup} />
+      <TagFilter title='Grupo ENS:' what='el grupo ENS' options={groupOptions} active={group} onChange={setGroup} />
       <EuiSpacer size='s' />
       {error && <EuiCallOut size='s' color='danger' iconType='alert' title={error} />}
       <EuiBasicTable<ENSHostRow>
