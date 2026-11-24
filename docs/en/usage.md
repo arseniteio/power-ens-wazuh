@@ -43,7 +43,7 @@ Madurez de la organización is the ENS valuation (Anexo II, apdo. 6): CMM levels
 
 Vista general shows one row per machine with its total compliance. Opening a machine shows its controls and the work pending on it, and the last 30 days.
 
-Detalle del control shows one control on one machine: each requirement, each evidence with its title, status and reason, and an explanation of how it is measured. The info icon next to an evidence title shows the description of the template. An evidence that counts items, such as the copies of mp.info.6, shows the count, the percentage and, when a scale is configured, the level L0 to L5. Seleccionar máquina, at the top of every view, searches the machines in the server with filters by system and group. This is where to go to find out why something fails.
+Detalle del control shows one control on one machine: each requirement, each evidence with its title, status and reason, and an explanation of how it is measured. The info icon next to an evidence title shows the description of the template. An evidence that counts items, such as the copies of mp.info.6, shows the count, the percentage and, when a scale is configured, the level L0 to L5. Seleccionar máquina, at the top of every view, searches the machines in the server by name, agent, host, Wazuh group, distribution or service, with filters by system, Wazuh group and ENS group. This is where to go to find out why something fails.
 
 Evidencias lists the evidences of all controls, with their status per machine.
 

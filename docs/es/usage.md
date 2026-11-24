@@ -43,7 +43,7 @@ Madurez de la organización es la valoración del ENS (Anexo II, apdo. 6): nivel
 
 Vista general muestra una fila por máquina con su cumplimiento total. Al abrir una máquina se ven sus controles, el trabajo pendiente y los últimos 30 días.
 
-Detalle del control muestra un control en una máquina: cada requisito, cada evidencia con su título, su estado y su motivo, y una explicación de cómo se mide. El icono de información junto al título de una evidencia muestra la descripción de la plantilla. Una evidencia que cuenta elementos, como las copias de mp.info.6, muestra el recuento, el porcentaje y, si hay una escala configurada, el nivel L0 a L5. Seleccionar máquina, arriba en todas las vistas, busca las máquinas en el servidor con filtros por sistema y grupo. Aquí es donde se averigua por qué falla algo.
+Detalle del control muestra un control en una máquina: cada requisito, cada evidencia con su título, su estado y su motivo, y una explicación de cómo se mide. El icono de información junto al título de una evidencia muestra la descripción de la plantilla. Una evidencia que cuenta elementos, como las copias de mp.info.6, muestra el recuento, el porcentaje y, si hay una escala configurada, el nivel L0 a L5. Seleccionar máquina, arriba en todas las vistas, busca las máquinas en el servidor por nombre, agente, host, grupo de Wazuh, distribución o servicio, con filtros por sistema, grupo de Wazuh y grupo ENS. Aquí es donde se averigua por qué falla algo.
 
 Evidencias lista las evidencias de todos los controles, con su estado por máquina.
 

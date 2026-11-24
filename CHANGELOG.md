@@ -4,6 +4,10 @@ All notable changes to Power ENS are documented in this file. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- The machine search finds machines by Wazuh group, distribution and service, and Seleccionar máquina filters by Wazuh group.
+
 ## [2.1.0] - 2026-11-22
 
 ### Added
