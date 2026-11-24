@@ -4,6 +4,10 @@ All notable changes to Power ENS are documented in this file. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Parameter references (P-xx) and maturity levels show their meaning on hover. The control report adds each parameter's description and the maturity scale with the required level.
+
 ### Changed
 
 - The Spanish interface calls the monitored machines activos (assets) instead of máquinas or agentes.
