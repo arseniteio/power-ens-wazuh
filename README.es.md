@@ -2,7 +2,7 @@
 
 [English version](README.md)
 
-Power ENS es el plugin para el dashboard de Wazuh de OSCompliance ENS, para el Esquema Nacional de Seguridad (ENS, Real Decreto 311/2022). Guarda los parámetros de política de cada control y muestra el cumplimiento por control y por máquina.
+Power ENS es el plugin para el dashboard de Wazuh de OSCompliance ENS, para el Esquema Nacional de Seguridad (ENS, Real Decreto 311/2022). Guarda los parámetros de política de cada control y muestra el cumplimiento por control y por activo.
 
 No juzga nada. Cada resultado es un veredicto del motor de OSCompliance, leído del índice `oscompliance-verdicts`, así que el plugin necesita [oscompliance-ens-wazuh](https://github.com/arseniteio/oscompliance-ens-wazuh) para mostrar resultados.
 

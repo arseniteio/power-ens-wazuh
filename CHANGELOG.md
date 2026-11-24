@@ -4,9 +4,13 @@ All notable changes to Power ENS are documented in this file. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- The Spanish interface calls the monitored machines activos (assets) instead of máquinas or agentes.
+
 ### Fixed
 
-- The machine search finds machines by Wazuh group, distribution and service, and Seleccionar máquina filters by Wazuh group.
+- The machine search finds machines by Wazuh group, distribution and service, and Seleccionar activo filters by Wazuh group.
 
 ## [2.1.0] - 2026-11-22
 
