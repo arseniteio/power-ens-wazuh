@@ -119,7 +119,7 @@ const ResultRow = ({ group, lookup }: { group: ResultGroup; lookup: ParameterLoo
         )}
         <EuiFlexItem grow={false}>
           <EuiText size='xs' color='subdued'>
-            <span>{group.machines.length === 1 ? '1 máquina' : `${group.machines.length} máquinas`}</span>
+            <span>{group.machines.length === 1 ? '1 activo' : `${group.machines.length} activos`}</span>
           </EuiText>
         </EuiFlexItem>
       </EuiFlexGroup>
@@ -211,7 +211,7 @@ export const EvidenceMotiveFlyout = ({ controlId, evidence, configuration, onClo
 
         <EuiHorizontalRule margin='m' />
         <EuiTitle size='xxs'>
-          <h3>{`Resultado por máquina · ${machines.length}`}</h3>
+          <h3>{`Resultado por activo · ${machines.length}`}</h3>
         </EuiTitle>
         <EuiSpacer size='s' />
         {visibleGroups.map((group, i) => (

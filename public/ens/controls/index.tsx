@@ -114,7 +114,7 @@ export const ControlsENS = () => {
             <EuiText size='s' color='subdued'>
               <p>
                 {`Controles sin medición en ${agentName || agentId}: ${unmeasured}`}{' '}
-                <EuiLink onClick={() => updateUrl({ agentId: undefined })}>Todas las máquinas</EuiLink>
+                <EuiLink onClick={() => updateUrl({ agentId: undefined })}>Todos los activos</EuiLink>
               </p>
             </EuiText>
             <EuiSpacer size='s' />

@@ -96,7 +96,7 @@ export const normalizeQuery = (query: Record<string, unknown>): ENSEvaluationQue
   const agentName = text(query.agentId);
   const agentId = agentName ? normalizeAgentId(agentName) : undefined;
   if (agentName && (!agentId || agentId.length > 64)) {
-    throw new ENSBadRequestError(`«${agentName}» no es un identificador de máquina válido.`);
+    throw new ENSBadRequestError(`«${agentName}» no es un identificador de activo válido.`);
   }
   const zone = text(query.timeZone);
   if (zone && !isValidTimeZone(zone)) {
@@ -305,7 +305,7 @@ export const createEvaluationService = ({
     const updatedAt = stored.updatedAt;
     const scope = machinesOfSystem(system, resolveENSScopeAgents(inventory.agents, configuration.scope), inventory.agents, systems);
     if (query.agentId && !scope.some(agent => agent.id === query.agentId)) {
-      throw new ENSBadRequestError(`La máquina ${query.agentId} no está en un grupo ENS evaluable.`);
+      throw new ENSBadRequestError(`El activo ${query.agentId} no está en un grupo ENS evaluable.`);
     }
     const window = resolveEvaluationWindow(configuration.global.evaluationPeriod, now);
     const verdicts = await loadVerdictsProbe(clients, userKey, window.from, system);

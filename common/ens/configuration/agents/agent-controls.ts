@@ -37,7 +37,7 @@ export const getAgentControls = (
         measured: onPlane && collected,
         reason: !onPlane
           ? manager
-            ? 'se evalúa en los agentes, no en el manager'
+            ? 'se evalúa en los activos, no en el manager'
             : 'se evalúa en el manager, con las filas de todos'
           : !collected
           ? 'sin recolector para su sistema'

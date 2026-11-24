@@ -85,7 +85,7 @@ export const planTemplateMigration = <T extends ENSTemplateModelDocument>(config
               id: templateId,
               controlId,
               name: `${from.map(id => getPlatformSource(id)!.label).join(' + ')} (de la 1.2.0)`,
-              description: 'Creada al convertir la configuración de la 1.2.0: las plantillas que se aplicaban juntas a un agente.',
+              description: 'Creada al convertir la configuración de la 1.2.0: las plantillas que se aplicaban juntas a un activo.',
               values: values as ENSCustomTemplate['values'],
             };
             templates.push(template);
@@ -118,7 +118,7 @@ export const summarizeTemplateMigration = (plan: Pick<ENSTemplateMigrationPlan, 
   const assigned = plan.assignments.filter(item => item.templateId !== ENS_NO_TEMPLATE).length;
   const pinned = plan.assignments.length - assigned;
   return [
-    `Conversión de la configuración 1.2.0: ${assigned} asignación(es) de plantilla por control en ${agents} agente(s)`,
+    `Conversión de la configuración 1.2.0: ${assigned} asignación(es) de plantilla por control en ${agents} activo(s)`,
     pinned ? `, ${pinned} control(es) marcados «Sin plantilla» para que sigan con el valor común` : '',
     plan.created.length ? `, ${plan.created.length} plantilla(s) propia(s) creada(s) con plantillas que se aplicaban juntas` : '',
     plan.dropped.length ? `; ${plan.dropped.length} plantilla(s) desconocida(s) que no se aplicaban se descartan` : '',

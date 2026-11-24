@@ -183,8 +183,8 @@ const ControlReport = ({
   );
 
   const agentValue = agentId
-    ? (evidenceAgent?.agentName || evidenceAgent?.agentId || `Agente ${agentId}`)
-    : 'Todos los agentes';
+    ? (evidenceAgent?.agentName || evidenceAgent?.agentId || `Activo ${agentId}`)
+    : 'Todos los activos';
 
   const formatPercent = (value: number | null) => (value !== null ? value + '%' : 'N/A');
 

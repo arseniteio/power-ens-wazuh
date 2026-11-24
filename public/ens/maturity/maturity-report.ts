@@ -12,7 +12,7 @@ export const maturityReportRows = (engine: ENSEngineMaturity | undefined, declar
     value:
       engine?.accredited === undefined
         ? 'sin medición'
-        : `${maturityLabel(engine.accredited)}${engine.machines ? ` (nivel más bajo de ${engine.machines} máquinas, ${engine.period_days || 30} días)` : ''}`,
+        : `${maturityLabel(engine.accredited)}${engine.machines ? ` (nivel más bajo de ${engine.machines} activos, ${engine.period_days || 30} días)` : ''}`,
   },
   { label: 'Valorado', value: declared?.level === undefined ? 'sin valorar' : maturityLabel(declared.level) },
   { label: 'Objetivo', value: declared?.target === undefined ? 'sin objetivo' : maturityLabel(declared.target) },

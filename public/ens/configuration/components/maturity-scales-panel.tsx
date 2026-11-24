@@ -28,7 +28,7 @@ import { CCN_SCALE } from '../../../../common/ens/maturity/compliance-level';
 import { InfoTip } from '../../ui/info-tip';
 import { ControlChoice } from './control-choice';
 
-const machineLabel = (agentId?: string): string => agentId || 'Todas';
+const machineLabel = (agentId?: string): string => agentId || 'Todos';
 
 const thresholdsLabel = (thresholds: number[]): string => thresholds.map((t, i) => `L${i + 1} ${t} %`).join(' · ');
 
@@ -78,8 +78,8 @@ const ScaleEditor = ({ current, onClose, onSaved }: EditorProps) => {
         <EuiFormRow label='Control' fullWidth>
           <ControlChoice value={controlId} onChange={setControlId} />
         </EuiFormRow>
-        <EuiFormRow label='Máquina' fullWidth labelAppend={<InfoTip content='Id de agente de Wazuh. Vacío: todas las máquinas.' />}>
-          <EuiFieldText value={agentId} onChange={event => setAgentId(event.target.value)} placeholder='Todas' fullWidth />
+        <EuiFormRow label='Activo' fullWidth labelAppend={<InfoTip content='Id de agente de Wazuh. Vacío: todos los activos.' />}>
+          <EuiFieldText value={agentId} onChange={event => setAgentId(event.target.value)} placeholder='Todos' fullWidth />
         </EuiFormRow>
         <EuiFormRow
           label='Porcentaje mínimo por nivel'
@@ -168,7 +168,7 @@ export const MaturityScalesPanel = ({ configuration, onSaved }: { configuration:
         noItemsMessage='Sin escalas: se usa la escala por defecto.'
         columns={[
           { field: 'controlId', name: 'Control', width: '110px' },
-          { field: 'agentId', name: 'Máquina', width: '120px', render: (agentId?: string) => machineLabel(agentId) },
+          { field: 'agentId', name: 'Activo', width: '120px', render: (agentId?: string) => machineLabel(agentId) },
           { field: 'thresholds', name: 'Porcentaje mínimo', render: (thresholds: number[]) => thresholdsLabel(thresholds) },
           {
             name: '',

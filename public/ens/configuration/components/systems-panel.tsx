@@ -97,7 +97,7 @@ export const SystemsPanel = () => {
           onCancel={() => setConfirming(false)}
           onConfirm={remove}
         >
-          <p>Las máquinas pasan al sistema principal. Se conservan el historial y los veredictos.</p>
+          <p>Los activos pasan al sistema principal. Se conservan el historial y los veredictos.</p>
         </EuiConfirmModal>
       )}
     </EuiPanel>

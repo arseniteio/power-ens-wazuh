@@ -55,7 +55,7 @@ const Machines = ({ machines }: { machines: ENSAgentRef[] }) => {
 
 const valueSummary = (view: ParameterView): string => {
   const rows = view.groups[0]?.rows || [];
-  if (view.groups.length > 1) return 'varía por máquina';
+  if (view.groups.length > 1) return 'varía por activo';
   if (!rows.length) return 'sin valor';
   if (view.groups[0].regex) return `expresión regular ${rows[0]}`;
   return rows.length === 1 ? rows[0] : `${rows.length} entradas`;
@@ -121,7 +121,7 @@ const Card = ({ group, props }: { group: GroupedNonConformity; props: NonConform
       </Row>
       )}
 
-      <Row label={group.machines.length > 1 ? `Máquinas · ${group.machines.length}` : 'Máquina'}>
+      <Row label={group.machines.length > 1 ? `Activos · ${group.machines.length}` : 'Activo'}>
         <Machines machines={group.machines} />
       </Row>
 
@@ -163,11 +163,11 @@ const Card = ({ group, props }: { group: GroupedNonConformity; props: NonConform
             <EuiText size='s'>
               <span>
                 <ExplainedText controlId={props.controlId} text={group.kind === 'measure'
-                  ? `Corregir en ${group.machines.length > 1 ? 'las máquinas' : 'la máquina'} lo que señala ${group.evidenceId}`
+                  ? `Corregir en ${group.machines.length > 1 ? 'los activos' : 'el activo'} lo que señala ${group.evidenceId}`
                   : group.kind === 'configuration'
                   ? missing ? `Dar valor a ${missing}` : 'Completar los parámetros de la evidencia'
                   : group.kind === 'collection'
-                  ? 'Revisar el agente y la recogida de datos de la máquina'
+                  ? 'Revisar el agente y la recogida de datos del activo'
                   : 'Registrar el documento con referencia y enlace'} />
               </span>
             </EuiText>

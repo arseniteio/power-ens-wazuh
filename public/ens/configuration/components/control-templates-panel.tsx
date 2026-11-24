@@ -155,7 +155,7 @@ export const ControlTemplatesPanel = ({ configuration, control, rows, onConfigur
     },
     {
       field: 'id',
-      name: 'Agentes',
+      name: 'Activos',
       render: (_id: string, template: ENSControlTemplate) => {
         const assigned = usage(template).length;
         const typed = byType(template);
@@ -216,9 +216,9 @@ export const ControlTemplatesPanel = ({ configuration, control, rows, onConfigur
 
       {pendingEdit && (
         <ChangePreviewModal
-          title={`Guardar «${pendingEdit.input.name}»: cambia ${plural(pendingEdit.previews.filter(preview => preview.changes.length).length, 'agente', 'agentes')}`}
+          title={`Guardar «${pendingEdit.input.name}»: cambia ${plural(pendingEdit.previews.filter(preview => preview.changes.length).length, 'activo', 'activos')}`}
           confirmLabel='Guardar plantilla'
-          intro='Los valores personalizados de cada agente se mantienen.'
+          intro='Los valores personalizados de cada activo se mantienen.'
           configuration={configuration}
           agentLabels={labels}
           previews={pendingEdit.previews}
@@ -241,16 +241,16 @@ export const ControlTemplatesPanel = ({ configuration, control, rows, onConfigur
         >
           <EuiText size='s'>
             {removalUsers.length ? (
-              <p>Está asignada a {plural(removalUsers.length, 'agente', 'agentes')}: {removalUsers.map(id => labels[id] || id).join(', ')}. Antes de borrarla se les asigna otra.</p>
+              <p>Está asignada a {plural(removalUsers.length, 'activo', 'activos')}: {removalUsers.map(id => labels[id] || id).join(', ')}. Antes de borrarla se les asigna otra.</p>
             ) : (
-              <p>No está asignada a ningún agente.</p>
+              <p>No está asignada a ningún activo.</p>
             )}
             <p>La versión anterior queda en el historial.</p>
           </EuiText>
           {removalUsers.length > 0 && (
-            <EuiFormRow label='Reasignar sus agentes a'>
+            <EuiFormRow label='Reasignar sus activos a'>
               <Choice
-                legend='Reasignar sus agentes a'
+                legend='Reasignar sus activos a'
                 options={[
                   { value: TYPE_DEFAULT, text: 'Detectado automáticamente' },
                   ...templates.filter(item => item.id !== removal.id).map(item => ({ value: item.id, text: item.name })),

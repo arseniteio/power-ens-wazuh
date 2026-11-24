@@ -126,7 +126,7 @@ export const ControlAssignmentPanel = ({
   const columns: EuiBasicTableColumn<ENSAgentRow>[] = [
     {
       field: 'id',
-      name: 'Agente',
+      name: 'Activo',
       render: (_id: string, row: ENSAgentRow) => (
         <EuiButtonEmpty size='xs' flush='left' onClick={() => onNavigate({ view: 'agents', agentId: row.id, controlId })}>
           <OsIcon kind={osKindOf({ id: row.id, os: row.agent.os })} size={16} /> {agentRowLabel(row)}
@@ -151,7 +151,7 @@ export const ControlAssignmentPanel = ({
             <EuiText size='xs'><p>{describeEffectiveTemplate(configuration, row, controlId)}</p></EuiText>
             {!measured && (
               <EuiText size='xs' color='subdued'>
-                <p>{planes.includes('manager') ? 'Se evalúa en el manager, con las filas de todos los agentes.' : 'No se evalúa en el manager.'}</p>
+                <p>{planes.includes('manager') ? 'Se evalúa en el manager, con las filas de todos los activos.' : 'No se evalúa en el manager.'}</p>
               </EuiText>
             )}
           </div>
@@ -183,7 +183,7 @@ export const ControlAssignmentPanel = ({
         <h3>Asignación</h3>
       </EuiTitle>
       <EuiText size='s' color='subdued'>
-        <p>Plantilla por agente</p>
+        <p>Plantilla por activo</p>
       </EuiText>
       <EuiSpacer size='s' />
 
@@ -224,12 +224,12 @@ export const ControlAssignmentPanel = ({
         loading={loading}
         isSelectable
         selection={{ onSelectionChange: (items: ENSAgentRow[]) => setSelectedIds(items.map(item => item.id)) }}
-        noItemsMessage='No hay agentes en el alcance.'
+        noItemsMessage='No hay activos en el alcance.'
       />
 
       {preview && (
         <ChangePreviewModal
-          title={`Asignar ${describeTemplateChoice(configuration, controlId, preview.templateId)} en ${controlId} a ${preview.previews.length} agente(s)`}
+          title={`Asignar ${describeTemplateChoice(configuration, controlId, preview.templateId)} en ${controlId} a ${preview.previews.length} activo(s)`}
           confirmLabel='Asignar'
           intro='Los valores personalizados se mantienen.'
           configuration={configuration}

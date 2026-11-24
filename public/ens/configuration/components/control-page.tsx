@@ -66,8 +66,8 @@ export const ControlPage = ({
         onConfigurationSaved={onConfigurationSaved}
         parameterIds={commonParameterIds(control)}
         secondaryParameterIds={control.parameters.filter(parameter => isAgentLevelParameter(control.controlId, parameter.id)).map(parameter => parameter.id)}
-        secondaryTitle='Parámetros por agente'
-        secondaryDescription='Se aplican si ni el agente ni su plantilla los fijan.'
+        secondaryTitle='Parámetros por activo'
+        secondaryDescription='Se aplican si ni el activo ni su plantilla los fijan.'
         focusParameterId={focusParameterId}
       />
 

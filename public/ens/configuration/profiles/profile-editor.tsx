@@ -356,7 +356,7 @@ export const ProfileEditor = ({ profileId, onClose }: ProfileEditorProps) => {
           <Section
             number={4}
             title='Parámetros'
-            info='Parámetros por máquina. Los de ámbito organización se editan en Organización.'
+            info='Parámetros por activo. Los de ámbito organización se editan en Organización.'
             aside={`${valueCount} ${valueCount === 1 ? 'parámetro' : 'parámetros'}`}
           >
             {controls.map(controlId => (
@@ -439,7 +439,7 @@ export const ProfileEditor = ({ profileId, onClose }: ProfileEditorProps) => {
         <EuiFlexItem grow={false} style={{ width: 320, position: 'sticky', top: 16 }}>
           <EuiPanel paddingSize='m' hasBorder>
             <EuiTitle size='xs'>
-              <h4>Máquinas incluidas</h4>
+              <h4>Activos incluidos</h4>
             </EuiTitle>
             <EuiSpacer size='s' />
             {previewError && <EuiCallOut size='s' color='danger' iconType='alert' title={previewError} />}

@@ -311,7 +311,7 @@ const FamiliesPanel = ({ families, selected, onSelect }: { families: FamilyRow[]
 
 const MachinesPanel = ({ machines, onOpen }: { machines: ENSMachineScore[]; onOpen: (agentId: string) => void }) => (
   <EuiPanel hasBorder>
-    <SectionTitle>Máquinas con menor índice</SectionTitle>
+    <SectionTitle>Activos con menor índice</SectionTitle>
     <EuiSpacer size='xs' />
     {machines.map((machine, index) => (
       <div key={machine.agentId} style={{ padding: '10px 0', borderTop: index ? `1px solid ${ENS_THEME.border}` : undefined }}>

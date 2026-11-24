@@ -46,7 +46,7 @@ import { MaturityScalesPanel } from './maturity-scales-panel';
 type TabId = 'groups' | 'pending' | 'organization' | 'general';
 
 const TABS: Array<{ id: TabId; label: string }> = [
-  { id: 'groups', label: 'Grupos y máquinas' },
+  { id: 'groups', label: 'Grupos y activos' },
   { id: 'pending', label: 'Pendiente' },
   { id: 'organization', label: 'Organización' },
   { id: 'general', label: 'General' },
@@ -59,7 +59,7 @@ const tabOf = (view: ENSConfigurationView): TabId => {
 };
 
 const scopeText = (groupIds: string[], mode: string): string => {
-  if (mode !== 'group') return 'todas las máquinas';
+  if (mode !== 'group') return 'todos los activos';
   return groupIds.length ? `${groupIds.length === 1 ? 'grupo' : 'grupos'} ${groupIds.join(', ')}` : 'ningún grupo';
 };
 

@@ -254,7 +254,7 @@ export const AgentConfigurationPage = ({
       {!known && !profile && (
         <>
           <EuiSpacer size='s' />
-          <EuiCallOut color='warning' iconType='alert' size='s' title={`El agente ${agentId} no existe en el inventario`} />
+          <EuiCallOut color='warning' iconType='alert' size='s' title={`El activo ${agentId} no existe en el inventario`} />
         </>
       )}
 
@@ -487,7 +487,7 @@ export const AgentConfigurationPage = ({
                     contributionOnly={contribution}
                     organisationRows={contribution ? valueRows(parameter, commonValue) : undefined}
                     effectiveRows={union && (agentId === ENS_MANAGER_AGENT || control.controlId === 'mp.info.6') ? valueRows(parameter, parameter.value) : undefined}
-                    note={contribution ? 'Solo las filas de este agente; se suman a las comunes.' : undefined}
+                    note={contribution ? 'Solo las filas de este activo; se suman a las comunes.' : undefined}
                     applicable={parameter.levels.includes(control.level)}
                     focused={open && target.parameterId === parameter.id}
                     describeSave={(next, matchMode) => describeAgentValueSave(configuration, agentId, control.controlId, parameter.id, next, matchMode)}
@@ -507,7 +507,7 @@ export const AgentConfigurationPage = ({
       })}
 
       {target.controlId && !controls.some(control => control.controlId === target.controlId) && (
-        <EuiCallOut color='warning' iconType='iInCircle' size='s' title={`${target.controlId} no tiene parámetros por agente`}>
+        <EuiCallOut color='warning' iconType='iInCircle' size='s' title={`${target.controlId} no tiene parámetros por activo`}>
           <EuiButtonEmpty size='xs' onClick={() => onNavigate({ view: 'controls', controlId: target.controlId, parameterId: target.parameterId })}>
             Abrir en Organización
           </EuiButtonEmpty>

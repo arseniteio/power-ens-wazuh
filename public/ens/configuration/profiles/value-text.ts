@@ -27,7 +27,7 @@ export const originText = (sources: ENSValueSource[]): string => {
   const [first] = sources;
   switch (first.kind) {
     case 'agent':
-      return 'Valor propio de esta máquina';
+      return 'Valor propio de este activo';
     case 'template':
       return `Plantilla ${quoted(first)} asignada en el control`;
     case 'type-template':

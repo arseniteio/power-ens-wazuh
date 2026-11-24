@@ -25,7 +25,7 @@ export const describeExclusionNotice = (
 
 export const describeExclusionEffect = (agentLabel: string, controlId: string, excluding: boolean): string =>
   excluding
-    ? `${agentLabel} entra en el grupo ${exclusionGroupOf(controlId)} de Wazuh. En la próxima evaluación del motor, ${controlId} aparecerá como «No aplica» en esta máquina.`
+    ? `${agentLabel} entra en el grupo ${exclusionGroupOf(controlId)} de Wazuh. En la próxima evaluación del motor, ${controlId} aparecerá como «No aplica» en este activo.`
     : `${agentLabel} sale del grupo ${exclusionGroupOf(controlId)} de Wazuh. El motor la vuelve a evaluar en ${controlId} en su próxima pasada.`;
 
 export const ENGINE_PASS_NOTE = 'El motor evalúa cada 15 minutos.';

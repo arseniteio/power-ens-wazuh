@@ -73,7 +73,7 @@ const causeOf = (verdict?: ENSEngineVerdict): ENSGapCause | undefined =>
 const parameterIdsIn = (texts: (string | undefined)[]): string[] =>
   [...new Set(texts.flatMap(text => (text || '').match(/\bP-[0-9A-Z]+\b/g) || []))];
 
-const noVerdict = 'Sin veredicto del motor para esta máquina.';
+const noVerdict = 'Sin veredicto del motor para este activo.';
 
 const requirementCause = (
   requirement: ENSRequirementDefinition,
@@ -132,7 +132,7 @@ const buildNonConformities = ({ controlId, level, machines, failing, definitionO
         requirementIds: [requirement.id],
         finding: requirement.observations[0],
         impact: `${requirement.evidenced ? 'Impide cumplir' : 'Sin prueba no se puede dar por cumplido'} ${controlId} en nivel ${level}.`,
-        requiredAction: cause ? ACTION_BY_CAUSE[cause] : `Corregir en la máquina lo que señala ${requirement.id}.`,
+        requiredAction: cause ? ACTION_BY_CAUSE[cause] : `Corregir en el activo lo que señala ${requirement.id}.`,
         origin: requirement.evidenced ? 'MEDIDA' : 'NO_EVIDENCIADA',
         ...(cause ? { cause } : {}),
         evidenceIds: [],
@@ -164,7 +164,7 @@ const buildNonConformities = ({ controlId, level, machines, failing, definitionO
       return {
         ...base,
         impact: `Impide cumplir ${controlId} (${requirementIds.join(', ')}) en nivel ${level}.`,
-        requiredAction: `Corregir en la máquina lo que señala ${evidenceId}.`,
+        requiredAction: `Corregir en el activo lo que señala ${evidenceId}.`,
         origin: 'MEDIDA',
         parameterIds: [],
       };

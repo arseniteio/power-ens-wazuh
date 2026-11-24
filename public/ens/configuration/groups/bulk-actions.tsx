@@ -86,7 +86,7 @@ const Frame = ({
   </EuiModal>
 );
 
-const machinesText = (count: number): string => (count === 1 ? '1 máquina' : `${count} máquinas`);
+const machinesText = (count: number): string => (count === 1 ? '1 activo' : `${count} activos`);
 
 export const AddToGroupModal = ({
   hosts,

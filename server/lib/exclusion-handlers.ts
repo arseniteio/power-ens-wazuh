@@ -8,7 +8,7 @@ interface Options {
   securityEnabled: boolean;
 }
 
-const NO_ROLE = 'Hace falta el rol power_ens_admin o all_access para excluir una máquina de un control.';
+const NO_ROLE = 'Hace falta el rol power_ens_admin o all_access para excluir un activo de un control.';
 
 const correct = (response: any, data: unknown) => response.ok({ body: { statusCode: 200, error: 0, data } });
 const failure = (response: any, statusCode: number, message: string) => response.customError({ statusCode, body: { message } });

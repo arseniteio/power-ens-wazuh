@@ -80,7 +80,7 @@ export const EvaluableGroupsPanel = ({ configuration, onConfigurationSaved }: Ev
       {scope.mode !== 'group' && (
         <>
           <EuiCallOut size='s' color='warning' iconType='alert' title={`Ahora mismo: ${scopeModeLabel(scope.mode)}`}>
-            <p>Al guardar, solo se evaluarán las máquinas de los grupos indicados.</p>
+            <p>Al guardar, solo se evaluarán los activos de los grupos indicados.</p>
           </EuiCallOut>
           <EuiSpacer size='s' />
         </>

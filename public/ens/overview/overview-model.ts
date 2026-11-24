@@ -109,7 +109,7 @@ export const describeOverviewPending = (
 ): { title: string; text: string; controls: string[] } | undefined =>
   pending
     ? {
-        title: `Calculando la evaluación: ${pending.total - pending.rows} de ${pending.total} filas (control × máquina) listas`,
+        title: `Calculando la evaluación: ${pending.total - pending.rows} de ${pending.total} filas (control × activo) listas`,
         text:
           `Faltan ${pending.controls.length} control${pending.controls.length === 1 ? '' : 'es'} (${pending.controls.join(', ')}). ` +
           'Calculando el resto de controles…',
@@ -205,10 +205,10 @@ interface WorkGroup {
 
 const describeMachines = (agentIds: string[], nameOf: (agentId: string) => string | undefined) =>
   !agentIds.length
-    ? 'todas las máquinas'
+    ? 'todos los activos'
     : agentIds.length <= 3
     ? agentIds.map(id => (nameOf(id) ? `${nameOf(id)} (${id})` : id)).join(', ')
-    : `${agentIds.length} máquinas`;
+    : `${agentIds.length} activos`;
 
 export const buildWorkQueue = (
   ncs: ENSOverviewNonConformity[],

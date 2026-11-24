@@ -86,7 +86,7 @@ const describeAgents = (agents: ENSAgentRef[]): string => {
   const rest = labels.length - named.length;
 
   return (
-    `${labels.length} máquinas: ${named.join(', ')}` +
+    `${labels.length} activos: ${named.join(', ')}` +
     (rest > 0 ? ` y ${rest} más` : '')
   );
 };

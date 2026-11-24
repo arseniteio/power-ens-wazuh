@@ -31,7 +31,7 @@ import { ControlChoice } from './control-choice';
 
 const LEVEL_OPTIONS = (['BAJO', 'MEDIO', 'ALTO'] as const).map(value => ({ value, text: value }));
 
-const machineLabel = (agentId?: string): string => agentId || 'Todas';
+const machineLabel = (agentId?: string): string => agentId || 'Todos';
 
 interface EditorProps {
   current?: ENSLevelAdjustment;
@@ -78,8 +78,8 @@ const AdjustmentEditor = ({ current, onClose, onSaved }: EditorProps) => {
         <EuiFormRow label='Control' fullWidth>
           <ControlChoice value={controlId} onChange={setControlId} />
         </EuiFormRow>
-        <EuiFormRow label='Máquina' fullWidth labelAppend={<InfoTip content='Id de agente de Wazuh. Vacío: todas las máquinas.' />}>
-          <EuiFieldText value={agentId} onChange={event => setAgentId(event.target.value)} placeholder='Todas' fullWidth />
+        <EuiFormRow label='Activo' fullWidth labelAppend={<InfoTip content='Id de agente de Wazuh. Vacío: todos los activos.' />}>
+          <EuiFieldText value={agentId} onChange={event => setAgentId(event.target.value)} placeholder='Todos' fullWidth />
         </EuiFormRow>
         <EuiFormRow label='Nivel' fullWidth labelAppend={<InfoTip content='Solo rebaja el nivel vigente del control; un nivel superior no se aplica.' />}>
           <Choice legend='Nivel' options={LEVEL_OPTIONS} value={level} onChange={setLevel} />
@@ -125,7 +125,7 @@ export const LevelAdjustmentsPanel = ({ configuration, onSaved }: { configuratio
           </EuiTitle>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <InfoTip content='Nivel inferior al vigente para un control, en todas las máquinas o en una.' />
+          <InfoTip content='Nivel inferior al vigente para un control, en todos los activos o en uno.' />
         </EuiFlexItem>
         <EuiFlexItem />
         <EuiFlexItem grow={false}>
@@ -142,7 +142,7 @@ export const LevelAdjustmentsPanel = ({ configuration, onSaved }: { configuratio
         noItemsMessage='Sin ajustes.'
         columns={[
           { field: 'controlId', name: 'Control', width: '110px' },
-          { field: 'agentId', name: 'Máquina', width: '120px', render: (agentId?: string) => machineLabel(agentId) },
+          { field: 'agentId', name: 'Activo', width: '120px', render: (agentId?: string) => machineLabel(agentId) },
           { field: 'level', name: 'Nivel', width: '90px' },
           { field: 'reason', name: 'Motivo' },
           {

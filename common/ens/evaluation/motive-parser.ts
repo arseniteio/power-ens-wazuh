@@ -41,7 +41,7 @@ export interface KnownReasonParts {
   parts: { evidenceId: string; status: string; text: string; secondary?: string[] }[];
 }
 
-const MACHINES = /^\[((?:\d+ máquinas: )?[^\]]+)\] /;
+const MACHINES = /^\[((?:\d+ (?:activos|máquinas): )?[^\]]+)\] /;
 const BRIDGE = /^Resuelta por la política del control \(([^()]*)\), que mide esta evidencia junto a ([^\s:]+): /;
 const QUESTION = 'Pregunta de auditoría: ';
 const STATES = MOTIVE_STATUSES.join('|');

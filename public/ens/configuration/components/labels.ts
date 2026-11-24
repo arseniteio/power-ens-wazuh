@@ -28,9 +28,9 @@ export const agentTypeLabel = (
 };
 
 const MODES: Record<ENSConfigurationScopeMode, string> = {
-  global: 'Todos los agentes del inventario',
-  agent: 'Los agentes de la lista',
-  group: 'Los agentes de los grupos',
+  global: 'Todos los activos del inventario',
+  agent: 'Los activos de la lista',
+  group: 'Los activos de los grupos',
 };
 
 export const scopeModeLabel = (mode: ENSConfigurationScopeMode): string => MODES[mode] || mode;

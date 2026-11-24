@@ -58,7 +58,7 @@ export const describeAgentLevelValueIssue = (
   if (parameterClass !== 'system' && parameterClass !== 'platform') {
     return {
       kind: 'orphan',
-      message: `${control.controlId} «${parameter.label}» es un ajuste común del control: no admite valor por agente ni por plantilla y este no se aplica`,
+      message: `${control.controlId} «${parameter.label}» es un ajuste común del control: no admite valor por activo ni por plantilla y este no se aplica`,
     };
   }
 
@@ -96,7 +96,7 @@ export const validateAgentProfile = (
   ) => issues.push({ agentId, controlId, parameterId, severity, kind, message });
 
   if (!isNormalisedAgentId(agentId)) {
-    add('error', 'orphan', `${describeNonIdAgentKey(agentId)}: sus valores no se aplican a ninguna máquina`);
+    add('error', 'orphan', `${describeNonIdAgentKey(agentId)}: sus valores no se aplican a ningún activo`);
   }
 
   if (Array.isArray(profile.templates) && profile.templates.length) {
@@ -130,7 +130,7 @@ export const validateAgentProfile = (
         add(
           'error',
           issue.kind,
-          issue.kind === 'value' ? `${issue.message}: esta máquina se evalúa con una configuración inválida` : issue.message,
+          issue.kind === 'value' ? `${issue.message}: este activo se evalúa con una configuración inválida` : issue.message,
           controlId,
           parameterId
         );

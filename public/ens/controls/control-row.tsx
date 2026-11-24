@@ -29,7 +29,7 @@ const shortTally = (tally: ENSMachineTally): string => {
     tally.noData ? `${tally.noData} sin datos` : '',
     tally.compliant ? `${tally.compliant} cumplen` : '',
   ].filter(Boolean);
-  return parts.slice(0, 2).join(' · ') || `${tally.total} máquinas`;
+  return parts.slice(0, 2).join(' · ') || `${tally.total} activos`;
 };
 
 const MachineTallyBar = ({ tally }: { tally: ENSMachineTally }) => {
@@ -41,7 +41,7 @@ const MachineTallyBar = ({ tally }: { tally: ENSMachineTally }) => {
     { status: 'NO_APLICA', n: tally.notApplicable },
   ].filter(barSpan => barSpan.n > 0);
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }} title={`Máquinas: ${describeTally(tally)}`}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }} title={`Activos: ${describeTally(tally)}`}>
       <span style={{ display: 'inline-flex', width: 100, height: 6, borderRadius: 3, overflow: 'hidden', background: ENS_THEME.track, flexShrink: 0 }}>
         {spans.map(barSpan => (
           <span key={barSpan.status} style={{ width: `${(barSpan.n / tally.total) * 100}%`, background: ENS_STATUS_COLORS[barSpan.status] }} />
@@ -58,7 +58,7 @@ export const ControlListHeader = () => (
   <EuiFlexGroup gutterSize='m' alignItems='center' responsive={false} style={{ padding: '0 12px 6px', borderBottom: `1px solid ${ENS_THEME.border}` }}>
     <EuiFlexItem><EuiText size='xs' color='subdued'><strong>Control</strong></EuiText></EuiFlexItem>
     <EuiFlexItem grow={false} style={{ width: CONTROL_COLUMNS.status }}><EuiText size='xs' color='subdued'><strong>Estado</strong></EuiText></EuiFlexItem>
-    <EuiFlexItem grow={false} style={{ width: CONTROL_COLUMNS.machines }}><EuiText size='xs' color='subdued'><strong>Máquinas</strong></EuiText></EuiFlexItem>
+    <EuiFlexItem grow={false} style={{ width: CONTROL_COLUMNS.machines }}><EuiText size='xs' color='subdued'><strong>Activos</strong></EuiText></EuiFlexItem>
     <EuiFlexItem grow={false} style={{ width: CONTROL_COLUMNS.nonConformities, textAlign: 'right' }}><EuiText size='xs' color='subdued'><strong>No conformidades</strong></EuiText></EuiFlexItem>
   </EuiFlexGroup>
 );

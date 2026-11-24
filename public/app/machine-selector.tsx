@@ -115,7 +115,7 @@ const MachineTable = ({ onPick }: { onPick: (agentId: string) => void }) => {
   const columns: Array<EuiBasicTableColumn<ENSHostRow>> = [
     {
       field: 'name',
-      name: 'Máquina',
+      name: 'Activo',
       render: (_name: string, host: ENSHostRow) => (
         <EuiFlexGroup gutterSize='s' alignItems='center' responsive={false}>
           <EuiFlexItem grow={false}>
@@ -144,7 +144,7 @@ const MachineTable = ({ onPick }: { onPick: (agentId: string) => void }) => {
         query={query}
         onQuery={setQuery}
         placeholder='Nombre, agente, host, grupo o servicio'
-        ariaLabel='Buscar máquina'
+        ariaLabel='Buscar activo'
       />
       <TagFilter title='Grupo de Wazuh:' what='el grupo de Wazuh' options={wazuhGroupOptions} active={wazuhGroup} onChange={setWazuhGroup} />
       <TagFilter title='Grupo ENS:' what='el grupo ENS' options={groupOptions} active={group} onChange={setGroup} />
@@ -183,7 +183,7 @@ export const MachineSelector = () => {
       <EuiFlexGroup gutterSize='s' alignItems='center' responsive={false} wrap>
         <EuiFlexItem grow={false}>
           <EuiText size='s'>
-            <strong>Máquina:</strong>
+            <strong>Activo:</strong>
           </EuiText>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
@@ -195,14 +195,14 @@ export const MachineSelector = () => {
                 </EuiFlexItem>
               )}
               <EuiFlexItem grow={false}>
-                <EuiBadge color='primary' iconType='cross' iconSide='right' iconOnClick={() => pick(undefined)} iconOnClickAriaLabel='Ver todas las máquinas'>
+                <EuiBadge color='primary' iconType='cross' iconSide='right' iconOnClick={() => pick(undefined)} iconOnClickAriaLabel='Ver todos los activos'>
                   {current ? `${current.name || current.id} (${current.id})` : agentId}
                 </EuiBadge>
               </EuiFlexItem>
             </EuiFlexGroup>
           ) : (
             <EuiText size='s' color='subdued'>
-              <span>Todas</span>
+              <span>Todos</span>
             </EuiText>
           )}
         </EuiFlexItem>
@@ -213,7 +213,7 @@ export const MachineSelector = () => {
             </EuiButtonEmpty>
           ) : (
             <EuiButton size='s' iconType='search' onClick={() => setOpen(true)}>
-              Seleccionar máquina
+              Seleccionar activo
             </EuiButton>
           )}
         </EuiFlexItem>

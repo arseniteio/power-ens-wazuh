@@ -11,7 +11,7 @@ export const evidenceCompliance = (evidence: ENSEvidenceResult): { compliance?: 
     const machines = evidence.byMachine || [];
     const met = machines.filter(m => m.status === 'CUMPLE').length;
     const applicable = machines.filter(m => m.status !== 'NO_APLICA').length;
-    return { compliance: evidence.compliance, detail: applicable ? `${met}/${applicable} máquinas` : undefined };
+    return { compliance: evidence.compliance, detail: applicable ? `${met}/${applicable} activos` : undefined };
   }
   const tally = evidence.tally;
   const args = evidence.reasonArgs || {};

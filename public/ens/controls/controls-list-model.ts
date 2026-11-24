@@ -64,7 +64,7 @@ export const describeTally = (tally: ENSMachineTally): string =>
     tally.notApplicable ? `${tally.notApplicable} no aplica${tally.notApplicable === 1 ? '' : 'n'}` : '',
   ]
     .filter(Boolean)
-    .join(' · ') + ` (de ${tally.total} máquina${tally.total === 1 ? '' : 's'})`;
+    .join(' · ') + ` (de ${tally.total} activo${tally.total === 1 ? '' : 's'})`;
 
 export const buildControlListEntries = (controls: ENSListControl[], options: ENSControlListOptions): ENSControlListEntry[] => {
   const entries = controls.map(control => {

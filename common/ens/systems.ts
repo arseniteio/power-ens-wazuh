@@ -40,7 +40,7 @@ export const systemFilter = (system: string, field = 'system') =>
 export const describeSystemScopeIssue = (system: string, scope?: Partial<ENSConfigurationScope>): string | undefined => {
   if (isDefaultSystem(system)) return undefined;
   if (scope?.mode !== 'group' && scope?.mode !== 'agent') {
-    return 'El alcance de un sistema distinto del principal tiene que indicar grupos o máquinas.';
+    return 'El alcance de un sistema distinto del principal tiene que indicar grupos o activos.';
   }
   return undefined;
 };

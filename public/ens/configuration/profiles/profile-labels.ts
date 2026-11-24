@@ -9,9 +9,9 @@ export const LAYER_LABELS: Record<ENSProfileLayer, string> = {
 
 export const LAYER_HELP: Record<ENSProfileLayer, string> = {
   distro: 'línea base por distribución y versión.',
-  role: 'función deducida de cada máquina.',
-  service: 'admite varios por máquina.',
-  site: 'grupo de Wazuh o nombre de máquina; capa más específica.',
+  role: 'función deducida de cada activo.',
+  service: 'admite varios por activo.',
+  site: 'grupo de Wazuh o nombre del activo; capa más específica.',
 };
 
 export const LAYER_COLORS: Record<ENSProfileLayer, string> = {
@@ -27,7 +27,7 @@ export const FIELD_LABELS: Record<string, string> = {
   distro: 'Distribución',
   family: 'Familia',
   role: 'Función',
-  hostname: 'Nombre de máquina',
+  hostname: 'Nombre del activo',
   service: 'Servicio',
   group: 'Grupo de Wazuh',
 };
@@ -59,7 +59,7 @@ export const conditionText = (condition: ENSProfileCondition): string => {
 export const matchText = (match: ENSProfileCondition[]): string =>
   match.length ? match.map(conditionText).join(' y ') : 'Sin condiciones';
 
-export const machines = (count: number): string => `${count.toLocaleString('es-ES')} ${count === 1 ? 'máquina' : 'máquinas'}`;
+export const machines = (count: number): string => `${count.toLocaleString('es-ES')} ${count === 1 ? 'activo' : 'activos'}`;
 
 export const SIGNAL_SOURCE_LABELS: Record<string, string> = {
   'os.platform': 'plataforma del inventario',
@@ -77,4 +77,4 @@ export const signalSourceText = (from: string): string => {
 };
 
 export const hostLabel = (host: { agentId: string; name?: string; hostname?: string }): string =>
-  host.name || host.hostname || (host.agentId === '000' ? 'Manager de Wazuh' : `Agente ${host.agentId}`);
+  host.name || host.hostname || (host.agentId === '000' ? 'Manager de Wazuh' : `Activo ${host.agentId}`);

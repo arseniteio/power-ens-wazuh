@@ -140,7 +140,7 @@ export const describeNotMeasuredOnAgent = (
     return {
       cause: 'PLANE',
       text: isManagerAgentId(agentId)
-        ? `${control.id} se mide en cada máquina del alcance ENS, no en el manager de Wazuh (${ENS_MANAGER_AGENT_ID}): el manager no tiene fila para este control.`
+        ? `${control.id} se mide en cada activo del alcance ENS, no en el manager de Wazuh (${ENS_MANAGER_AGENT_ID}): el manager no tiene fila para este control.`
         : `${control.id} se mide solo en el manager de Wazuh (${ENS_MANAGER_AGENT_ID}), no en ${machineLabel(agentId, agentName)}.`,
     };
   }
@@ -150,7 +150,7 @@ export const describeNotMeasuredOnAgent = (
       cause: 'DECLARED_SCOPE',
       parameterId: control.scopeParameter,
       declared: [],
-      text: `${control.id} no está en la configuración activa: sin ${control.scopeParameter} no hay máquinas declaradas en que medirlo.`,
+      text: `${control.id} no está en la configuración activa: sin ${control.scopeParameter} no hay activos declarados en que medirlo.`,
     };
   }
 
@@ -167,7 +167,7 @@ export const describeNotMeasuredOnAgent = (
     parameterId,
     declared,
     text: declared.length
-      ? `${control.id} solo se mide en las máquinas que declara ${parameterId} (${declared.join(', ')}); ${machineLabel(agentId, agentName)} no está entre ellas.`
-      : `${control.id} solo se mide en las máquinas que declara ${parameterId}, y ${parameterId} no declara ninguna: ${machineLabel(agentId, agentName)} no está entre ellas.`,
+      ? `${control.id} solo se mide en los activos que declara ${parameterId} (${declared.join(', ')}); ${machineLabel(agentId, agentName)} no está entre ellos.`
+      : `${control.id} solo se mide en los activos que declara ${parameterId}, y ${parameterId} no declara ninguno: ${machineLabel(agentId, agentName)} no está entre ellos.`,
   };
 };

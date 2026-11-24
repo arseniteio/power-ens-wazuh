@@ -51,7 +51,7 @@ export const PendingTab = ({ summary, onNavigate }: PendingTabProps) => {
       width: '170px',
       render: (evidences: string[]) => <EuiText size='s'>{evidences.join(', ')}</EuiText>,
     },
-    { field: 'agents', name: 'Máquinas', width: '120px', render: (agents: number) => machines(agents) },
+    { field: 'agents', name: 'Activos', width: '120px', render: (agents: number) => machines(agents) },
     {
       field: 'controlId',
       name: 'Dónde se fija',
@@ -59,7 +59,7 @@ export const PendingTab = ({ summary, onNavigate }: PendingTabProps) => {
       render: (_c: string, row: ENSPendingParameter) =>
         isAgentLevelParameter(row.controlId, row.parameterId) ? (
           <EuiButtonEmpty size='s' flush='left' onClick={() => onNavigate({ view: 'profiles' })}>
-            Por máquina: grupo
+            Por activo: grupo
           </EuiButtonEmpty>
         ) : (
           <EuiButtonEmpty size='s' flush='left' onClick={() => onNavigate({ view: 'controls', controlId: row.controlId, parameterId: row.parameterId })}>
@@ -77,13 +77,13 @@ export const PendingTab = ({ summary, onNavigate }: PendingTabProps) => {
         <EuiFlexGroup alignItems='center' gutterSize='m' responsive={false}>
           <EuiFlexItem>
             <EuiTitle size='xs'>
-              <h3>{data.withoutProfile ? `Máquinas sin grupo: ${data.withoutProfile}` : 'Máquinas sin grupo: 0'}</h3>
+              <h3>{data.withoutProfile ? `Activos sin grupo: ${data.withoutProfile}` : 'Activos sin grupo: 0'}</h3>
             </EuiTitle>
             <EuiText size='s' color='subdued'>
               <p>
                 {data.withoutProfile
                   ? ''
-                  : 'Todas las máquinas tienen grupo'}
+                  : 'Todos los activos tienen grupo'}
               </p>
             </EuiText>
           </EuiFlexItem>
@@ -91,7 +91,7 @@ export const PendingTab = ({ summary, onNavigate }: PendingTabProps) => {
             <>
               <EuiFlexItem grow={false}>
                 <EuiButton size='s' onClick={() => onNavigate({ view: 'machines', machineFilter: `profile:${NO_PROFILE_FILTER}` })}>
-                  Ver máquinas
+                  Ver activos
                 </EuiButton>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>

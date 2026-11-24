@@ -161,7 +161,7 @@ export const createConfigurationHandlers = ({ logger, securityEnabled }: Options
       if (!previous && !isDefaultSystem(system)) return failure(response, 404, `El sistema ENS «${system}» no existe.`);
       const shared = sharedScopeGroups(system, bodyText.configuration.scope, await listENSSystems(internal(context), logger));
       if (shared.length) {
-        return failure(response, 400, `No se guarda: otro sistema ya usa los grupos ${shared.join(', ')}. Una máquina solo puede estar en un sistema.`);
+        return failure(response, 400, `No se guarda: otro sistema ya usa los grupos ${shared.join(', ')}. Un activo solo puede estar en un sistema.`);
       }
       const expectsNone = bodyText.expectedVersion === null;
       const expected = parseConfigurationVersion(bodyText.expectedVersion);

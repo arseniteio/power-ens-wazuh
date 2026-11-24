@@ -164,7 +164,7 @@ export const MeasureMaturity = ({
       </EuiFlexGroup>
       <EuiSpacer size='s' />
       <EuiText size='xs' color='subdued'>
-        {maturity?.machines ? <p>{`Continuidad: mínimo de ${maturity.machines} máquina${maturity.machines === 1 ? '' : 's'}, ${maturity.period_days || 30} días`}</p> : null}
+        {maturity?.machines ? <p>{`Continuidad: mínimo de ${maturity.machines} activo${maturity.machines === 1 ? '' : 's'}, ${maturity.period_days || 30} días`}</p> : null}
         {declared?.assessedBy && <p>{`Valorado: ${declared.assessedBy}${declared.assessedAt ? `, ${dateTimeLabel(declared.assessedAt)}` : ''}${declared.references ? ` · ${declared.references}` : ''}`}</p>}
       </EuiText>
       {maturity?.incoherent && (

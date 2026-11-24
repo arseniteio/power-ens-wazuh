@@ -33,7 +33,7 @@ const correct = (response: any, data: unknown) => response.ok({ body: { statusCo
 const failure = (response: any, statusCode: number, message: string) => response.customError({ statusCode, body: { message } });
 const statusOf = (error: any): number => Number(error?.statusCode || error?.meta?.statusCode) || 500;
 
-const NO_READ = 'No tienes permiso para leer el índice oscompliance-host-profile, donde el motor deja lo que deduce de cada máquina.';
+const NO_READ = 'No tienes permiso para leer el índice oscompliance-host-profile, donde el motor deja lo que deduce de cada activo.';
 
 const FILTER_KEYS: Array<keyof ENSHostFilters> = ['distro', 'family', 'role', 'service', 'group', 'profile'];
 
@@ -64,7 +64,7 @@ export const createHostHandlers = ({ logger }: Options) => {
     const status = statusOf(error);
     if (status === 401 || status === 403) return failure(response, 403, NO_READ);
     logger.error(`Could not read ${what}: ${error?.message || error}`);
-    return failure(response, status === 503 ? 503 : 500, `No se pudo leer ${what === 'the host profiles' ? 'el inventario de máquinas' : 'los datos'}; el detalle está en el log del dashboard.`);
+    return failure(response, status === 503 ? 503 : 500, `No se pudo leer ${what === 'the host profiles' ? 'el inventario de activos' : 'los datos'}; el detalle está en el log del dashboard.`);
   };
 
   const search = async (context: any, request: any, response: any) => {
@@ -72,14 +72,14 @@ export const createHostHandlers = ({ logger }: Options) => {
     const page = Math.max(0, Number(body.page) || 0);
     const size = Math.max(1, Math.min(100, Number(body.size) || 25));
     if ((page + 1) * size > HOST_RESULT_WINDOW) {
-      return failure(response, 400, `Solo se pueden recorrer las primeras ${HOST_RESULT_WINDOW.toLocaleString('es-ES')} máquinas; usa la búsqueda o los filtros.`);
+      return failure(response, 400, `Solo se pueden recorrer las primeras ${HOST_RESULT_WINDOW.toLocaleString('es-ES')} activos; usa la búsqueda o los filtros.`);
     }
     try {
       const profiles = await profilesOf(context);
       const result = await searchComplete(
         actual(context),
         buildHostSearchRequest({ page, size, text: typeof body.text === 'string' ? body.text : '', filters: filtersOf(body.filters) }, profiles),
-        'el inventario de máquinas'
+        'el inventario de activos'
       );
       const aggs = result?.aggregations || {};
       return correct(response, {
@@ -114,7 +114,7 @@ export const createHostHandlers = ({ logger }: Options) => {
     try {
       const profiles = await profilesOf(context);
       const [hosts, unset] = await Promise.all([
-        searchComplete(actual(context), buildHostSummaryRequest(profiles), 'el inventario de máquinas'),
+        searchComplete(actual(context), buildHostSummaryRequest(profiles), 'el inventario de activos'),
         pending(context).catch(error => {
           logger.warn(`ENS configuration status: could not read the pending parameters: ${error?.message || error}`);
           return undefined;
@@ -142,7 +142,7 @@ export const createHostHandlers = ({ logger }: Options) => {
     const problems = validateProfile({ id: 'vista-previa', name: 'vista previa', layer: 'site', match, values: {} });
     if (problems.length) return correct(response, { total: 0, hosts: [], problems });
     try {
-      const result = await searchComplete(actual(context), buildPreviewRequest(match), 'el inventario de máquinas');
+      const result = await searchComplete(actual(context), buildPreviewRequest(match), 'el inventario de activos');
       return correct(response, {
         total: totalOf(result),
         hosts: (result?.hits?.hits || []).map((hit: any) => ({
@@ -163,12 +163,12 @@ export const createHostHandlers = ({ logger }: Options) => {
     if (!/^\d{3,}$/.test(agentId)) return failure(response, 400, 'El identificador de agente no es válido.');
     try {
       const [result, listed, stored] = await Promise.all([
-        searchComplete(actual(context), buildHostRequest(agentId), 'el inventario de máquinas'),
+        searchComplete(actual(context), buildHostRequest(agentId), 'el inventario de activos'),
         readStoredProfiles(internal(context), logger).then(listProfiles),
         readActiveENSConfiguration(internal(context), logger),
       ]);
       const doc: ENSHostProfileDocument | undefined = result?.hits?.hits?.[0]?._source;
-      if (!doc) return failure(response, 404, `El motor todavía no ha descrito la máquina ${agentId}.`);
+      if (!doc) return failure(response, 404, `El motor todavía no ha descrito el activo ${agentId}.`);
 
       const profiles = effectiveProfiles(listed);
       const matched = matchedProfiles(profiles, hostFactsOf(doc));

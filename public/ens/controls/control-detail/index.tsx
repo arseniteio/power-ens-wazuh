@@ -169,16 +169,16 @@ export const ControlDetailENS = ({
   const totalMachines = (complianceResult?.consolidatedAgents || []).length;
 
   const nameOf = (id?: string) => (id ? scopeAgents.find(agent => agent.id === id)?.name : undefined);
-  const labelOf = (id?: string) => (id ? `${id} · ${nameOf(id) || 'sin nombre'}` : 'todas las máquinas');
+  const labelOf = (id?: string) => (id ? `${id} · ${nameOf(id) || 'sin nombre'}` : 'todos los activos');
 
   const agentName = displayedAgent
     ? (nameOf(displayedAgent) ||
-       ('Agente ' + displayedAgent))
+       ('Activo ' + displayedAgent))
     : totalMachines > 0
-    ? `Todos los agentes (vista general · ${totalMachines} máquina${
+    ? `Todos los activos (vista general · ${totalMachines} activo${
         totalMachines === 1 ? '' : 's'
       })`
-    : 'Todos los agentes (vista general)';
+    : 'Todos los activos (vista general)';
 
   const engineStatus = complianceResult?.status || 'NO_EVALUABLE';
 
@@ -322,7 +322,7 @@ export const ControlDetailENS = ({
     { label: 'Cumplimiento', value: `${engineScoreText}${complianceResult?.compliance ? ` · L${complianceResult.compliance.level}` : ''} · ${statusLabel(engineStatus)}` },
     {
       label: isAggregatedView
-        ? 'Demostrados · requisito × máquina'
+        ? 'Demostrados · requisito × activo'
         : 'Requisitos demostrados',
       value: `${measuredRequirements}/${applicableRequirements}`,
     },
@@ -330,7 +330,7 @@ export const ControlDetailENS = ({
       label: 'No conformidades',
       value: `${openNonConformitiesCount}${
         machinesWithNonConformity > 0
-          ? ` · ${machinesWithNonConformity} máquina${
+          ? ` · ${machinesWithNonConformity} activo${
               machinesWithNonConformity === 1 ? '' : 's'
             }`
           : ''
@@ -448,7 +448,7 @@ export const ControlDetailENS = ({
 
       {item.agent && (
         <p>
-          <strong>Agente:</strong> {item.agent}
+          <strong>Activo:</strong> {item.agent}
         </p>
       )}
 
@@ -691,7 +691,7 @@ export const ControlDetailENS = ({
             title={`Resultado de ${labelOf(view.agentId)}${displayedHour ? ` · ${displayedHour}` : ''}`}
           >
             {fromOtherMachine && (
-              <p>No es el de {labelOf(agentId)}: el de esa máquina no se ha podido calcular.</p>
+              <p>No es el de {labelOf(agentId)}: el de ese activo no se ha podido calcular.</p>
             )}
           </EuiCallOut>
         </>
@@ -765,14 +765,14 @@ export const ControlDetailENS = ({
             <p>
               {motive?.text ||
                 (displayedAgent
-                  ? 'Sin medición en esta máquina'
+                  ? 'Sin medición en este activo'
                   : 'Sin medición')}
             </p>
                         <EuiFlexGroup gutterSize='s' responsive={false} wrap>
               {displayedAgent && (
                 <EuiFlexItem grow={false}>
                   <EuiButton size='s' iconType='list' onClick={() => updateUrl({ agentId: undefined })}>
-                    Ver todas las máquinas
+                    Ver todos los activos
                   </EuiButton>
                 </EuiFlexItem>
               )}
@@ -933,7 +933,7 @@ export const ControlDetailENS = ({
                               </EuiFlexItem>
                               <EuiFlexItem grow={false}>
                                 <EuiText size='xs' color='subdued'>
-                                  <span>{`${requirement.machines.met}/${requirement.machines.total} máquinas`}</span>
+                                  <span>{`${requirement.machines.met}/${requirement.machines.total} activos`}</span>
                                 </EuiText>
                               </EuiFlexItem>
                             </EuiFlexGroup>
@@ -989,12 +989,12 @@ export const ControlDetailENS = ({
                 <EuiText size='xs' color='subdued'>
                   <strong>
                     {isAggregatedView
-                      ? `Requisitos conformes en todas las máquinas: ${compliantRequirements}/${denominatorRequirements}`
+                      ? `Requisitos conformes en todos los activos: ${compliantRequirements}/${denominatorRequirements}`
                       : `Requisitos conformes: ${compliantRequirements}/${denominatorRequirements}`}
                   </strong>{' '}
                   ·{' '}
                   {isAggregatedView
-                    ? `Cumplimiento medio de ${totalMachines} máquinas: ${engineScoreText}`
+                    ? `Cumplimiento medio de ${totalMachines} activos: ${engineScoreText}`
                     : `Cumplimiento: ${engineScoreText}`}
                 </EuiText>
             </EuiPanel>

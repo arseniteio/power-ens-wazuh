@@ -155,7 +155,7 @@ const ControlsList = ({ configuration, target, getActiveLevel, onNavigate, onCon
         : state.status === 'INVALID'
         ? state.validation.issues.map(issue => `«${issue.label}» no es válido.`)
         : [];
-    const perAgent = Object.entries(gaps[row.id] || {}).map(([parameterId, count]) => `Falta «${nameOf(control, parameterId)}» en ${plural(count, 'agente', 'agentes')}.`);
+    const perAgent = Object.entries(gaps[row.id] || {}).map(([parameterId, count]) => `Falta «${nameOf(control, parameterId)}» en ${plural(count, 'activo', 'activos')}.`);
     const key = perAgent.length && (state.status === 'CONFIGURED' || state.status === 'NOT_CONFIGURED') ? 'INCOMPLETE' : state.status;
     const all = [...lines, ...perAgent];
     return { key, lines: all.length > MAX_LINES ? [...all.slice(0, MAX_LINES), `Y ${all.length - MAX_LINES} más.`] : all };
@@ -205,7 +205,7 @@ const ControlsList = ({ configuration, target, getActiveLevel, onNavigate, onCon
         }).length;
         return (
           <EuiText size='xs'>
-            <span title={`${builtins} de serie · ${own} propias`}>{`${builtins + own}${assigned ? ` · ${plural(assigned, 'agente asignado', 'agentes asignados')}` : ''}`}</span>
+            <span title={`${builtins} de serie · ${own} propias`}>{`${builtins + own}${assigned ? ` · ${plural(assigned, 'activo asignado', 'activos asignados')}` : ''}`}</span>
           </EuiText>
         );
       },

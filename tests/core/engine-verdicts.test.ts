@@ -31,7 +31,7 @@ describe('a result built from engine verdicts', () => {
     const built = result([]);
     assert.equal(built.status, 'NO_CUMPLE');
     assert.equal(built.score, 0);
-    assert.equal(built.observations[0], 'Sin veredicto del motor para esta máquina.');
+    assert.equal(built.observations[0], 'Sin veredicto del motor para este activo.');
   });
 
   test('gives each requirement its verdict', () => {

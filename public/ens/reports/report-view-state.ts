@@ -23,8 +23,8 @@ export const reportViewState = (input: ENSReportViewInput): ENSReportViewState =
     if (!input.agentId) {
       return {
         kind: 'not-measured',
-        title: `${input.controlId} no tiene resultado en ninguna máquina`,
-        text: 'Ninguna máquina del alcance mide este control.',
+        title: `${input.controlId} no tiene resultado en ningún activo`,
+        text: 'Ningún activo del alcance mide este control.',
       };
     }
     const reason = input.notMeasured();

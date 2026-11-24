@@ -92,7 +92,7 @@ const ControlBar = ({ row, total, onPick }: { row: MatrixRow; total: number; onP
           key={s}
           type='button'
           title={`${statusLabel(s)}: ${bar[s].length}`}
-          aria-label={`${statusLabel(s)}: ${bar[s].length} máquinas`}
+          aria-label={`${statusLabel(s)}: ${bar[s].length} activos`}
           onClick={() => onPick(s, bar[s])}
           style={{ width: `${(bar[s].length / Math.max(total, measured)) * 100}%`, height: 18, background: ENS_STATUS_COLORS[s], border: 0, padding: 0, cursor: 'pointer' }}
         />
@@ -344,7 +344,7 @@ export const OverviewENS = () => {
             <EuiSpacer size='m' />
 
             <EuiFlexGroup gutterSize='s' responsive={false} wrap>
-              <EuiFlexItem><Figure title='Máquinas' value={figures.all} active={fleetFilter === 'all'} onClick={() => setFleetFilter('all')} /></EuiFlexItem>
+              <EuiFlexItem><Figure title='Activos' value={figures.all} active={fleetFilter === 'all'} onClick={() => setFleetFilter('all')} /></EuiFlexItem>
               <EuiFlexItem><Figure title='Cumplimiento total' value={figures.ok} color='success' active={fleetFilter === 'ok'} onClick={() => pickFleet('ok')} /></EuiFlexItem>
               <EuiFlexItem><Figure title='Con incumplimientos' value={figures.failing} color='danger' active={fleetFilter === 'failing'} onClick={() => pickFleet('failing')} /></EuiFlexItem>
               <EuiFlexItem><Figure title='Sin datos en 24 h' value={figures.stale} color='subdued' active={fleetFilter === 'stale'} onClick={() => pickFleet('stale')} /></EuiFlexItem>
@@ -387,7 +387,7 @@ export const OverviewENS = () => {
             <EuiFlexGroup alignItems='center' gutterSize='s' responsive={false} wrap>
               <EuiFlexItem grow={false}>
                 <EuiTitle size='s'>
-                  <h3>Máquinas</h3>
+                  <h3>Activos</h3>
                 </EuiTitle>
               </EuiFlexItem>
               {controlFilter && (
@@ -415,12 +415,12 @@ export const OverviewENS = () => {
               itemId='agentId'
               pagination={{ initialPageSize: PAGE_SIZE, pageSizeOptions: [PAGE_SIZE, 50, 100] }}
               sorting={{ sort: { field: 'notMet', direction: 'desc' } }}
-              message='Ninguna máquina coincide.'
+              message='Ningún activo coincide.'
               rowProps={(m: any) => ({ onClick: () => setSelected(m.agentId), style: { cursor: 'pointer' } })}
               columns={[
                 {
                   field: 'agentName',
-                  name: 'Máquina',
+                  name: 'Activo',
                   sortable: (m: any) => m.agentName || m.agentId,
                   render: (_: string, m: any) => (
                     <EuiHealth color={m.stale ? 'danger' : m.status === 'active' ? 'success' : 'subdued'}>{machineLabel(m)}</EuiHealth>

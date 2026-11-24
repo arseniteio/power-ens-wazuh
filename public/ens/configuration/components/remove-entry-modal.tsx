@@ -35,7 +35,7 @@ export const RemoveEntryModal = ({ configuration, removal, onCancel, onConfirm }
         <ul>
           {lines.length ? lines.map((line, index) => <li key={`${index}-${line}`}>{line}</li>) : <li>nada guardado</li>}
         </ul>
-        <p>No se aplica a ninguna máquina. La versión anterior queda en el historial.</p>
+        <p>No se aplica a ningún activo. La versión anterior queda en el historial.</p>
       </EuiText>
     </ConfirmModal>
   );

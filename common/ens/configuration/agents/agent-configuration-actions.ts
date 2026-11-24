@@ -99,7 +99,7 @@ export const setAgentParameterValue = (
   matchMode?: ENSMatchMode
 ): ENSConfigurationVersion => {
   if (!isAgentLevelParameter(controlId, parameterId)) {
-    throw new Error(`${controlId} ${parameterId} es un ajuste común del control: no admite valor por agente.`);
+    throw new Error(`${controlId} ${parameterId} es un ajuste común del control: no admite valor por activo.`);
   }
 
   const inherited = getInheritedSetting(configuration, agentId, controlId, parameterId);
@@ -238,7 +238,7 @@ export const previewControlAssignment = (
           .filter(parameterId => target && Object.prototype.hasOwnProperty.call(target.values, parameterId))
           .map(parameterId => `${controlId} ${parameterId}`),
         ...(target?.systemType && type && target.systemType !== type
-          ? { mismatch: `«${target.name}» es para ${ENS_SYSTEM_TYPE_LABELS[target.systemType]} y el agente es ${ENS_SYSTEM_TYPE_LABELS[type]}` }
+          ? { mismatch: `«${target.name}» es para ${ENS_SYSTEM_TYPE_LABELS[target.systemType]} y el activo es ${ENS_SYSTEM_TYPE_LABELS[type]}` }
           : {}),
       };
     }),
@@ -387,7 +387,7 @@ export const deleteControlTemplate = (
   if (reassign?.templateId === templateId) throw new Error('No se puede reasignar a la plantilla que se borra.');
   const users = getTemplateUsage(model, template.controlId, templateId);
   if (users.length && !reassign) {
-    throw new Error(`«${template.name}» está asignada a ${users.length} agente(s) (${users.join(', ')}): hay que reasignarlos antes de borrarla.`);
+    throw new Error(`«${template.name}» está asignada a ${users.length} activo(s) (${users.join(', ')}): hay que reasignarlos antes de borrarla.`);
   }
   const reassigned = users.length
     ? setControlTemplateAssignment(model, template.controlId, users, reassign!.templateId)

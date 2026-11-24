@@ -113,7 +113,7 @@ const StatusBadge = ({ status }: { status: string }) => (
 
 const STATUS_LEGEND: { status: string; gloss: string }[] = [
   { status: 'CUMPLE', gloss: 'demostrado' },
-  { status: 'NO_CUMPLE', gloss: 'medido · resta · se corrige la máquina' },
+  { status: 'NO_CUMPLE', gloss: 'medido · resta · se corrige el activo' },
   { status: 'PARCIAL', gloss: 'conforma en parte · resta' },
   {
     status: 'NO_EVALUABLE',

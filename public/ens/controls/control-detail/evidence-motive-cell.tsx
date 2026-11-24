@@ -34,7 +34,7 @@ export const EvidenceMotiveCell = ({ evidence, onOpen }: { evidence: ENSEvidence
         <ExplainedText text={shorten(reasonDocText(first.display.doc))} />
       </p>
       <EuiButtonEmpty size='xs' flush='left' iconType='inspect' onClick={onOpen}>
-        {groups.length > 1 ? `Ver motivo · ${groups.length} resultados en ${machines} máquinas` : 'Ver motivo'}
+        {groups.length > 1 ? `Ver motivo · ${groups.length} resultados en ${machines} activos` : 'Ver motivo'}
       </EuiButtonEmpty>
     </EuiText>
   );

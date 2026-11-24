@@ -27,7 +27,7 @@ const ACTIONS: ENSExclusionAction[] = ['EXCLUDED', 'INCLUDED'];
 
 export const parseExclusionTarget = (agentId: unknown, controlId: unknown): { agentId: string; controlId: string } | string => {
   const agent = normalizeAgentId(agentId);
-  if (!/^\d{3,}$/.test(agent)) return 'Hace falta el identificador numérico de la máquina.';
+  if (!/^\d{3,}$/.test(agent)) return 'Hace falta el identificador numérico del activo.';
   if (agent === MANAGER_AGENT_ID) return 'El manager de Wazuh no admite grupos, así que no se puede excluir.';
 
   const control = typeof controlId === 'string' ? controlId.trim() : '';

@@ -109,7 +109,7 @@ export const TemplateEditorModal = ({ mode, control, template, usage, onCancel, 
         )}
         {usage.length > 0 && (
           <EuiText size='s' color='subdued'>
-            <p>Asignada a {usage.length} agente(s): {usage.join(', ')}.</p>
+            <p>Asignada a {usage.length} activo(s): {usage.join(', ')}.</p>
           </EuiText>
         )}
         {readOnly ? (
@@ -149,7 +149,7 @@ export const TemplateEditorModal = ({ mode, control, template, usage, onCancel, 
                     <EuiText size='s'><strong>{parameter.id} · {parameter.label}</strong></EuiText>
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
-                    <EuiBadge color='hollow'>{getParameterClass(control.controlId, parameter.id) === 'system' ? 'cambia por agente' : 'de la plataforma'}</EuiBadge>
+                    <EuiBadge color='hollow'>{getParameterClass(control.controlId, parameter.id) === 'system' ? 'cambia por activo' : 'de la plataforma'}</EuiBadge>
                   </EuiFlexItem>
                   {empty && (
                     <EuiFlexItem grow={false}>

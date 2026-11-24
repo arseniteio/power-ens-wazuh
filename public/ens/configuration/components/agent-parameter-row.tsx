@@ -50,7 +50,7 @@ const describeOrigin = (origin: ENSResolvedValueOrigin, hasValue: boolean, contr
   if (origin.source === 'agent') return { text: 'Personalizado', color: 'primary' };
   if (origin.source === 'template') return { text: `Plantilla «${origin.templateName || origin.templateId}»`, color: 'hollow' };
   if (contributionOnly) return { text: 'Sin filas propias', color: 'default' };
-  if (origin.source === 'union') return { text: 'Por defecto + agentes', color: 'hollow' };
+  if (origin.source === 'union') return { text: 'Por defecto + activos', color: 'hollow' };
   return hasValue ? { text: 'Por defecto', color: 'default' } : { text: 'Sin valor', color: 'warning' };
 };
 
@@ -247,8 +247,8 @@ export const AgentParameterRow = ({
                 <EuiFlexItem grow={false}>
                   <EuiButtonIcon
                     iconType='pencil'
-                    aria-label={own ? 'Editar' : contributionOnly ? 'Añadir filas de este agente' : 'Personalizar'}
-                    title={own ? 'Editar' : contributionOnly ? 'Añadir filas de este agente' : 'Personalizar'}
+                    aria-label={own ? 'Editar' : contributionOnly ? 'Añadir filas de este activo' : 'Personalizar'}
+                    title={own ? 'Editar' : contributionOnly ? 'Añadir filas de este activo' : 'Personalizar'}
                     onClick={() => { resetDraft(); setSaved(undefined); setEditing(true); }}
                   />
                 </EuiFlexItem>

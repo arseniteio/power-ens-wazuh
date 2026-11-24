@@ -47,7 +47,7 @@ const BelowRequired = ({ machines, onOpenMachine }: { machines: ENSMachineContro
   if (!machines.length) {
     return (
       <EuiText size='xs' color='subdued'>
-        <span>Todas las máquinas alcanzan el nivel exigido</span>
+        <span>Todos los activos alcanzan el nivel exigido</span>
       </EuiText>
     );
   }
@@ -55,7 +55,7 @@ const BelowRequired = ({ machines, onOpenMachine }: { machines: ENSMachineContro
     <>
       {machines.length >= SEARCH_FROM && (
         <>
-          <EuiFieldSearch compressed placeholder={`Buscar en ${machines.length} máquinas`} value={filter} onChange={e => setFilter(e.target.value)} />
+          <EuiFieldSearch compressed placeholder={`Buscar en ${machines.length} activos`} value={filter} onChange={e => setFilter(e.target.value)} />
           <EuiSpacer size='xs' />
         </>
       )}
@@ -71,7 +71,7 @@ const BelowRequired = ({ machines, onOpenMachine }: { machines: ENSMachineContro
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiButtonEmpty size='xs' onClick={() => onOpenMachine(machine.agentId)}>
-              Ver máquina
+              Ver activo
             </EuiButtonEmpty>
           </EuiFlexItem>
         </EuiFlexGroup>
@@ -116,7 +116,7 @@ export const ControlMaturity = ({
               <InfoTip
                 content={
                   fleet
-                    ? 'Media del cumplimiento de las máquinas, traducida a nivel CMM con la escala del control. El estado sale de comparar ese nivel con el exigido por el nivel del control.'
+                    ? 'Media del cumplimiento de los activos, traducida a nivel CMM con la escala del control. El estado sale de comparar ese nivel con el exigido por el nivel del control.'
                     : 'Requisitos aplicables que cumplen, traducidos a nivel CMM con la escala del control. El estado sale de comparar ese nivel con el exigido por el nivel del control.'
                 }
               />
@@ -125,7 +125,7 @@ export const ControlMaturity = ({
           <EuiSpacer size='s' />
           <div style={{ fontSize: 34, fontWeight: 300, lineHeight: '40px' }}>{`${compliance.percent} %`}</div>
           <EuiText size='xs' color='subdued'>
-            <p style={{ margin: '4px 0 0' }}>{fleet ? `Cumplimiento medio · ${machines.length} máquinas` : 'Cumplimiento'}</p>
+            <p style={{ margin: '4px 0 0' }}>{fleet ? `Cumplimiento medio · ${machines.length} activos` : 'Cumplimiento'}</p>
           </EuiText>
           <EuiSpacer size='m' />
           <MaturitySeal status={result.status} compliance={compliance} />
@@ -136,7 +136,7 @@ export const ControlMaturity = ({
         {fleet && (
           <EuiFlexItem style={{ minWidth: 300 }}>
             <EuiText size='s'>
-              <strong>{`Máquinas · ${machines.length}`}</strong>
+              <strong>{`Activos · ${machines.length}`}</strong>
             </EuiText>
             <EuiSpacer size='xs' />
             <StatusBar machines={machines} />

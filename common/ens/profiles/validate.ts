@@ -84,7 +84,7 @@ export const checkProfileValue = (parameter: CatalogParameter, value: unknown, m
 const validateMatch = (profile: ENSProfile, add: (message: string) => void): void => {
   const conditions = Array.isArray(profile.match) ? profile.match : [];
   if (conditions.length === 0) {
-    add('no tiene condiciones, así que no se aplicaría a ninguna máquina');
+    add('no tiene condiciones, así que no se aplicaría a ningún activo');
   }
   conditions.forEach((condition, index) => {
     const where = `condición ${index + 1}`;

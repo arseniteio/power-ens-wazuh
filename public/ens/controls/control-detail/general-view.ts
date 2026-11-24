@@ -27,7 +27,7 @@ export const describeScope = (
     return machineDisplayName(agents[0]);
   }
 
-  return `${agents.length} máquinas${allLabel(
+  return `${agents.length} activos${allLabel(
     agents,
     totalMachines,
   )}: ${listMachines(agents)}`;
@@ -37,7 +37,7 @@ const allLabel = (
   agents: ENSAgentRef[],
   totalMachines: number,
 ): string =>
-  totalMachines > 0 && agents.length === totalMachines ? ' (todas)' : '';
+  totalMachines > 0 && agents.length === totalMachines ? ' (todos)' : '';
 
 export const machinesLabel = (
   agents: ENSAgentRef[],
@@ -45,7 +45,7 @@ export const machinesLabel = (
 ): string =>
   agents.length === 1
     ? machineDisplayName(agents[0])
-    : `${agents.length} máquinas${allLabel(agents, totalMachines)}`;
+    : `${agents.length} activos${allLabel(agents, totalMachines)}`;
 
 const sortMotives = (
   groups: ENSObservationGroup[],

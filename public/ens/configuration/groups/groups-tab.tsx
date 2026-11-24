@@ -53,7 +53,7 @@ interface GroupsTabProps {
   onConfigurationSaved: () => void;
 }
 
-const machinesText = (count: number): string => (count === 1 ? '1 máquina' : `${count} máquinas`);
+const machinesText = (count: number): string => (count === 1 ? '1 activo' : `${count} activos`);
 
 const groupStatus = (profile: ENSProfile): { text: string; color: string } => {
   const set = Object.values(profile.values || {}).reduce((total, params) => total + Object.keys(params || {}).length, 0);
@@ -134,7 +134,7 @@ const GroupList = ({
         </React.Fragment>
       );
     })}
-    <EuiPanel hasBorder paddingSize='s' color={selected === NO_GROUP ? 'primary' : 'plain'} onClick={() => onSelect(NO_GROUP)} aria-label='Abrir las máquinas sin grupo'>
+    <EuiPanel hasBorder paddingSize='s' color={selected === NO_GROUP ? 'primary' : 'plain'} onClick={() => onSelect(NO_GROUP)} aria-label='Abrir los activos sin grupo'>
       <EuiFlexGroup justifyContent='spaceBetween' gutterSize='s' responsive={false}>
         <EuiFlexItem>
           <EuiText size='s'>
@@ -262,7 +262,7 @@ const GroupMachines = ({
   const columns: Array<EuiBasicTableColumn<ENSHostRow>> = [
     {
       field: 'name',
-      name: 'Máquina',
+      name: 'Activo',
       render: (_name: string, host: ENSHostRow) => (
         <EuiFlexGroup gutterSize='s' alignItems='center' responsive={false}>
           <EuiFlexItem grow={false}>
@@ -343,7 +343,7 @@ const GroupMachines = ({
         loading={loading}
         isSelectable
         selection={{ onSelectionChange: setSelected }}
-        noItemsMessage={loading ? 'Cargando máquinas…' : 'Sin máquinas'}
+        noItemsMessage={loading ? 'Cargando activos…' : 'Sin activos'}
         pagination={{ pageIndex: page, pageSize: PAGE_SIZE, totalItemCount: Math.min(result?.total || 0, 10000), hidePerPageOptions: true }}
         onChange={({ page: next }: any) => next && setPage(next.index)}
       />
@@ -442,13 +442,13 @@ export const GroupsTab = ({ target, summary, revision, onNavigate, onConfigurati
                   listItems={
                     group
                       ? [
-                          { title: 'Máquinas', description: String(counts[group.id] || 0) },
+                          { title: 'Activos', description: String(counts[group.id] || 0) },
                           { title: 'Capa', description: layerLabel(group.layer) },
                           isHandPicked(group)
                             ? { title: 'Selección', description: handPickedHosts(group).join(', ') || '—' }
                             : { title: 'Condición', description: matchText(group.match) },
                         ]
-                      : [{ title: 'Máquinas fuera de grupo', description: String(summary.data?.withoutProfile || 0) }]
+                      : [{ title: 'Activos fuera de grupo', description: String(summary.data?.withoutProfile || 0) }]
                   }
                 />
               </EuiFlexItem>
@@ -477,7 +477,7 @@ export const GroupsTab = ({ target, summary, revision, onNavigate, onConfigurati
                     Controles
                   </EuiTab>
                   <EuiTab isSelected={view === 'machines'} onClick={() => setView('machines')}>
-                    {`Máquinas (${counts[group.id] || 0})`}
+                    {`Activos (${counts[group.id] || 0})`}
                   </EuiTab>
                 </EuiTabs>
                 <EuiSpacer size='m' />

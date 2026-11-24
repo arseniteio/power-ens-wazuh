@@ -19,7 +19,7 @@ export const classifyNonConformity = (
     return { label: 'Declarado (documental)', icon: 'document', color: '#BD271E', badgeColor: 'danger', action: 'Renovar o completar la documentación', owner: 'Organización (contratos y proveedores)', order: 2 };
   }
   if (item.origin === 'MEDIDA') {
-    return { label: 'Medido', icon: 'inspect', color: '#BD271E', badgeColor: 'danger', action: 'Corregir la máquina', owner: 'Sistema auditado', order: 1 };
+    return { label: 'Medido', icon: 'inspect', color: '#BD271E', badgeColor: 'danger', action: 'Corregir el activo', owner: 'Sistema auditado', order: 1 };
   }
   if (item.cause === 'CATALOG') {
     return { label: 'No evidenciado · catálogo', icon: 'package', color: '#98A2B3', badgeColor: 'default', action: 'Declarar la evidencia', owner: 'Producto Power ENS', order: 6 };
