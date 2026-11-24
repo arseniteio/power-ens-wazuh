@@ -2,7 +2,7 @@
   "op.acc.1": {
     "summary": "Cada usuario tiene un identificador único y sus cuentas se gestionan y retiran según la política.",
     "regulates": "La identificación de quien accede: identificadores únicos, ciclo de vida de las cuentas y, desde MEDIO, lista de usuarios autorizados.",
-    "wazuh": "Da los inicios de sesión de cada máquina. Cuentas y grupos los recoge el agente OSCompliance.",
+    "wazuh": "Da los inicios de sesión de cada activo. Cuentas y grupos los recoge el agente OSCompliance.",
     "powerEns": "Compara cuentas y accesos con lo declarado: bajas, cuentas de servicio y administrativas, retención y lista de autorizados.",
     "outside": "Quién debe tener cuenta lo decide la organización. Sin esa declaración no se puede juzgar."
   },
@@ -44,14 +44,14 @@
   "op.exp.1": {
     "summary": "Inventario actualizado de todos los elementos del sistema, con su naturaleza y su responsable.",
     "regulates": "Saber qué compone el sistema y quién responde de cada elemento.",
-    "wazuh": "Syscollector da hardware, software, puertos, procesos e interfaces. El estado del agente muestra qué máquinas dejan de reportar.",
-    "powerEns": "Cruza ese inventario con los activos declarados. Señala máquinas sin responsable, vecinos no inventariados y revisiones caducadas.",
+    "wazuh": "Syscollector da hardware, software, puertos, procesos e interfaces. El estado del agente muestra qué activos dejan de reportar.",
+    "powerEns": "Cruza ese inventario con los activos declarados. Señala activos sin responsable, vecinos no inventariados y revisiones caducadas.",
     "outside": "Naturaleza, responsable y etiquetado físico los declara la organización."
   },
   "op.exp.2": {
     "summary": "Los equipos entran en operación bastionados: sin cuentas estándar, con la funcionalidad mínima y seguros por defecto.",
     "regulates": "La configuración segura al poner un sistema en operación.",
-    "wazuh": "SCA es la línea base: da la puntuación de cada política en cada máquina.",
+    "wazuh": "SCA es la línea base: da la puntuación de cada política en cada activo.",
     "powerEns": "Compara esa puntuación con el mínimo declarado. El agente añade cuentas por defecto, servicios no justificados, valores inseguros y máquinas virtuales.",
     "outside": "Mantener esta configuración en el tiempo es de op.exp.3."
   },
@@ -65,14 +65,14 @@
   "op.exp.4": {
     "summary": "Los sistemas se actualizan según el riesgo: anuncios vigilados, parches en plazo y personal autorizado.",
     "regulates": "La gestión de vulnerabilidades y el parcheado, con prueba previa y reversión según el nivel.",
-    "wazuh": "Cruza el inventario de paquetes con los boletines y da las vulnerabilidades abiertas de cada máquina.",
+    "wazuh": "Cruza el inventario de paquetes con los boletines y da las vulnerabilidades abiertas de cada activo.",
     "powerEns": "Compara su antigüedad con el plazo de cada criticidad. Revisa parches pendientes, quién actualiza y cuándo, software sin soporte, preproducción y reversión.",
     "outside": "Valorar el riesgo y fijar plazos es de la organización. El firmware no se ve desde el agente."
   },
   "op.exp.5": {
     "summary": "Todo cambio sigue un ciclo controlado: petición, análisis de riesgos, aprobación, pruebas y documentación.",
     "regulates": "El ciclo de vida de la petición de cambio. Es un proceso de la organización.",
-    "wazuh": "FIM detecta los cambios reales en cada máquina. El agente añade las transacciones de paquetes.",
+    "wazuh": "FIM detecta los cambios reales en cada activo. El agente añade las transacciones de paquetes.",
     "powerEns": "Compara los cambios reales con el registro de peticiones de Configuración y señala los no registrados.",
     "outside": "Comprueba que análisis, aprobación y pruebas constan, no que sean adecuados."
   },
@@ -108,7 +108,7 @@
     "summary": "Las claves criptográficas se protegen durante todo su ciclo de vida y solo se usan algoritmos autorizados.",
     "regulates": "Generación, transporte, custodia, explotación, retirada y destrucción de claves.",
     "wazuh": "Cobertura limitada. FIM vigila cambios en los almacenes y SCA los algoritmos. Las lecturas requieren auditd o SACL.",
-    "powerEns": "Mide lo que hay en las máquinas: accesos a almacenes, ubicación y protección de claves privadas, generación, algoritmos y vigencia de certificados.",
+    "powerEns": "Mide lo que hay en los activos: accesos a almacenes, ubicación y protección de claves privadas, generación, algoritmos y vigencia de certificados.",
     "outside": "HSM, custodia física y destrucción certificada son documentales."
   },
   "op.nub.1": {
@@ -122,7 +122,7 @@
     "summary": "Plan de continuidad con funciones, medios alternativos contratados y personal formado. Solo con disponibilidad ALTA.",
     "regulates": "El plan: funciones, medios alternativos, contratos, formación e integración con otros planes.",
     "wazuh": "Casi nada es observable. FIM comprueba la integridad tras una caída (R2) y los eventos datan las interrupciones reales.",
-    "powerEns": "Juzga aprobación, contratos y formación registrados en Configuración, y la integridad de cada máquina al arrancar.",
+    "powerEns": "Juzga aprobación, contratos y formación registrados en Configuración, y la integridad de cada activo al arrancar.",
     "outside": "La calidad y viabilidad del plan no se miden con eventos."
   },
   "op.cont.3": {
@@ -136,7 +136,7 @@
     "summary": "Herramientas de detección o prevención de intrusiones basadas en reglas y, según el nivel, procedimientos de respuesta.",
     "regulates": "La detección de intrusiones y las acciones previstas en el análisis de riesgos.",
     "wazuh": "Es un HIDS con reglas: cubre el requisito base y R1. Con Active Response, R3. Para tráfico de red hace falta un NIDS, cuyos eventos Wazuh ingiere.",
-    "powerEns": "Evalúa el manager por su API (procesos, reglas, exclusiones y respuesta activa) y las alertas de cada máquina.",
+    "powerEns": "Evalúa el manager por su API (procesos, reglas, exclusiones y respuesta activa) y las alertas de cada activo.",
     "outside": "R2 son procedimientos escritos, no tecnología."
   },
   "op.mon.2": {
@@ -150,7 +150,7 @@
     "summary": "Recogida y correlación automática de eventos y vigilancia de la superficie de exposición, con inspecciones en ALTO.",
     "regulates": "La vigilancia del sistema. Es el control con más refuerzos en ALTO.",
     "wazuh": "Cubre recolección, correlación, superficie de exposición con vulnerabilidades y SCA, anomalías y volumen de consultas.",
-    "powerEns": "Evalúa el manager, las fuentes de cada máquina y el registro de inspecciones.",
+    "powerEns": "Evalúa el manager, las fuentes de cada activo y el registro de inspecciones.",
     "outside": "Fuera de Wazuh: APT por tráfico de red, cibervigilancia y pruebas de penetración. Aquí solo se registran."
   },
   "mp.eq.2": {
@@ -226,7 +226,7 @@
   "mp.s.3": {
     "summary": "La navegación se protege con filtrado, resolución de nombres segura, protección del puesto y concienciación. En ALTO, también se registra.",
     "regulates": "La protección de la navegación. R1 registra el uso e inspecciona canales cifrados: hay que declarar qué se analiza, qué se registra, cuánto y para qué.",
-    "wazuh": "Ingiere los registros del filtrado y aplica reglas. El agente aporta DNS y antimalware de cada máquina.",
+    "wazuh": "Ingiere los registros del filtrado y aplica reglas. El agente aporta DNS y antimalware de cada activo.",
     "powerEns": "Juzga filtrado, resolutores autorizados, protección del puesto, listas de destinos y concienciación.",
     "outside": "Proporcionalidad y exclusiones (banca, salud, asesoría jurídica) las decide la organización."
   },

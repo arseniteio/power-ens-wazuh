@@ -10,7 +10,7 @@
     "D"
   ],
   "annex_section": "4.6.2",
-  "description": "op.cont.2 exige un plan de continuidad con funciones, medios alternativos contratados y personal formado. Se juzga sobre la aprobación del plan, los contratos y la formación registrados, y la comprobación de integridad de cada máquina al arrancar.",
+  "description": "op.cont.2 exige un plan de continuidad con funciones, medios alternativos contratados y personal formado. Se juzga sobre la aprobación del plan, los contratos y la formación registrados, y la comprobación de integridad de cada activo al arrancar.",
   "levels": [
     "ALTO"
   ],

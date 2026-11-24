@@ -14,7 +14,7 @@
     "D"
   ],
   "annex_section": "4.3.5",
-  "description": "op.exp.5 contrasta los cambios que de verdad se producen en cada máquina (ficheros que ve el FIM de Wazuh y transacciones de apt) con el registro de peticiones de cambio que la organización mantiene en Configuración.",
+  "description": "op.exp.5 contrasta los cambios que de verdad se producen en cada activo (ficheros que ve el FIM de Wazuh y transacciones de apt) con el registro de peticiones de cambio que la organización mantiene en Configuración.",
   "levels": [
     "MEDIO",
     "ALTO"
@@ -173,7 +173,7 @@
     {
       "id": "EV-01",
       "title": "Cambios reales detectados en los sistemas",
-      "description": "Cambios que de verdad se producen en la máquina en el periodo: ficheros que ve el FIM de Wazuh y transacciones de apt, con su hora y su actor. Exige el FIM activo.",
+      "description": "Cambios que de verdad se producen en el activo en el periodo: ficheros que ve el FIM de Wazuh y transacciones de apt, con su hora y su actor. Exige el FIM activo.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -183,12 +183,12 @@
       ],
       "category": "INTEGRITY",
       "criticality": "HIGH",
-      "audit_question": "¿Se ven los cambios que se producen en esta máquina?"
+      "audit_question": "¿Se ven los cambios que se producen en este activo?"
     },
     {
       "id": "EV-02",
       "title": "Cambios implantados sin petición registrada",
-      "description": "Cada cambio real tiene que estar cubierto por una petición de P-10 de su máquina (o de *), aprobada antes del cambio y cuya ventana lo contenga. Una petición sin fin de ventana es un cambio estándar.",
+      "description": "Cada cambio real tiene que estar cubierto por una petición de P-10 de su activo (o de *), aprobada antes del cambio y cuya ventana lo contenga. Una petición sin fin de ventana es un cambio estándar.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -198,12 +198,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Cada cambio de esta máquina tiene una petición aprobada que lo cubra?"
+      "audit_question": "¿Cada cambio de este activo tiene una petición aprobada que lo cubra?"
     },
     {
       "id": "EV-03",
       "title": "Completitud de la información de la petición de cambio",
-      "description": "Cada petición autorizada de la máquina de los últimos 90 días trae rellenas las columnas de P-02, el prefijo de numeración de P-01 y, en categoría ALTA, la valoración del impacto en la seguridad.",
+      "description": "Cada petición autorizada del activo de los últimos 90 días trae rellenas las columnas de P-02, el prefijo de numeración de P-01 y, en categoría ALTA, la valoración del impacto en la seguridad.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -214,7 +214,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Las peticiones de cambio de esta máquina traen la información necesaria para autorizarlas?"
+      "audit_question": "¿Las peticiones de cambio de este activo traen la información necesaria para autorizarlas?"
     },
     {
       "id": "EV-04",
@@ -229,12 +229,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Los cambios de riesgo alto de esta máquina los aprobó antes el Responsable de la Seguridad?"
+      "audit_question": "¿Los cambios de riesgo alto de este activo los aprobó antes el Responsable de la Seguridad?"
     },
     {
       "id": "EV-05",
       "title": "Trazabilidad del paso por preproducción",
-      "description": "Cada versión instalada en una máquina de producción se instaló antes en su preproducción (op.exp.4 P-06) o está allí ahora.",
+      "description": "Cada versión instalada en un activo de producción se instaló antes en su preproducción (op.exp.4 P-06) o está allí ahora.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -264,7 +264,7 @@
     {
       "id": "EV-07",
       "title": "Estabilidad del servicio tras el cambio",
-      "description": "Servicios caídos ahora en la máquina que cayeron en las P-09 horas siguientes a un cambio no revertido. Apoya las pruebas de aceptación y la reversión.",
+      "description": "Servicios caídos ahora en el activo que cayeron en las P-09 horas siguientes a un cambio no revertido. Apoya las pruebas de aceptación y la reversión.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -289,7 +289,7 @@
       ],
       "category": "INTEGRITY",
       "criticality": "MEDIUM",
-      "audit_question": "¿Cada cambio de esta máquina tuvo un punto de reversión previo?"
+      "audit_question": "¿Cada cambio de este activo tuvo un punto de reversión previo?"
     }
   ],
   "parameters": {
@@ -500,7 +500,7 @@
       ],
       "required": false,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "Documental: la comunicación no deja huella en la máquina. r1.2 se acredita con P-ATT.",
+      "engine_usage": "Documental: la comunicación no deja huella en el activo. r1.2 se acredita con P-ATT.",
       "if_not_configured": "Sin efecto en el veredicto."
     },
     "P-09": {
@@ -686,7 +686,7 @@
     {
       "id": "cambios",
       "title": "Cambios reales y su petición",
-      "description": "Cambios vistos en cada máquina y los que no tienen petición aprobada.",
+      "description": "Cambios vistos en cada activo y los que no tienen petición aprobada.",
       "evidences": [
         "EV-01",
         "EV-02"

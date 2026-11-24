@@ -14,7 +14,7 @@
       "controlId": "mp.s.1",
       "name": "plataforma_correo",
       "label": "Plataforma de correo",
-      "description": "Elementos de la plataforma de correo: máquina con agente que los ejecuta y fuente de sus registros en Wazuh.",
+      "description": "Elementos de la plataforma de correo: activo con agente que los ejecuta y fuente de sus registros en Wazuh.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -29,7 +29,7 @@
       "example": "Postfix | mail01 | mail01",
       "required": true,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "mp.s.1 se juzga en sus máquinas; EV-01 sigue sus fuentes.",
+      "powerEnsUsage": "mp.s.1 se juzga en sus activos; EV-01 sigue sus fuentes.",
       "evidenceIds": [
         "EV-01"
       ],
@@ -44,7 +44,7 @@
         },
         {
           "name": "maquina",
-          "label": "Máquina",
+          "label": "Activo",
           "type": "string",
           "required": false
         },
@@ -333,7 +333,7 @@
       "controlId": "mp.s.1",
       "name": "configuracion_correo",
       "label": "Configuración del correo",
-      "description": "Ficheros o directorios de configuración del servicio de correo en la máquina.",
+      "description": "Ficheros o directorios de configuración del servicio de correo en el activo.",
       "levels": [
         "BAJO",
         "MEDIO",

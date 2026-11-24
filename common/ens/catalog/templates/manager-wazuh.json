@@ -1,7 +1,7 @@
 {
   "id": "manager-wazuh",
   "name": "Manager Wazuh",
-  "description": "El manager de Wazuh sobre Linux, auditado como una máquina más: los mismos valores que Linux.",
+  "description": "El manager de Wazuh sobre Linux, auditado como un activo más: los mismos valores que Linux.",
   "kind": "base",
   "system_type": "manager",
   "type_default": true,

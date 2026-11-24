@@ -28,7 +28,7 @@
       "example": "MFP-03 | multifunción | 10.2.0.14 | aa:bb:cc:00:11:22 | Administración | sí",
       "required": true,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "EV-02 busca en él los dispositivos que ve cada máquina; EV-03 sus flujos; EV-08 los que guardan información.",
+      "powerEnsUsage": "EV-02 busca en él los dispositivos que ve cada activo; EV-03 sus flujos; EV-08 los que guardan información.",
       "evidenceIds": [
         "EV-02",
         "EV-03",

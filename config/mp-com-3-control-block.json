@@ -182,7 +182,7 @@
       "controlId": "mp.com.3",
       "name": "vpn_canales_fuera_dominio",
       "label": "Redes privadas virtuales de los canales",
-      "description": "Canales que discurren fuera del dominio: máquina que los establece, su interfaz o proceso de túnel, protocolo y cifrado.",
+      "description": "Canales que discurren fuera del dominio: activo que los establece, su interfaz o proceso de túnel, protocolo y cifrado.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -194,7 +194,7 @@
       "example": "sede remota | gw-sede | wg0 | WireGuard | ChaCha20-Poly1305",
       "required": false,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "EV-08 exige el túnel activo en la máquina.",
+      "powerEnsUsage": "EV-08 exige el túnel levantado en el activo.",
       "evidenceIds": [
         "EV-08"
       ],
@@ -238,7 +238,7 @@
       "controlId": "mp.com.3",
       "name": "configuracion_canales",
       "label": "Configuración de los canales protegidos",
-      "description": "Ficheros o directorios de configuración de los extremos y túneles de la máquina.",
+      "description": "Ficheros o directorios de configuración de los extremos y túneles del activo.",
       "levels": [
         "BAJO",
         "MEDIO",

@@ -63,7 +63,7 @@
       "controlId": "op.exp.6",
       "name": "cobertura_esperada_antimalware",
       "label": "Cobertura esperada de antimalware",
-      "description": "Antimalware que tiene que estar en ejecución en la máquina, por su nombre: clamav, mdatp, falcon-sensor, sophos-spl, eset, sentinelone, trendmicro-ds.",
+      "description": "Antimalware que tiene que estar en ejecución en el activo, por su nombre: clamav, mdatp, falcon-sensor, sophos-spl, eset, sentinelone, trendmicro-ds.",
       "levels": [
         "BAJO",
         "MEDIO",

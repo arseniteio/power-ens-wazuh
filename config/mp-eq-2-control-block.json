@@ -66,7 +66,7 @@
       "controlId": "mp.eq.2",
       "name": "puesto_de_trabajo",
       "label": "Es un puesto de trabajo",
-      "description": "Si la máquina es un puesto de trabajo sujeto al bloqueo. Sin valor, lo es la máquina con sesión gráfica.",
+      "description": "Si el activo es un puesto de trabajo sujeto al bloqueo. Sin valor, lo es el activo con sesión gráfica.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -78,14 +78,14 @@
       "example": "sí",
       "required": false,
       "wazuhUsage": "El agente informa si hay sesión gráfica.",
-      "powerEnsUsage": "Una máquina que no es puesto de trabajo queda fuera de mp.eq.2.",
+      "powerEnsUsage": "Un activo que no es puesto de trabajo queda fuera de mp.eq.2.",
       "evidenceIds": [
         "EV-01",
         "EV-02",
         "EV-05"
       ],
       "ruleIds": [],
-      "ifNotConfigured": "Puesto de trabajo es la máquina con sesión gráfica."
+      "ifNotConfigured": "Puesto de trabajo es el activo con sesión gráfica."
     },
     {
       "id": "P-04",
@@ -104,7 +104,7 @@
       "example": "pantalla-soc01 | visualización continua | sala con control de acceso | Responsable de Seguridad",
       "required": false,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "Una máquina con excepción queda fuera de mp.eq.2.",
+      "powerEnsUsage": "Un activo con excepción queda fuera de mp.eq.2.",
       "evidenceIds": [
         "EV-01",
         "EV-02",
@@ -156,7 +156,7 @@
       "example": "caffeine, mousejiggler, keepawake",
       "required": false,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "EV-05 las busca entre los procesos de la máquina.",
+      "powerEnsUsage": "EV-05 las busca entre los procesos del activo.",
       "evidenceIds": [
         "EV-05"
       ],

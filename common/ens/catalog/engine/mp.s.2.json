@@ -14,7 +14,7 @@
     "D"
   ],
   "annex_section": "5.8.2",
-  "description": "mp.s.2 exige proteger los servicios web frente al acceso sin autenticación, la manipulación de URL y cookies, la inyección, el escalado y el XSS, y auditarlos. Se juzga en las máquinas que sirven las aplicaciones: sus registros, las reglas que detectan cada ataque, sus vulnerabilidades y las auditorías.",
+  "description": "mp.s.2 exige proteger los servicios web frente al acceso sin autenticación, la manipulación de URL y cookies, la inyección, el escalado y el XSS, y auditarlos. Se juzga en los activos que sirven las aplicaciones: sus registros, las reglas que detectan cada ataque, sus vulnerabilidades y las auditorías.",
   "levels": [
     "BAJO",
     "MEDIO",
@@ -204,7 +204,7 @@
     {
       "id": "EV-01",
       "title": "Registros de los servidores web",
-      "description": "Cada fuente de las aplicaciones de la máquina en P-01 envía registros a Wazuh dentro de P-11 horas.",
+      "description": "Cada fuente de las aplicaciones del activo en P-01 envía registros a Wazuh dentro de P-11 horas.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -334,7 +334,7 @@
     {
       "id": "EV-10",
       "title": "Vulnerabilidades de la plataforma web",
-      "description": "Ninguna vulnerabilidad crítica o alta de la máquina lleva abierta más de P-09 días.",
+      "description": "Ninguna vulnerabilidad crítica o alta del activo lleva abierta más de P-09 días.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -350,7 +350,7 @@
     {
       "id": "EV-11",
       "title": "Auditorías de las aplicaciones",
-      "description": "Cada aplicación de la máquina tiene una auditoría de la modalidad de P-07 en P-08 dentro de P-10 días; las de caja blanca con metodología y herramientas automáticas.",
+      "description": "Cada aplicación del activo tiene una auditoría de la modalidad de P-07 en P-08 dentro de P-10 días; las de caja blanca con metodología y herramientas automáticas.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -369,7 +369,7 @@
     {
       "id": "EV-12",
       "title": "Resolución de los hallazgos",
-      "description": "Cada hallazgo de P-12 de las aplicaciones de la máquina está resuelto o en plazo.",
+      "description": "Cada hallazgo de P-12 de las aplicaciones del activo está resuelto o en plazo.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -388,7 +388,7 @@
       "class": "organisation",
       "name": "aplicaciones_web",
       "label": "Aplicaciones web",
-      "description": "Aplicaciones web: máquina con agente que las sirve, fuente de sus registros en Wazuh, URL y exposición.",
+      "description": "Aplicaciones web: activo con agente que las sirve, fuente de sus registros en Wazuh, URL y exposición.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -410,7 +410,7 @@
         },
         {
           "name": "maquina",
-          "label": "Máquina",
+          "label": "Activo",
           "type": "string",
           "required": true
         },
@@ -439,7 +439,7 @@
       ],
       "required": true,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "mp.s.2 se juzga en sus máquinas; EV-01 sigue sus fuentes.",
+      "engine_usage": "mp.s.2 se juzga en sus activos; EV-01 sigue sus fuentes.",
       "evidence_ids": [
         "EV-01",
         "EV-11",
@@ -727,7 +727,7 @@
       "min_value": 1,
       "default_value": 30,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "EV-10 mide las vulnerabilidades de la máquina con este plazo.",
+      "engine_usage": "EV-10 mide las vulnerabilidades del activo con este plazo.",
       "evidence_ids": [
         "EV-10"
       ],

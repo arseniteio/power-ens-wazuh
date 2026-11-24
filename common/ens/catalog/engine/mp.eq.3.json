@@ -261,7 +261,7 @@
       ],
       "required": true,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "Las máquinas de P-01 y las de chasis portátil se juzgan; EV-01 exige responsable y EV-04 cifrado desde MEDIO.",
+      "engine_usage": "Los activos de P-01 y las de chasis portátil se juzgan; EV-01 exige responsable y EV-04 cifrado desde MEDIO.",
       "evidence_ids": [
         "EV-01",
         "EV-04"

@@ -10,7 +10,7 @@
     "D"
   ],
   "annex_section": "4.6.3",
-  "description": "op.cont.3 exige probar periódicamente el plan de continuidad y corregir lo que revelan las pruebas. Se juzga sobre el registro de pruebas y de deficiencias, y la caída que la monitorización de Wazuh midió en cada máquina probada.",
+  "description": "op.cont.3 exige probar periódicamente el plan de continuidad y corregir lo que revelan las pruebas. Se juzga sobre el registro de pruebas y de deficiencias, y la caída que la monitorización de Wazuh midió en cada activo probado.",
   "levels": [
     "ALTO"
   ],
@@ -80,8 +80,8 @@
     },
     {
       "id": "EV-03",
-      "title": "Medición de la prueba en la máquina",
-      "description": "Hay registros de monitorización de la máquina en cada prueba parcial o simulacro en que participó.",
+      "title": "Medición de la prueba en el activo",
+      "description": "Hay registros de monitorización del activo en cada prueba parcial o simulacro en que participó.",
       "levels": [
         "ALTO"
       ],
@@ -90,12 +90,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Se midió lo que le ocurrió a la máquina en cada prueba?"
+      "audit_question": "¿Se midió lo que le ocurrió al activo en cada prueba?"
     },
     {
       "id": "EV-04",
       "title": "Resultado frente al RTO",
-      "description": "En cada prueba parcial o simulacro de la máquina, su caída más larga no supera su RTO de P-07 y la máquina vuelve a estar activa.",
+      "description": "En cada prueba parcial o simulacro del activo, su caída más larga no supera su RTO de P-07 y el activo vuelve a estar en servicio.",
       "levels": [
         "ALTO"
       ],
@@ -104,7 +104,7 @@
       ],
       "category": "AVAILABILITY",
       "criticality": "HIGH",
-      "audit_question": "¿La máquina se restableció dentro de su RTO en las pruebas?"
+      "audit_question": "¿El activo se restableció dentro de su RTO en las pruebas?"
     },
     {
       "id": "EV-05",
@@ -463,11 +463,11 @@
       ],
       "required": false,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "EV-04 compara la caída más larga de la máquina en cada prueba con su RTO.",
+      "engine_usage": "EV-04 compara la caída más larga del activo en cada prueba con su RTO.",
       "evidence_ids": [
         "EV-04"
       ],
-      "if_not_configured": "EV-04 queda sin demostrar en las máquinas probadas."
+      "if_not_configured": "EV-04 queda sin demostrar en los activos probados."
     },
     "P-ATT": {
       "class": "organisation",
@@ -540,7 +540,7 @@
     {
       "id": "resultado",
       "title": "Resultado medido",
-      "description": "Caída de cada máquina frente a su RTO.",
+      "description": "Caída de cada activo frente a su RTO.",
       "evidences": [
         "EV-03",
         "EV-04"

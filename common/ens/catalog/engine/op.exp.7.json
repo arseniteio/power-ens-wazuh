@@ -216,7 +216,7 @@
     {
       "id": "EV-01",
       "title": "Detección de eventos de seguridad e incidentes",
-      "description": "Horas del periodo con alertas de la máquina desde el nivel mínimo de P-01, por severidad.",
+      "description": "Horas del periodo con alertas del activo desde el nivel mínimo de P-01, por severidad.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -227,12 +227,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Wazuh detecta y clasifica los eventos de seguridad de esta máquina?"
+      "audit_question": "¿Wazuh detecta y clasifica los eventos de seguridad de este activo?"
     },
     {
       "id": "EV-02",
       "title": "Conciliación entre alertas y expedientes de incidente",
-      "description": "Cada hora con alertas relevantes de la máquina (fuera de las reglas de P-12) necesita un incidente de P-13 abierto dentro del plazo de escalado de su severidad en P-02.",
+      "description": "Cada hora con alertas relevantes del activo (fuera de las reglas de P-12) necesita un incidente de P-13 abierto dentro del plazo de escalado de su severidad en P-02.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -243,7 +243,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Toda alerta relevante de esta máquina acabó en un incidente?"
+      "audit_question": "¿Toda alerta relevante de este activo acabó en un incidente?"
     },
     {
       "id": "EV-03",
@@ -258,7 +258,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Los incidentes de esta máquina se contuvieron y resolvieron en plazo?"
+      "audit_question": "¿Los incidentes de este activo se contuvieron y resolvieron en plazo?"
     },
     {
       "id": "EV-04",
@@ -275,7 +275,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Los incidentes de esta máquina se escalaron e informaron a quien corresponde?"
+      "audit_question": "¿Los incidentes de este activo se escalaron e informaron a quien corresponde?"
     },
     {
       "id": "EV-05",
@@ -295,7 +295,7 @@
     {
       "id": "EV-06",
       "title": "Medidas urgentes de contención aplicadas",
-      "description": "Cada incidente de severidad alta o crítica tuvo una respuesta activa en la máquina o consta su fase intermedia de contención.",
+      "description": "Cada incidente de severidad alta o crítica tuvo una respuesta activa en el activo o consta su fase intermedia de contención.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -305,7 +305,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Se aplicaron medidas urgentes en los incidentes graves de esta máquina?"
+      "audit_question": "¿Se aplicaron medidas urgentes en los incidentes graves de este activo?"
     },
     {
       "id": "EV-07",
@@ -341,7 +341,7 @@
     {
       "id": "EV-09",
       "title": "Reconfiguración dinámica ejecutada ante incidente (R3)",
-      "description": "Cada incidente crítico tuvo una respuesta automática en la máquina entre su fase inicial y la final.",
+      "description": "Cada incidente crítico tuvo una respuesta automática en el activo entre su fase inicial y la final.",
       "levels": [
         "ALTO"
       ],
@@ -369,7 +369,7 @@
     {
       "id": "EV-11",
       "title": "Detección de anomalías y respuesta automatizada (R4)",
-      "description": "Respuestas activas que el manager envía a la máquina y cuyo script está presente (op.exp.6 EV-11).",
+      "description": "Respuestas activas que el manager envía al activo y cuyo script está presente (op.exp.6 EV-11).",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -380,7 +380,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Esta máquina puede responder automáticamente a una anomalía?"
+      "audit_question": "¿Este activo puede responder automáticamente a una anomalía?"
     },
     {
       "id": "EV-12",

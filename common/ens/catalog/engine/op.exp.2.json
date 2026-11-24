@@ -129,12 +129,12 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿Wazuh evalúa esta máquina contra su línea base de P-01 dentro de P-09?"
+      "audit_question": "¿Wazuh evalúa este activo contra su línea base de P-01 dentro de P-09?"
     },
     {
       "id": "EV-02",
       "title": "Pervivencia de cuentas y contraseñas estándar",
-      "description": "Cuentas por defecto de P-03 que siguen activas en la máquina (contraseña utilizable, o claves SSH con shell de acceso) o que han entrado en el periodo.",
+      "description": "Cuentas por defecto de P-03 que siguen activas en el activo (contraseña utilizable, o claves SSH con shell de acceso) o que han entrado en el periodo.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -145,12 +145,12 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿Alguna cuenta estándar de P-03 sigue activa o ha entrado en esta máquina?"
+      "audit_question": "¿Alguna cuenta estándar de P-03 sigue activa o ha entrado en este activo?"
     },
     {
       "id": "EV-03",
       "title": "Servicios y puertos no justificados en ejecución",
-      "description": "Sockets en escucha de la máquina, con su proceso, frente a los servicios y puertos justificados en P-02. Lo que sobra es superficie de exposición innecesaria.",
+      "description": "Sockets en escucha del activo, con su proceso, frente a los servicios y puertos justificados en P-02. Lo que sobra es superficie de exposición innecesaria.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -161,12 +161,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Todo lo que escucha en esta máquina está justificado en P-02?"
+      "audit_question": "¿Todo lo que escucha en este activo está justificado en P-02?"
     },
     {
       "id": "EV-04",
       "title": "Verificación de la regla de seguridad por defecto",
-      "description": "Valores por defecto que debilitan la máquina: opciones inseguras de sshd y algoritmos débiles, ficheros sensibles de P-08 más abiertos de lo debido, cuentas sin contraseña y UID 0 distintos de root. Solo se admiten las excepciones vigentes de P-04.",
+      "description": "Valores por defecto que debilitan el activo: opciones inseguras de sshd y algoritmos débiles, ficheros sensibles de P-08 más abiertos de lo debido, cuentas sin contraseña y UID 0 distintos de root. Solo se admiten las excepciones vigentes de P-04.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -177,12 +177,12 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿Esta máquina usa valores seguros por defecto, salvo excepciones vigentes de P-04?"
+      "audit_question": "¿Este activo usa valores seguros por defecto, salvo excepciones vigentes de P-04?"
     },
     {
       "id": "EV-05",
       "title": "Configuración segura de hipervisores y máquinas virtuales",
-      "description": "Si la máquina es virtual, tiene que figurar en P-06 con su anfitrión, y el anfitrión, si tiene agente, tiene que estar reportando: se gestiona con el mismo rigor que una física.",
+      "description": "Si el activo es virtual, tiene que figurar en P-06 con su anfitrión, y el anfitrión, si tiene agente, tiene que estar reportando: se gestiona con el mismo rigor que uno físico.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -193,7 +193,7 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿Si esta máquina es virtual, está inventariada en P-06 con su anfitrión gestionado?"
+      "audit_question": "¿Si este activo es virtual, está inventariado en P-06 con su anfitrión gestionado?"
     },
     {
       "id": "EV-06",
@@ -210,7 +210,7 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿La puntuación SCA de esta máquina llega al mínimo de P-05?"
+      "audit_question": "¿La puntuación SCA de este activo llega al mínimo de P-05?"
     }
   ],
   "parameters": {
@@ -218,7 +218,7 @@
       "class": "platform",
       "name": "politicas_sca_por_perfil",
       "label": "Políticas SCA por perfil",
-      "description": "Políticas SCA de Wazuh que valen como línea base de esta máquina, por su identificador (cis_ubuntu24-04). Basta con que se evalúe una.",
+      "description": "Políticas SCA de Wazuh que valen como línea base de este activo, por su identificador (cis_ubuntu24-04). Basta con que se evalúe una.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -244,7 +244,7 @@
       "class": "system",
       "name": "servicios_justificados_por_perfil",
       "label": "Servicios justificados por perfil",
-      "description": "Servicios justificados en la máquina, uno por fila: proceso como lo muestra el sistema (sshd) y sus puertos separados por comas; sin puertos, cualquiera.",
+      "description": "Servicios justificados en el activo, uno por fila: proceso como lo muestra el sistema (sshd) y sus puertos separados por comas; sin puertos, cualquiera.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -318,7 +318,7 @@
       "class": "system",
       "name": "excepciones_autorizadas",
       "label": "Excepciones autorizadas",
-      "description": "Desviaciones de la seguridad por defecto autorizadas, una por fila: máquina (nombre del agente), comprobación como la nombra el motor (ssh_x11forwarding, permisos:/etc/crontab), motivo, quién la aprobó y fecha de fin.",
+      "description": "Desviaciones de la seguridad por defecto autorizadas, una por fila: activo (nombre del agente), comprobación como la nombra el motor (ssh_x11forwarding, permisos:/etc/crontab), motivo, quién la aprobó y fecha de fin.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -363,7 +363,7 @@
       ],
       "required": false,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "EV-04 no cuenta una desviación con fila de esta máquina y vigencia no pasada.",
+      "engine_usage": "EV-04 no cuenta una desviación con fila de este activo y vigencia no pasada.",
       "evidence_ids": [
         "EV-04"
       ],
@@ -399,7 +399,7 @@
       "class": "system",
       "name": "inventario_virtualizacion",
       "label": "Inventario de virtualización",
-      "description": "Máquinas virtuales gestionadas, una por fila: hipervisor, máquina (nombre de su agente) y gestión del anfitrión (nombre de su agente o, en la nube, referencia de su acreditación).",
+      "description": "Máquinas virtuales gestionadas, una por fila: hipervisor, activo (nombre de su agente) y gestión del anfitrión (nombre de su agente o, en la nube, referencia de su acreditación).",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -419,7 +419,7 @@
         },
         {
           "name": "maquina",
-          "label": "Máquina",
+          "label": "Activo",
           "type": "string",
           "required": true
         },
@@ -431,7 +431,7 @@
         }
       ],
       "required": false,
-      "agent_usage": "El agente informa de si la máquina es virtual.",
+      "agent_usage": "El agente informa de si el activo es virtual.",
       "engine_usage": "EV-05 exige que una máquina virtual tenga fila, y que su anfitrión, si es un agente, esté reportando.",
       "evidence_ids": [
         "EV-05"
@@ -507,7 +507,7 @@
       "class": "organisation",
       "name": "antiguedad_maxima_sca_horas",
       "label": "Antigüedad máxima de la evaluación SCA (horas)",
-      "description": "Horas que puede pasar una máquina sin evaluarse contra su línea base ni contactar con el manager. SCA evalúa cada 12 horas por defecto.",
+      "description": "Horas que puede pasar un activo sin evaluarse contra su línea base ni contactar con el manager. SCA evalúa cada 12 horas por defecto.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -584,7 +584,7 @@
     {
       "id": "linea_base",
       "title": "Línea base de configuración",
-      "description": "Política SCA evaluada en cada máquina y su puntuación frente al mínimo.",
+      "description": "Política SCA evaluada en cada activo y su puntuación frente al mínimo.",
       "evidences": [
         "EV-01",
         "EV-06"
@@ -609,7 +609,7 @@
     {
       "id": "minima_funcionalidad",
       "title": "Servicios y puertos no justificados",
-      "description": "Lo que escucha en cada máquina sin estar justificado en P-02.",
+      "description": "Lo que escucha en cada activo sin estar justificado en P-02.",
       "evidences": [
         "EV-03"
       ],

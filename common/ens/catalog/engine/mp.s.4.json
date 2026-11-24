@@ -10,7 +10,7 @@
     "D"
   ],
   "annex_section": "5.8.4",
-  "description": "mp.s.4 exige capacidad con holgura, prevención, detección y reacción frente a la denegación de servicio. Se juzga en las máquinas de los servicios expuestos: su carga, SYN cookies, cortafuegos, servicios amplificadores, las reglas y respuestas de Wazuh y el registro de episodios.",
+  "description": "mp.s.4 exige capacidad con holgura, prevención, detección y reacción frente a la denegación de servicio. Se juzga en los activos de los servicios expuestos: su carga, SYN cookies, cortafuegos, servicios amplificadores, las reglas y respuestas de Wazuh y el registro de episodios.",
   "levels": [
     "MEDIO",
     "ALTO"
@@ -116,7 +116,7 @@
     {
       "id": "EV-01",
       "title": "Holgura de capacidad",
-      "description": "La CPU (carga media de 15 minutos frente a sus núcleos) y la memoria en uso de la máquina no superan el porcentaje de P-02.",
+      "description": "La CPU (carga media de 15 minutos frente a sus núcleos) y la memoria en uso del activo no superan el porcentaje de P-02.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -126,12 +126,12 @@
       ],
       "category": "AVAILABILITY",
       "criticality": "HIGH",
-      "audit_question": "¿La máquina tiene holgura para la carga?"
+      "audit_question": "¿El activo tiene holgura para la carga?"
     },
     {
       "id": "EV-02",
-      "title": "Prevención en la máquina",
-      "description": "La máquina tiene SYN cookies activas y un cortafuegos que descarta por defecto lo que le llega.",
+      "title": "Prevención en el activo",
+      "description": "El activo tiene SYN cookies activas y un cortafuegos que descarta por defecto lo que le llega.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -188,7 +188,7 @@
     {
       "id": "EV-09",
       "title": "Servicios amplificadores",
-      "description": "La máquina no tiene abiertos fuera de loopback servicios UDP que amplifiquen ataques (DNS, NTP, SNMP, SSDP, memcached...) salvo los de P-08.",
+      "description": "El activo no tiene abiertos fuera de loopback servicios UDP que amplifiquen ataques (DNS, NTP, SNMP, SSDP, memcached...) salvo los de P-08.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -199,7 +199,7 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿Puede la máquina usarse para amplificar ataques contra terceros?"
+      "audit_question": "¿Puede el activo usarse para amplificar ataques contra terceros?"
     },
     {
       "id": "EV-10",
@@ -224,7 +224,7 @@
       "class": "organisation",
       "name": "servicios_expuestos",
       "label": "Servicios expuestos",
-      "description": "Servicios expuestos a redes públicas: máquina con agente que los sirve, criticidad y disponibilidad comprometida.",
+      "description": "Servicios expuestos a redes públicas: activo con agente que los sirve, criticidad y disponibilidad comprometida.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -243,7 +243,7 @@
         },
         {
           "name": "maquina",
-          "label": "Máquina",
+          "label": "Activo",
           "type": "string",
           "required": true
         },
@@ -262,7 +262,7 @@
       ],
       "required": true,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "mp.s.4 se juzga en sus máquinas.",
+      "engine_usage": "mp.s.4 se juzga en sus activos.",
       "evidence_ids": [
         "EV-01",
         "EV-02",
@@ -611,7 +611,7 @@
     {
       "id": "capacidad",
       "title": "Capacidad",
-      "description": "Holgura de las máquinas de los servicios expuestos.",
+      "description": "Holgura de los activos de los servicios expuestos.",
       "evidences": [
         "EV-01"
       ],

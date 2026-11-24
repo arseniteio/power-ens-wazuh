@@ -10,7 +10,7 @@
     "C"
   ],
   "annex_section": "5.3.4",
-  "description": "mp.eq.4 exige que los dispositivos sin agente (multifunción, IoT, electrónica) tengan una configuración segura y flujos controlados. Se juzga sobre los vecinos que ve cada máquina, el inventario de dispositivos, sus flujos y sus registros en Wazuh.",
+  "description": "mp.eq.4 exige que los dispositivos sin agente (multifunción, IoT, electrónica) tengan una configuración segura y flujos controlados. Se juzga sobre los vecinos que ve cada activo, el inventario de dispositivos, sus flujos y sus registros en Wazuh.",
   "levels": [
     "BAJO",
     "MEDIO",
@@ -105,7 +105,7 @@
     {
       "id": "EV-01",
       "title": "Descubrimiento de dispositivos en la red",
-      "description": "La máquina informa de los dispositivos que ve junto a ella (su tabla de vecinos).",
+      "description": "El activo informa de los dispositivos que ve junto a él (su tabla de vecinos).",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -122,7 +122,7 @@
     {
       "id": "EV-02",
       "title": "Dispositivos no inventariados",
-      "description": "Cada dispositivo que ve la máquina está en P-01 o es una máquina de la flota.",
+      "description": "Cada dispositivo que ve el activo está en P-01 o es un activo de la flota.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -246,7 +246,7 @@
       ],
       "required": true,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "EV-02 busca en él los dispositivos que ve cada máquina; EV-03 sus flujos; EV-08 los que guardan información.",
+      "engine_usage": "EV-02 busca en él los dispositivos que ve cada activo; EV-03 sus flujos; EV-08 los que guardan información.",
       "evidence_ids": [
         "EV-02",
         "EV-03",

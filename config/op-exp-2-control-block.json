@@ -14,7 +14,7 @@
       "controlId": "op.exp.2",
       "name": "politicas_sca_por_perfil",
       "label": "Políticas SCA por perfil",
-      "description": "Políticas SCA de Wazuh que valen como línea base de esta máquina, por su identificador (cis_ubuntu24-04). Basta con que se evalúe una.",
+      "description": "Políticas SCA de Wazuh que valen como línea base de este activo, por su identificador (cis_ubuntu24-04). Basta con que se evalúe una.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -42,7 +42,7 @@
       "controlId": "op.exp.2",
       "name": "servicios_justificados_por_perfil",
       "label": "Servicios justificados por perfil",
-      "description": "Servicios justificados en la máquina, uno por fila: proceso como lo muestra el sistema (sshd) y sus puertos separados por comas; sin puertos, cualquiera.",
+      "description": "Servicios justificados en el activo, uno por fila: proceso como lo muestra el sistema (sshd) y sus puertos separados por comas; sin puertos, cualquiera.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -120,7 +120,7 @@
       "controlId": "op.exp.2",
       "name": "excepciones_autorizadas",
       "label": "Excepciones autorizadas",
-      "description": "Desviaciones de la seguridad por defecto autorizadas, una por fila: máquina (nombre del agente), comprobación como la nombra el motor (ssh_x11forwarding, permisos:/etc/crontab), motivo, quién la aprobó y fecha de fin.",
+      "description": "Desviaciones de la seguridad por defecto autorizadas, una por fila: activo (nombre del agente), comprobación como la nombra el motor (ssh_x11forwarding, permisos:/etc/crontab), motivo, quién la aprobó y fecha de fin.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -133,7 +133,7 @@
       "example": "srv-web-01 | ssh_permitrootlogin | acceso de emergencia por clave | Responsable de Seguridad | 2027-03-31",
       "required": false,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "EV-04 no cuenta una desviación con fila de esta máquina y vigencia no pasada.",
+      "powerEnsUsage": "EV-04 no cuenta una desviación con fila de este activo y vigencia no pasada.",
       "evidenceIds": [
         "EV-04"
       ],
@@ -205,7 +205,7 @@
       "controlId": "op.exp.2",
       "name": "inventario_virtualizacion",
       "label": "Inventario de virtualización",
-      "description": "Máquinas virtuales gestionadas, una por fila: hipervisor, máquina (nombre de su agente) y gestión del anfitrión (nombre de su agente o, en la nube, referencia de su acreditación).",
+      "description": "Máquinas virtuales gestionadas, una por fila: hipervisor, activo (nombre de su agente) y gestión del anfitrión (nombre de su agente o, en la nube, referencia de su acreditación).",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -217,7 +217,7 @@
       "type": "table",
       "example": "pve01 | srv-web01 | pve01",
       "required": false,
-      "wazuhUsage": "El agente informa de si la máquina es virtual.",
+      "wazuhUsage": "El agente informa de si el activo es virtual.",
       "powerEnsUsage": "EV-05 exige que una máquina virtual tenga fila, y que su anfitrión, si es un agente, esté reportando.",
       "evidenceIds": [
         "EV-05"
@@ -233,7 +233,7 @@
         },
         {
           "name": "maquina",
-          "label": "Máquina",
+          "label": "Activo",
           "type": "string",
           "required": true
         },
@@ -320,7 +320,7 @@
       "controlId": "op.exp.2",
       "name": "antiguedad_maxima_sca_horas",
       "label": "Antigüedad máxima de la evaluación SCA (horas)",
-      "description": "Horas que puede pasar una máquina sin evaluarse contra su línea base ni contactar con el manager. SCA evalúa cada 12 horas por defecto.",
+      "description": "Horas que puede pasar un activo sin evaluarse contra su línea base ni contactar con el manager. SCA evalúa cada 12 horas por defecto.",
       "levels": [
         "BAJO",
         "MEDIO",

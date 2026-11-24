@@ -92,7 +92,7 @@
     {
       "id": "EV-01",
       "title": "Registro de eventos que originan cada incidente",
-      "description": "Las alertas de la máquina en las 24 horas anteriores a la fase inicial de cada incidente siguen en el índice.",
+      "description": "Las alertas del activo en las 24 horas anteriores a la fase inicial de cada incidente siguen en el índice.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -124,7 +124,7 @@
     {
       "id": "EV-03",
       "title": "Registro de las actuaciones de emergencia",
-      "description": "Actuaciones de emergencia de los incidentes graves: respuesta activa en la máquina o fase intermedia (op.exp.7 EV-06).",
+      "description": "Actuaciones de emergencia de los incidentes graves: respuesta activa en el activo o fase intermedia (op.exp.7 EV-06).",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -140,7 +140,7 @@
     {
       "id": "EV-04",
       "title": "Registro de las modificaciones del sistema derivadas del incidente",
-      "description": "Los cambios de la máquina durante cada incidente tienen su petición en el registro de cambios de op.exp.5 P-10.",
+      "description": "Los cambios del activo durante cada incidente tienen su petición en el registro de cambios de op.exp.5 P-10.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -172,7 +172,7 @@
     {
       "id": "EV-07",
       "title": "Protección de los registros del período del incidente",
-      "description": "Cada día de un incidente abierto o con relevancia jurídica conserva alertas de la máquina en el índice.",
+      "description": "Cada día de un incidente abierto o con relevancia jurídica conserva alertas del activo en el índice.",
       "levels": [
         "BAJO",
         "MEDIO",

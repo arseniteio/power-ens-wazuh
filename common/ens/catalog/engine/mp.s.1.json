@@ -14,7 +14,7 @@
     "D"
   ],
   "annex_section": "5.8.1",
-  "description": "mp.s.1 exige proteger el correo frente al spam, el código dañino y el móvil, y su tránsito y encaminamiento. Se juzga en las máquinas de la plataforma de correo: sus registros, filtros, TLS, los registros DNS de los dominios propios, los cambios de su configuración y la concienciación.",
+  "description": "mp.s.1 exige proteger el correo frente al spam, el código dañino y el móvil, y su tránsito y encaminamiento. Se juzga en los activos de la plataforma de correo: sus registros, filtros, TLS, los registros DNS de los dominios propios, los cambios de su configuración y la concienciación.",
   "levels": [
     "BAJO",
     "MEDIO",
@@ -311,7 +311,7 @@
       "class": "organisation",
       "name": "plataforma_correo",
       "label": "Plataforma de correo",
-      "description": "Elementos de la plataforma de correo: máquina con agente que los ejecuta y fuente de sus registros en Wazuh.",
+      "description": "Elementos de la plataforma de correo: activo con agente que los ejecuta y fuente de sus registros en Wazuh.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -333,7 +333,7 @@
         },
         {
           "name": "maquina",
-          "label": "Máquina",
+          "label": "Activo",
           "type": "string",
           "required": false
         },
@@ -346,7 +346,7 @@
       ],
       "required": true,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "mp.s.1 se juzga en sus máquinas; EV-01 sigue sus fuentes.",
+      "engine_usage": "mp.s.1 se juzga en sus activos; EV-01 sigue sus fuentes.",
       "evidence_ids": [
         "EV-01"
       ],
@@ -611,7 +611,7 @@
       "class": "system",
       "name": "configuracion_correo",
       "label": "Configuración del correo",
-      "description": "Ficheros o directorios de configuración del servicio de correo en la máquina.",
+      "description": "Ficheros o directorios de configuración del servicio de correo en el activo.",
       "levels": [
         "BAJO",
         "MEDIO",

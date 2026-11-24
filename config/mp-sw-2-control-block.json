@@ -14,7 +14,7 @@
       "controlId": "mp.sw.2",
       "name": "aplicaciones_en_alcance",
       "label": "Aplicaciones",
-      "description": "Aplicaciones: máquinas donde se despliegan (nombres en Wazuh separados por comas), paquetes que las componen, responsable y origen.",
+      "description": "Aplicaciones: activos donde se despliegan (nombres en Wazuh separados por comas), paquetes que las componen, responsable y origen.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -27,7 +27,7 @@
       "example": "portal de expedientes | srv-web01, srv-web02 | portal-app | J. Ruiz | desarrollo propio",
       "required": true,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "mp.sw.2 se juzga en sus máquinas; las instalaciones de sus paquetes son sus despliegues.",
+      "powerEnsUsage": "mp.sw.2 se juzga en sus activos; las instalaciones de sus paquetes son sus despliegues.",
       "evidenceIds": [
         "EV-01",
         "EV-02",
@@ -44,7 +44,7 @@
         },
         {
           "name": "maquinas",
-          "label": "Máquinas",
+          "label": "Activos",
           "type": "string",
           "required": true
         },
@@ -100,7 +100,7 @@
       "controlId": "mp.sw.2",
       "name": "entorno_preproduccion",
       "label": "Entorno de preproducción",
-      "description": "Emparejamiento de cada máquina de producción con la de preproducción (nombres en Wazuh) y cómo se aísla.",
+      "description": "Emparejamiento de cada activo de producción con la de preproducción (nombres en Wazuh) y cómo se aísla.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -171,7 +171,7 @@
       "controlId": "mp.sw.2",
       "name": "puertos_servicios_previstos",
       "label": "Puertos previstos",
-      "description": "Puertos que puede abrir cada aplicación, o * para los de todas las máquinas.",
+      "description": "Puertos que puede abrir cada aplicación, o * para los de todos los activos.",
       "levels": [
         "BAJO",
         "MEDIO",

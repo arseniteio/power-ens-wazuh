@@ -14,7 +14,7 @@
     "D"
   ],
   "annex_section": "5.6.2",
-  "description": "mp.sw.2 exige comprobar los criterios de aceptación y que no se deteriora la seguridad antes de poner una aplicación en servicio. Se juzga en las máquinas de cada aplicación: sus despliegues vistos por Wazuh, las actas de aceptación, las regresiones de SCA, los puertos, las vulnerabilidades y el paso por preproducción.",
+  "description": "mp.sw.2 exige comprobar los criterios de aceptación y que no se deteriora la seguridad antes de poner una aplicación en servicio. Se juzga en los activos de cada aplicación: sus despliegues vistos por Wazuh, las actas de aceptación, las regresiones de SCA, los puertos, las vulnerabilidades y el paso por preproducción.",
   "levels": [
     "BAJO",
     "MEDIO",
@@ -88,7 +88,7 @@
     {
       "id": "EV-01",
       "title": "Puestas en servicio detectadas",
-      "description": "Cada aplicación de P-01 de la máquina se conoce por sus paquetes, que es como Wazuh ve cada puesta en servicio.",
+      "description": "Cada aplicación de P-01 del activo se conoce por sus paquetes, que es como Wazuh ve cada puesta en servicio.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -136,7 +136,7 @@
     {
       "id": "EV-04",
       "title": "Exposición introducida",
-      "description": "Cada puerto que la máquina abre fuera de loopback está declarado en P-05.",
+      "description": "Cada puerto que el activo abre fuera de loopback está declarado en P-05.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -152,7 +152,7 @@
     {
       "id": "EV-05",
       "title": "Vulnerabilidades introducidas",
-      "description": "Ningún paquete de las aplicaciones de la máquina tiene vulnerabilidades críticas o altas abiertas.",
+      "description": "Ningún paquete de las aplicaciones del activo tiene vulnerabilidades críticas o altas abiertas.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -168,7 +168,7 @@
     {
       "id": "EV-07",
       "title": "Paso por preproducción",
-      "description": "Cada versión desplegada se instaló antes en la máquina de preproducción que P-03 empareja con esta.",
+      "description": "Cada versión desplegada se instaló antes en el activo de preproducción que P-03 empareja con esta.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -186,7 +186,7 @@
       "class": "organisation",
       "name": "aplicaciones_en_alcance",
       "label": "Aplicaciones",
-      "description": "Aplicaciones: máquinas donde se despliegan (nombres en Wazuh separados por comas), paquetes que las componen, responsable y origen.",
+      "description": "Aplicaciones: activos donde se despliegan (nombres en Wazuh separados por comas), paquetes que las componen, responsable y origen.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -206,7 +206,7 @@
         },
         {
           "name": "maquinas",
-          "label": "Máquinas",
+          "label": "Activos",
           "type": "string",
           "required": true
         },
@@ -235,7 +235,7 @@
       ],
       "required": true,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "mp.sw.2 se juzga en sus máquinas; las instalaciones de sus paquetes son sus despliegues.",
+      "engine_usage": "mp.sw.2 se juzga en sus activos; las instalaciones de sus paquetes son sus despliegues.",
       "evidence_ids": [
         "EV-01",
         "EV-02",
@@ -267,7 +267,7 @@
       "class": "organisation",
       "name": "entorno_preproduccion",
       "label": "Entorno de preproducción",
-      "description": "Emparejamiento de cada máquina de producción con la de preproducción (nombres en Wazuh) y cómo se aísla.",
+      "description": "Emparejamiento de cada activo de producción con la de preproducción (nombres en Wazuh) y cómo se aísla.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -334,7 +334,7 @@
       "class": "organisation",
       "name": "puertos_servicios_previstos",
       "label": "Puertos previstos",
-      "description": "Puertos que puede abrir cada aplicación, o * para los de todas las máquinas.",
+      "description": "Puertos que puede abrir cada aplicación, o * para los de todos los activos.",
       "levels": [
         "BAJO",
         "MEDIO",

@@ -14,7 +14,7 @@
       "controlId": "mp.s.2",
       "name": "aplicaciones_web",
       "label": "Aplicaciones web",
-      "description": "Aplicaciones web: máquina con agente que las sirve, fuente de sus registros en Wazuh, URL y exposición.",
+      "description": "Aplicaciones web: activo con agente que las sirve, fuente de sus registros en Wazuh, URL y exposición.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -29,7 +29,7 @@
       "example": "sede | srv-web01 | srv-web01 | https://sede.org.es | internet",
       "required": true,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "mp.s.2 se juzga en sus máquinas; EV-01 sigue sus fuentes.",
+      "powerEnsUsage": "mp.s.2 se juzga en sus activos; EV-01 sigue sus fuentes.",
       "evidenceIds": [
         "EV-01",
         "EV-11",
@@ -46,7 +46,7 @@
         },
         {
           "name": "maquina",
-          "label": "Máquina",
+          "label": "Activo",
           "type": "string",
           "required": true
         },
@@ -373,7 +373,7 @@
       "minValue": 1,
       "defaultValue": 30,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "EV-10 mide las vulnerabilidades de la máquina con este plazo.",
+      "powerEnsUsage": "EV-10 mide las vulnerabilidades del activo con este plazo.",
       "evidenceIds": [
         "EV-10"
       ],

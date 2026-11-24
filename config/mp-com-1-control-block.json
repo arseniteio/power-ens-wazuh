@@ -14,7 +14,7 @@
       "controlId": "mp.com.1",
       "name": "elementos_perimetrales",
       "label": "Elementos del perímetro",
-      "description": "Cortafuegos, pasarelas, proxies inversos y concentradores VPN: tipo, ubicación y su fuente en Wazuh (el nombre del agente, el nombre de máquina de sus registros o su ubicación de registro).",
+      "description": "Cortafuegos, pasarelas, proxies inversos y concentradores VPN: tipo, ubicación y su fuente en Wazuh (el nombre del agente, el nombre de activo de sus registros o su ubicación de registro).",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -145,7 +145,7 @@
       "example": "enlace principal | fw-perim01 | 192.168.1.1",
       "required": true,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "EV-04 exige cada pasarela de la máquina entre ellas.",
+      "powerEnsUsage": "EV-04 exige cada pasarela del activo entre ellas.",
       "evidenceIds": [
         "EV-04"
       ],
@@ -250,7 +250,7 @@
       "controlId": "mp.com.1",
       "name": "interfaces_previstas",
       "label": "Interfaces de red previstas",
-      "description": "Nombres de interfaz previstos en la máquina, admite comodines (lo, eth*, ens*).",
+      "description": "Nombres de interfaz previstos en el activo, admite comodines (lo, eth*, ens*).",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -275,7 +275,7 @@
       "controlId": "mp.com.1",
       "name": "tuneles_autorizados",
       "label": "Túneles autorizados",
-      "description": "Interfaces de túnel y herramientas de acceso remoto autorizadas en la máquina (wg0, openvpn).",
+      "description": "Interfaces de túnel y herramientas de acceso remoto autorizadas en el activo (wg0, openvpn).",
       "levels": [
         "BAJO",
         "MEDIO",

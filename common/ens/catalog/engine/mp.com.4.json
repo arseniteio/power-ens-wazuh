@@ -14,7 +14,7 @@
     "D"
   ],
   "annex_section": "5.4.4",
-  "description": "mp.com.4 exige segregar el tráfico en segmentos. Se juzga sobre el mapa de segmentos, el inventario de red de cada máquina, las conexiones de los puntos de interconexión y los incidentes registrados.",
+  "description": "mp.com.4 exige segregar el tráfico en segmentos. Se juzga sobre el mapa de segmentos, el inventario de red de cada activo, las conexiones de los puntos de interconexión y los incidentes registrados.",
   "levels": [
     "MEDIO",
     "ALTO"
@@ -168,8 +168,8 @@
   "evidences": [
     {
       "id": "EV-01",
-      "title": "Máquina en un segmento declarado",
-      "description": "Cada dirección de la máquina está en un segmento de P-01.",
+      "title": "Activo en un segmento declarado",
+      "description": "Cada dirección del activo está en un segmento de P-01.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -179,7 +179,7 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿La máquina está en un segmento declarado?"
+      "audit_question": "¿El activo está en un segmento declarado?"
     },
     {
       "id": "EV-02",
@@ -198,8 +198,8 @@
     },
     {
       "id": "EV-03",
-      "title": "Máquinas en más de un segmento",
-      "description": "La máquina está en un solo segmento, salvo que sea un punto de interconexión de P-05.",
+      "title": "Activos en más de un segmento",
+      "description": "El activo está en un solo segmento, salvo que sea un punto de interconexión de P-05.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -209,12 +209,12 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿Hay máquinas que unen segmentos sin estar declaradas?"
+      "audit_question": "¿Hay activos que unen segmentos sin estar declarados?"
     },
     {
       "id": "EV-04",
       "title": "Comunicaciones inalámbricas separadas",
-      "description": "Cada interfaz inalámbrica activa de la máquina tiene sus direcciones en un segmento inalámbrico de P-01.",
+      "description": "Cada interfaz inalámbrica activa del activo tiene sus direcciones en un segmento inalámbrico de P-01.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -244,7 +244,7 @@
     {
       "id": "EV-07",
       "title": "Forma de segmentación implantada",
-      "description": "Con VLAN, cada segmento de P-01 tiene su VLAN; con VPN, la máquina tiene un túnel activo.",
+      "description": "Con VLAN, cada segmento de P-01 tiene su VLAN; con VPN, el activo tiene un túnel levantado.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -274,7 +274,7 @@
     {
       "id": "EV-09",
       "title": "Incidentes contenidos en su segmento",
-      "description": "Ningún incidente de op.exp.7 de los últimos 90 días afecta a máquinas de más de un segmento.",
+      "description": "Ningún incidente de op.exp.7 de los últimos 90 días afecta a activos de más de un segmento.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -487,7 +487,7 @@
       "class": "organisation",
       "name": "puntos_interconexion",
       "label": "Puntos de interconexión",
-      "description": "Puntos de interconexión entre segmentos: segmentos que unen, el equipo que los controla (su nombre en Wazuh si es una máquina) y su fuente de registros en Wazuh.",
+      "description": "Puntos de interconexión entre segmentos: segmentos que unen, el equipo que los controla (su nombre en Wazuh si es un activo) y su fuente de registros en Wazuh.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -717,7 +717,7 @@
     {
       "id": "segmentos",
       "title": "Segmentos",
-      "description": "Segmentos, máquinas en ellos y la forma de segmentar.",
+      "description": "Segmentos, activos en ellos y la forma de segmentar.",
       "evidences": [
         "EV-01",
         "EV-03",

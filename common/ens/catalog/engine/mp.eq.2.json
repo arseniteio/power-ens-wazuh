@@ -162,7 +162,7 @@
       "class": "system",
       "name": "puesto_de_trabajo",
       "label": "Es un puesto de trabajo",
-      "description": "Si la máquina es un puesto de trabajo sujeto al bloqueo. Sin valor, lo es la máquina con sesión gráfica.",
+      "description": "Si el activo es un puesto de trabajo sujeto al bloqueo. Sin valor, lo es el activo con sesión gráfica.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -174,13 +174,13 @@
       "example": "sí",
       "required": false,
       "agent_usage": "El agente informa si hay sesión gráfica.",
-      "engine_usage": "Una máquina que no es puesto de trabajo queda fuera de mp.eq.2.",
+      "engine_usage": "Un activo que no es puesto de trabajo queda fuera de mp.eq.2.",
       "evidence_ids": [
         "EV-01",
         "EV-02",
         "EV-05"
       ],
-      "if_not_configured": "Puesto de trabajo es la máquina con sesión gráfica."
+      "if_not_configured": "Puesto de trabajo es el activo con sesión gráfica."
     },
     "P-04": {
       "class": "organisation",
@@ -224,7 +224,7 @@
       ],
       "required": false,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "Una máquina con excepción queda fuera de mp.eq.2.",
+      "engine_usage": "Un activo con excepción queda fuera de mp.eq.2.",
       "evidence_ids": [
         "EV-01",
         "EV-02",
@@ -248,7 +248,7 @@
       "example": "caffeine, mousejiggler, keepawake",
       "required": false,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "EV-05 las busca entre los procesos de la máquina.",
+      "engine_usage": "EV-05 las busca entre los procesos del activo.",
       "evidence_ids": [
         "EV-05"
       ],

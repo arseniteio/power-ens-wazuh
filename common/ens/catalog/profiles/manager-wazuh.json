@@ -1,7 +1,7 @@
 {
   "id": "manager-wazuh",
   "name": "Manager Wazuh",
-  "description": "El manager de Wazuh, auditado como una máquina más. Mismos valores que la plantilla Manager Wazuh.",
+  "description": "El manager de Wazuh, auditado como un activo más. Mismos valores que la plantilla Manager Wazuh.",
   "layer": "role",
   "match": [
     {

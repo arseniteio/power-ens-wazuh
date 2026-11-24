@@ -14,7 +14,7 @@
     "D"
   ],
   "annex_section": "4.3.10",
-  "description": "op.exp.10 regula el ciclo de vida de las claves criptográficas. Se mide lo que vive en las máquinas: quién accede a los almacenes de claves, dónde están las claves privadas y cómo se protegen, dónde se generan, si siguen las retiradas, qué algoritmos se aceptan y usan, y la vigencia de los certificados.",
+  "description": "op.exp.10 regula el ciclo de vida de las claves criptográficas. Se mide lo que vive en los activos: quién accede a los almacenes de claves, dónde están las claves privadas y cómo se protegen, dónde se generan, si siguen las retiradas, qué algoritmos se aceptan y usan, y la vigencia de los certificados.",
   "levels": [
     "BAJO",
     "MEDIO",
@@ -137,7 +137,7 @@
       ],
       "category": "ACCESS_CONTROL",
       "criticality": "HIGH",
-      "audit_question": "¿Solo las cuentas autorizadas acceden a las claves de esta máquina?"
+      "audit_question": "¿Solo las cuentas autorizadas acceden a las claves de este activo?"
     },
     {
       "id": "EV-02",
@@ -153,7 +153,7 @@
       ],
       "category": "INTEGRITY",
       "criticality": "HIGH",
-      "audit_question": "¿Todas las claves privadas de esta máquina están en almacenes declarados?"
+      "audit_question": "¿Todas las claves privadas de este activo están en almacenes declarados?"
     },
     {
       "id": "EV-03",
@@ -188,7 +188,7 @@
     {
       "id": "EV-05",
       "title": "Generación de claves en medios de explotación",
-      "description": "Ejecuciones de ssh-keygen u openssl registradas por auditd en una máquina que P-05 declara medio de explotación.",
+      "description": "Ejecuciones de ssh-keygen u openssl registradas por auditd en un activo que P-05 declara medio de explotación.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -204,7 +204,7 @@
     {
       "id": "EV-06",
       "title": "Claves retiradas presentes en medios de explotación",
-      "description": "Claves que P-01 declara retiradas y que siguen en la máquina, por su huella o su ubicación.",
+      "description": "Claves que P-01 declara retiradas y que siguen en el activo, por su huella o su ubicación.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -215,7 +215,7 @@
       ],
       "category": "INTEGRITY",
       "criticality": "HIGH",
-      "audit_question": "¿Las claves retiradas ya no están en esta máquina?"
+      "audit_question": "¿Las claves retiradas ya no están en este activo?"
     },
     {
       "id": "EV-07",
@@ -232,7 +232,7 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿Los certificados de esta máquina están vigentes y con algoritmos robustos?"
+      "audit_question": "¿Los certificados de este activo están vigentes y con algoritmos robustos?"
     },
     {
       "id": "EV-08",
@@ -248,7 +248,7 @@
       ],
       "category": "ACCESS_CONTROL",
       "criticality": "HIGH",
-      "audit_question": "¿Las claves privadas de esta máquina están protegidas?"
+      "audit_question": "¿Las claves privadas de este activo están protegidas?"
     }
   ],
   "parameters": {
@@ -318,7 +318,7 @@
       ],
       "required": false,
       "agent_usage": "El agente informa de la huella y la ubicación de cada clave privada.",
-      "engine_usage": "EV-06 busca en la máquina las claves retiradas.",
+      "engine_usage": "EV-06 busca en el activo las claves retiradas.",
       "evidence_ids": [
         "EV-06"
       ],
@@ -507,7 +507,7 @@
       "evidence_ids": [
         "EV-05"
       ],
-      "if_not_configured": "Ninguna máquina se trata como medio de explotación."
+      "if_not_configured": "Ningún activo se trata como medio de explotación."
     },
     "P-06": {
       "class": "organisation",
@@ -546,7 +546,7 @@
       ],
       "required": false,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "Documental: EV-06 comprueba que no sigan en la máquina. Sale en el informe.",
+      "engine_usage": "Documental: EV-06 comprueba que no sigan en el activo. Sale en el informe.",
       "if_not_configured": "Sin efecto en el veredicto."
     },
     "P-07": {

@@ -14,7 +14,7 @@
     "D"
   ],
   "annex_section": "5.4.1",
-  "description": "mp.com.1 exige un perímetro por el que pase todo el tráfico y solo los flujos autorizados. Se juzga sobre los registros de los elementos perimetrales en Wazuh y, en cada máquina, sus interfaces, pasarelas, túneles y accesos desde internet.",
+  "description": "mp.com.1 exige un perímetro por el que pase todo el tráfico y solo los flujos autorizados. Se juzga sobre los registros de los elementos perimetrales en Wazuh y, en cada activo, sus interfaces, pasarelas, túneles y accesos desde internet.",
   "levels": [
     "BAJO",
     "MEDIO",
@@ -122,7 +122,7 @@
     {
       "id": "EV-03",
       "title": "Interfaces de red previstas",
-      "description": "Cada interfaz activa de la máquina está prevista en P-07.",
+      "description": "Cada interfaz activa del activo está prevista en P-07.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -133,12 +133,12 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿La máquina tiene solo las interfaces de red previstas?"
+      "audit_question": "¿El activo tiene solo las interfaces de red previstas?"
     },
     {
       "id": "EV-04",
       "title": "Salidas a redes externas",
-      "description": "Cada pasarela de la máquina es una salida prevista en P-03.",
+      "description": "Cada pasarela del activo es una salida prevista en P-03.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -149,12 +149,12 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿La máquina sale al exterior solo por el perímetro?"
+      "audit_question": "¿El activo sale al exterior solo por el perímetro?"
     },
     {
       "id": "EV-05",
       "title": "Túneles que eluden el perímetro",
-      "description": "La máquina no tiene interfaces de túnel activas ni herramientas de tunelización o acceso remoto fuera de P-08.",
+      "description": "El activo no tiene interfaces de túnel activas ni herramientas de tunelización o acceso remoto fuera de P-08.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -186,7 +186,7 @@
     {
       "id": "EV-07",
       "title": "Administración expuesta al exterior",
-      "description": "Ninguna autenticación en la máquina viene de una dirección de internet fuera de P-09.",
+      "description": "Ninguna autenticación en el activo viene de una dirección de internet fuera de P-09.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -198,7 +198,7 @@
       ],
       "category": "ACCESS_CONTROL",
       "criticality": "HIGH",
-      "audit_question": "¿Se administra la máquina desde internet?"
+      "audit_question": "¿Se administra el activo desde internet?"
     },
     {
       "id": "EV-08",
@@ -223,7 +223,7 @@
       "class": "organisation",
       "name": "elementos_perimetrales",
       "label": "Elementos del perímetro",
-      "description": "Cortafuegos, pasarelas, proxies inversos y concentradores VPN: tipo, ubicación y su fuente en Wazuh (el nombre del agente, el nombre de máquina de sus registros o su ubicación de registro).",
+      "description": "Cortafuegos, pasarelas, proxies inversos y concentradores VPN: tipo, ubicación y su fuente en Wazuh (el nombre del agente, el nombre de activo de sus registros o su ubicación de registro).",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -370,7 +370,7 @@
       ],
       "required": true,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "EV-04 exige cada pasarela de la máquina entre ellas.",
+      "engine_usage": "EV-04 exige cada pasarela del activo entre ellas.",
       "evidence_ids": [
         "EV-04"
       ],
@@ -445,7 +445,7 @@
       "class": "system",
       "name": "interfaces_previstas",
       "label": "Interfaces de red previstas",
-      "description": "Nombres de interfaz previstos en la máquina, admite comodines (lo, eth*, ens*).",
+      "description": "Nombres de interfaz previstos en el activo, admite comodines (lo, eth*, ens*).",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -468,7 +468,7 @@
       "class": "system",
       "name": "tuneles_autorizados",
       "label": "Túneles autorizados",
-      "description": "Interfaces de túnel y herramientas de acceso remoto autorizadas en la máquina (wg0, openvpn).",
+      "description": "Interfaces de túnel y herramientas de acceso remoto autorizadas en el activo (wg0, openvpn).",
       "levels": [
         "BAJO",
         "MEDIO",

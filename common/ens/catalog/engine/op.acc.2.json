@@ -243,7 +243,7 @@
       "class": "system",
       "name": "sistemas_en_scope",
       "label": "Sistemas incluidos en el alcance",
-      "description": "Sistemas sobre los que debe verificarse op.acc.2, identificados por nombre de máquina o IP y por sistema operativo. Lo que no figure aquí no se audita.",
+      "description": "Sistemas sobre los que debe verificarse op.acc.2, identificados por nombre de activo o IP y por sistema operativo. Lo que no figure aquí no se audita.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -263,7 +263,7 @@
         "EV-02",
         "EV-03"
       ],
-      "if_not_configured": "El control es NO EVALUABLE: sin alcance no se puede emitir semáforo. En un despliegue por agente el alcance es la propia máquina y el parámetro es informativo."
+      "if_not_configured": "El control es NO EVALUABLE: sin alcance no se puede emitir semáforo. En un despliegue por agente el alcance es el propio activo y el parámetro es informativo."
     },
     "P-02": {
       "class": "platform",
@@ -563,7 +563,7 @@
       "evidence_ids": [
         "EV-07"
       ],
-      "if_not_configured": "EV-07 se publica NO EVALUABLE, nunca CUMPLE: sembrarla con lo que hay en la máquina declararía autorizada la puerta trasera de un sistema comprometido."
+      "if_not_configured": "EV-07 se publica NO EVALUABLE, nunca CUMPLE: sembrarla con lo que hay en el activo declararía autorizada la puerta trasera de un sistema comprometido."
     },
     "P-11": {
       "class": "platform",
@@ -622,7 +622,7 @@
       ],
       "required": false,
       "agent_usage": "Define qué pertenencias se registran como group_membership privilegiada.",
-      "engine_usage": "Define qué cuenta como privilegio administrativo en la máquina.",
+      "engine_usage": "Define qué cuenta como privilegio administrativo en el activo.",
       "evidence_ids": [
         "EV-05"
       ],

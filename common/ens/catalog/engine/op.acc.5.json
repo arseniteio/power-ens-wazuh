@@ -580,7 +580,7 @@
       "class": "system",
       "name": "servicios_acceso_externo",
       "label": "Servicios acceso externo",
-      "description": "Portales, aplicaciones o endpoints donde se autentican usuarios externos (sede electrónica, portal del ciudadano, API pública, extranet de proveedores), una fila por servicio. La columna `servicio` debe ser EXACTAMENTE el nombre de OPACC5_SERVICIOS, que contrastan EV-06 y EV-09; si ninguna máquina publica servicios externos, no hay nada que declarar.",
+      "description": "Portales, aplicaciones o endpoints donde se autentican usuarios externos (sede electrónica, portal del ciudadano, API pública, extranet de proveedores), una fila por servicio. La columna `servicio` debe ser EXACTAMENTE el nombre de OPACC5_SERVICIOS, que contrastan EV-06 y EV-09; si ningún activo publica servicios externos, no hay nada que declarar.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -905,8 +905,8 @@
         }
       ],
       "required": false,
-      "agent_usage": "Con la declaración completa (motivo, referencia y enlace real) y nada medido ni acreditado en la máquina, los requisitos salen NO_APLICA con referencia y motivo, y el control queda fuera del índice sin número. Si se midió algo, la exclusión se contradice y no se aplica.",
-      "engine_usage": "Con la declaración completa (motivo, referencia y enlace real) y nada medido ni acreditado en la máquina, los requisitos salen NO_APLICA con referencia y motivo, y el control queda fuera del índice sin número. Si se midió algo, la exclusión se contradice y no se aplica.",
+      "agent_usage": "Con la declaración completa (motivo, referencia y enlace real) y nada medido ni acreditado en el activo, los requisitos salen NO_APLICA con referencia y motivo, y el control queda fuera del índice sin número. Si se midió algo, la exclusión se contradice y no se aplica.",
+      "engine_usage": "Con la declaración completa (motivo, referencia y enlace real) y nada medido ni acreditado en el activo, los requisitos salen NO_APLICA con referencia y motivo, y el control queda fuera del índice sin número. Si se midió algo, la exclusión se contradice y no se aplica.",
       "evidence_ids": [],
       "if_not_configured": "El control se evalúa normalmente: sin servicios de acceso externo, sus requisitos quedan sin demostrar y cuentan en contra."
     }

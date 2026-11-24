@@ -14,7 +14,7 @@
     "D"
   ],
   "annex_section": "4.7.3",
-  "description": "op.mon.3 exige recoger y correlacionar los eventos de seguridad y vigilar la superficie de exposición. Se juzga sobre el manager de Wazuh, las fuentes que envía cada máquina y el registro de inspecciones.",
+  "description": "op.mon.3 exige recoger y correlacionar los eventos de seguridad y vigilar la superficie de exposición. Se juzga sobre el manager de Wazuh, las fuentes que envía cada activo y el registro de inspecciones.",
   "levels": [
     "BAJO",
     "MEDIO",
@@ -219,7 +219,7 @@
     {
       "id": "EV-01",
       "title": "Recolección automática de eventos",
-      "description": "Los procesos de recepción del manager están en marcha y la máquina le envía eventos dentro de P-03 horas.",
+      "description": "Los procesos de recepción del manager están en marcha y el activo le envía eventos dentro de P-03 horas.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -230,12 +230,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Hay un sistema automático que recoge los eventos de la máquina?"
+      "audit_question": "¿Hay un sistema automático que recoge los eventos del activo?"
     },
     {
       "id": "EV-02",
       "title": "Cobertura y continuidad de la recolección",
-      "description": "Cada fuente de P-01 de la máquina la lee su agente y envía eventos dentro de sus horas.",
+      "description": "Cada fuente de P-01 del activo la lee su agente y envía eventos dentro de sus horas.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -266,7 +266,7 @@
     {
       "id": "EV-04",
       "title": "Superficie de exposición",
-      "description": "El detector de vulnerabilidades está activo sobre el inventario de paquetes de la máquina y SCA da resultados de ella.",
+      "description": "El detector de vulnerabilidades está activo sobre el inventario de paquetes del activo y SCA da resultados de él.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -276,7 +276,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Se determina la superficie de exposición de la máquina?"
+      "audit_question": "¿Se determina la superficie de exposición del activo?"
     },
     {
       "id": "EV-05",
@@ -351,7 +351,7 @@
     {
       "id": "EV-10",
       "title": "Verificación de configuración",
-      "description": "SCA verifica la configuración de la máquina de forma continua, o la última verificación de P-10 está dentro de la periodicidad de P-09.",
+      "description": "SCA verifica la configuración del activo de forma continua, o la última verificación de P-10 está dentro de la periodicidad de P-09.",
       "levels": [
         "ALTO"
       ],
@@ -365,7 +365,7 @@
     {
       "id": "EV-11",
       "title": "Análisis de vulnerabilidades",
-      "description": "El detector de vulnerabilidades analiza la máquina de forma continua, o el último análisis de P-10 está dentro de la periodicidad de P-09.",
+      "description": "El detector de vulnerabilidades analiza el activo de forma continua, o el último análisis de P-10 está dentro de la periodicidad de P-09.",
       "levels": [
         "ALTO"
       ],
@@ -396,7 +396,7 @@
       "class": "organisation",
       "name": "fuentes_eventos_seguridad",
       "label": "Fuentes de eventos de seguridad",
-      "description": "Fuentes que deben recogerse, una por fila: nombre, máquina (su nombre en Wazuh o * para todas), fichero que lee el agente y horas máximas sin eventos.",
+      "description": "Fuentes que deben recogerse, una por fila: nombre, activo (su nombre en Wazuh o * para todos), fichero que lee el agente y horas máximas sin eventos.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -435,7 +435,7 @@
       ],
       "required": true,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "EV-02 exige cada fuente de la máquina leída por su agente y con eventos dentro de sus horas.",
+      "engine_usage": "EV-02 exige cada fuente del activo leída por su agente y con eventos dentro de sus horas.",
       "evidence_ids": [
         "EV-02"
       ],
@@ -480,8 +480,8 @@
     "P-03": {
       "class": "system",
       "name": "horas_maximas_sin_eventos",
-      "label": "Horas máximas sin eventos de la máquina",
-      "description": "Horas que una máquina puede pasar sin enviar eventos al manager.",
+      "label": "Horas máximas sin eventos del activo",
+      "description": "Horas que un activo puede pasar sin enviar eventos al manager.",
       "levels": [
         "BAJO",
         "MEDIO",

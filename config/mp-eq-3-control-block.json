@@ -28,7 +28,7 @@
       "example": "PRT-014 | portátil | J. Gómez | MEDIO",
       "required": true,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "Las máquinas de P-01 y las de chasis portátil se juzgan; EV-01 exige responsable y EV-04 cifrado desde MEDIO.",
+      "powerEnsUsage": "Los activos de P-01 y las de chasis portátil se juzgan; EV-01 exige responsable y EV-04 cifrado desde MEDIO.",
       "evidenceIds": [
         "EV-01",
         "EV-04"

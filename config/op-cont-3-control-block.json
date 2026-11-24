@@ -342,12 +342,12 @@
       "example": "srv-web | 4 | 15",
       "required": false,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "EV-04 compara la caída más larga de la máquina en cada prueba con su RTO.",
+      "powerEnsUsage": "EV-04 compara la caída más larga del activo en cada prueba con su RTO.",
       "evidenceIds": [
         "EV-04"
       ],
       "ruleIds": [],
-      "ifNotConfigured": "EV-04 queda sin demostrar en las máquinas probadas.",
+      "ifNotConfigured": "EV-04 queda sin demostrar en los activos probados.",
       "columns": [
         {
           "name": "sistema",

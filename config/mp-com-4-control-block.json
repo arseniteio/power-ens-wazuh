@@ -202,7 +202,7 @@
       "controlId": "mp.com.4",
       "name": "puntos_interconexion",
       "label": "Puntos de interconexión",
-      "description": "Puntos de interconexión entre segmentos: segmentos que unen, el equipo que los controla (su nombre en Wazuh si es una máquina) y su fuente de registros en Wazuh.",
+      "description": "Puntos de interconexión entre segmentos: segmentos que unen, el equipo que los controla (su nombre en Wazuh si es un activo) y su fuente de registros en Wazuh.",
       "levels": [
         "MEDIO",
         "ALTO"

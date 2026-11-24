@@ -37,7 +37,7 @@
       "controlId": "mp.s.3",
       "name": "filtrado_navegacion",
       "label": "Filtrado de la navegación",
-      "description": "Proxies o pasarelas de filtrado: máquina con agente si la tienen y fuente de sus registros en Wazuh.",
+      "description": "Proxies o pasarelas de filtrado: activo con agente si la tienen y fuente de sus registros en Wazuh.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -66,7 +66,7 @@
         },
         {
           "name": "maquina",
-          "label": "Máquina",
+          "label": "Activo",
           "type": "string",
           "required": false
         },
@@ -148,7 +148,7 @@
       "controlId": "mp.s.3",
       "name": "resolutores_autorizados",
       "label": "Resolutores DNS autorizados",
-      "description": "Servidores DNS a los que pueden preguntar las máquinas (dirección o CIDR).",
+      "description": "Servidores DNS a los que pueden preguntar los activos (dirección o CIDR).",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -161,7 +161,7 @@
       "example": "10.0.0.53, 10.0.0.54",
       "required": true,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "EV-05 exige cada servidor de la máquina entre ellos.",
+      "powerEnsUsage": "EV-05 exige cada servidor del activo entre ellos.",
       "evidenceIds": [
         "EV-05"
       ],

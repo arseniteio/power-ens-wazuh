@@ -208,7 +208,7 @@
       "example": "buzon | rsi@organizacion.es",
       "required": false,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "Documental: la comunicación no deja huella en la máquina. r1.2 se acredita con P-ATT.",
+      "powerEnsUsage": "Documental: la comunicación no deja huella en el activo. r1.2 se acredita con P-ATT.",
       "evidenceIds": [],
       "ruleIds": [],
       "ifNotConfigured": "Sin efecto en el veredicto.",

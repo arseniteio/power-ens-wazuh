@@ -10,7 +10,7 @@
     "D"
   ],
   "annex_section": "5.7.6",
-  "description": "mp.info.6 exige copias de seguridad que permitan recuperar los datos. Se juzga sobre las copias que cada máquina declara en P-04: su fecha, retención, acceso y ubicación, y las pruebas de restauración registradas.",
+  "description": "mp.info.6 exige copias de seguridad que permitan recuperar los datos. Se juzga sobre las copias que cada activo declara en P-04: su fecha, retención, acceso y ubicación, y las pruebas de restauración registradas.",
   "levels": [
     "BAJO",
     "MEDIO",
@@ -219,7 +219,7 @@
     {
       "id": "EV-05",
       "title": "Prueba de restauración",
-      "description": "La última restauración correcta de una copia de la máquina en P-06 no supera el plazo de P-05.",
+      "description": "La última restauración correcta de una copia del activo en P-06 no supera el plazo de P-05.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -233,8 +233,8 @@
     },
     {
       "id": "EV-06",
-      "title": "Copia fuera de la máquina",
-      "description": "Al menos una copia guarda sus copias en un sistema de ficheros de otra máquina (NFS, SMB, SSHFS, S3...).",
+      "title": "Copia fuera del activo",
+      "description": "Al menos una copia guarda sus copias en un sistema de ficheros de otro activo (NFS, SMB, SSHFS, S3...).",
       "levels": [
         "ALTO"
       ],
@@ -243,7 +243,7 @@
       ],
       "category": "AVAILABILITY",
       "criticality": "HIGH",
-      "audit_question": "¿Hay una copia guardada fuera de la máquina?"
+      "audit_question": "¿Hay una copia guardada fuera del activo?"
     }
   ],
   "parameters": {
@@ -326,8 +326,8 @@
     "P-04": {
       "class": "system",
       "name": "copias",
-      "label": "Copias de la máquina",
-      "description": "Copias que se hacen o guardan en la máquina, una por fila: nombre, ruta (un directorio, un patrón de ficheros como /var/backups/db-*.dump o git:/etc), y su frecuencia y retención si difieren de P-01 y P-03.",
+      "label": "Copias del activo",
+      "description": "Copias que se hacen o guardan en el activo, una por fila: nombre, ruta (un directorio, un patrón de ficheros como /var/backups/db-*.dump o git:/etc), y su frecuencia y retención si difieren de P-01 y P-03.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -367,7 +367,7 @@
       ],
       "required": false,
       "agent_usage": "El motor pasa las rutas a la configuración del grupo; el agente data la copia más reciente y la más antigua de cada una, su tamaño, quién puede leerlas y el sistema de ficheros donde están.",
-      "engine_usage": "Define qué copias se juzgan en EV-01 a EV-04 y EV-06. Una máquina sin copias declaradas queda fuera de mp.info.6.",
+      "engine_usage": "Define qué copias se juzgan en EV-01 a EV-04 y EV-06. Un activo sin copias declaradas queda fuera de mp.info.6.",
       "evidence_ids": [
         "EV-01",
         "EV-02",
@@ -375,7 +375,7 @@
         "EV-04",
         "EV-06"
       ],
-      "if_not_configured": "La máquina queda fuera de mp.info.6 (NO_APLICA)."
+      "if_not_configured": "El activo queda fuera de mp.info.6 (NO_APLICA)."
     },
     "P-05": {
       "class": "organisation",
@@ -404,7 +404,7 @@
       "class": "organisation",
       "name": "registro_pruebas_restauracion",
       "label": "Registro de pruebas de restauración",
-      "description": "Una fila por prueba: fecha, máquina cuyas copias se restauran, copia, resultado y cómo se verificó el contenido.",
+      "description": "Una fila por prueba: fecha, activo cuyas copias se restauran, copia, resultado y cómo se verificó el contenido.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -423,7 +423,7 @@
         },
         {
           "name": "maquina",
-          "label": "Máquina",
+          "label": "Activo",
           "type": "string",
           "required": true
         },
@@ -452,7 +452,7 @@
       ],
       "required": true,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "EV-05 toma la restauración correcta más reciente de la máquina.",
+      "engine_usage": "EV-05 toma la restauración correcta más reciente del activo.",
       "evidence_ids": [
         "EV-05"
       ],
@@ -485,7 +485,7 @@
       "class": "system",
       "name": "claves_cifrado",
       "label": "Claves de cifrado de las copias",
-      "description": "Ruta de cada fichero de clave que cifra las copias de la máquina.",
+      "description": "Ruta de cada fichero de clave que cifra las copias del activo.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -652,7 +652,7 @@
     {
       "id": "separacion",
       "title": "Copia separada",
-      "description": "Copias guardadas en otra máquina.",
+      "description": "Copias guardadas en otro activo.",
       "evidences": [
         "EV-06"
       ],

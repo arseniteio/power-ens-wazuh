@@ -32,7 +32,7 @@
         "EV-07"
       ],
       "ruleIds": [],
-      "ifNotConfigured": "EV-07 queda sin demostrar: ninguna máquina tiene responsable declarado.",
+      "ifNotConfigured": "EV-07 queda sin demostrar: ningún activo tiene responsable declarado.",
       "columns": [
         {
           "name": "activo",
@@ -129,7 +129,7 @@
       "example": "HW servidor, HW red, SW aplicación, SW base, servicio, soporte, instalación",
       "required": false,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "EV-07 comprueba que la naturaleza de la máquina en P-01 sea una de esta lista.",
+      "powerEnsUsage": "EV-07 comprueba que la naturaleza del activo en P-01 sea una de esta lista.",
       "evidenceIds": [
         "EV-07"
       ],
@@ -237,7 +237,7 @@
       "controlId": "op.exp.1",
       "name": "antiguedad_maxima_inventario_horas",
       "label": "Antigüedad máxima del inventario técnico (horas)",
-      "description": "Horas que puede pasar una máquina sin renovar su inventario ni contactar con el manager. Syscollector escanea cada hora por defecto.",
+      "description": "Horas que puede pasar un activo sin renovar su inventario ni contactar con el manager. Syscollector escanea cada hora por defecto.",
       "levels": [
         "BAJO",
         "MEDIO",

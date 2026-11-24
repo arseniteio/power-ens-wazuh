@@ -71,7 +71,7 @@
       "example": "srv-web-01 | Ubuntu 24.04 | servidor web",
       "required": false,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "Documental: cada máquina del alcance se juzga. Sale en el informe.",
+      "powerEnsUsage": "Documental: cada activo del alcance se juzga. Sale en el informe.",
       "evidenceIds": [],
       "ruleIds": [],
       "ifNotConfigured": "Sin efecto en el veredicto.",
@@ -436,7 +436,7 @@
       "example": "firewall-drop | fuerza bruta SSH | servidores | 600 s",
       "required": true,
       "wazuhUsage": "El agente informa de los scripts de respuesta activa.",
-      "powerEnsUsage": "EV-11 exige cada acción enviada a la máquina e instalada.",
+      "powerEnsUsage": "EV-11 exige cada acción enviada al activo e instalada en él.",
       "evidenceIds": [
         "EV-11"
       ],
@@ -474,7 +474,7 @@
       "controlId": "op.exp.8",
       "name": "antiguedad_maxima_keepalive_horas",
       "label": "Silencio máximo tolerado de un servidor (horas)",
-      "description": "Horas que puede pasar una máquina sin comunicar con el manager ni dejar registro de monitorización.",
+      "description": "Horas que puede pasar un activo sin comunicar con el manager ni dejar registro de monitorización.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -551,7 +551,7 @@
       "controlId": "op.exp.8",
       "name": "rutas_registros_actividad",
       "label": "Rutas de los registros de actividad",
-      "description": "Ficheros y directorios de los registros de actividad de la máquina cuyo acceso se controla.",
+      "description": "Ficheros y directorios de los registros de actividad del activo cuyo acceso se controla.",
       "levels": [
         "MEDIO",
         "ALTO"

@@ -14,7 +14,7 @@
     "D"
   ],
   "annex_section": "4.3.8",
-  "description": "op.exp.8 es el control en el que Wazuh es el propio control: cada máquina registra su actividad con los campos mínimos y la entrega sin huecos, el reloj está sincronizado, la retención y las copias del indexer son las declaradas y solo el personal autorizado lee los registros.",
+  "description": "op.exp.8 es el control en el que Wazuh es el propio control: cada activo registra su actividad con los campos mínimos y la entrega sin huecos, el reloj está sincronizado, la retención y las copias del indexer son las declaradas y solo el personal autorizado lee los registros.",
   "levels": [
     "BAJO",
     "MEDIO",
@@ -179,7 +179,7 @@
     {
       "id": "EV-01",
       "title": "Generación y conservación del registro de auditoría",
-      "description": "auditd activo en la máquina y Wazuh leyendo su registro de auditoría y un registro del sistema (journald, syslog o auth.log).",
+      "description": "auditd activo en el activo y Wazuh leyendo su registro de auditoría y un registro del sistema (journald, syslog o auth.log).",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -190,7 +190,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Esta máquina genera y entrega su registro de auditoría?"
+      "audit_question": "¿Este activo genera y entrega su registro de auditoría?"
     },
     {
       "id": "EV-02",
@@ -206,7 +206,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿El agente de esta máquina está entregando su registro?"
+      "audit_question": "¿El agente de este activo está entregando su registro?"
     },
     {
       "id": "EV-03",
@@ -222,7 +222,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Los registros de auditoría de esta máquina traen los campos mínimos?"
+      "audit_question": "¿Los registros de auditoría de este activo traen los campos mínimos?"
     },
     {
       "id": "EV-04",
@@ -239,7 +239,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Esta máquina ha entregado su registro sin huecos?"
+      "audit_question": "¿Este activo ha entregado su registro sin huecos?"
     },
     {
       "id": "EV-05",
@@ -259,7 +259,7 @@
     {
       "id": "EV-06",
       "title": "Sincronización del reloj y protección de la referencia de tiempo (R2)",
-      "description": "Servicio de sincronización de la máquina, si está sincronizada, su desfase frente a P-06, sus fuentes frente a P-05 y si están autenticadas.",
+      "description": "Servicio de sincronización del activo, si está sincronizado, su desfase frente a P-06, sus fuentes frente a P-05 y si están autenticadas.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -269,7 +269,7 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿El reloj de esta máquina está sincronizado con una referencia protegida?"
+      "audit_question": "¿El reloj de este activo está sincronizado con una referencia protegida?"
     },
     {
       "id": "EV-07",
@@ -299,7 +299,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Solo el personal autorizado puede leer los registros de esta máquina?"
+      "audit_question": "¿Solo el personal autorizado puede leer los registros de este activo?"
     },
     {
       "id": "EV-09",
@@ -333,7 +333,7 @@
     {
       "id": "EV-11",
       "title": "Sistema automático de recolección, correlación y respuesta (R5)",
-      "description": "Cada acción de respuesta automática de P-11 es una respuesta activa que el manager envía a la máquina y cuyo script está en ella.",
+      "description": "Cada acción de respuesta automática de P-11 es una respuesta activa que el manager envía al activo y cuyo script está en él.",
       "levels": [
         "ALTO"
       ],
@@ -342,12 +342,12 @@
       ],
       "category": "MONITORING",
       "criticality": "MEDIUM",
-      "audit_question": "¿Las respuestas automáticas previstas están desplegadas en esta máquina?"
+      "audit_question": "¿Las respuestas automáticas previstas están desplegadas en este activo?"
     },
     {
       "id": "EV-12",
       "title": "Respuestas automáticas ejecutadas (R5)",
-      "description": "Respuestas activas ejecutadas en la máquina en el periodo.",
+      "description": "Respuestas activas ejecutadas en el activo en el periodo.",
       "levels": [
         "ALTO"
       ],
@@ -356,7 +356,7 @@
       ],
       "category": "MONITORING",
       "criticality": "MEDIUM",
-      "audit_question": "¿Qué respuestas automáticas se han ejecutado en esta máquina?"
+      "audit_question": "¿Qué respuestas automáticas se han ejecutado en este activo?"
     },
     {
       "id": "EV-13",
@@ -373,7 +373,7 @@
       ],
       "category": "INTEGRITY",
       "criticality": "HIGH",
-      "audit_question": "¿El sistema de registro de esta máquina está protegido?"
+      "audit_question": "¿El sistema de registro de este activo está protegido?"
     }
   ],
   "parameters": {
@@ -455,7 +455,7 @@
       ],
       "required": false,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "Documental: cada máquina del alcance se juzga. Sale en el informe.",
+      "engine_usage": "Documental: cada activo del alcance se juzga. Sale en el informe.",
       "if_not_configured": "Sin efecto en el veredicto."
     },
     "P-03": {
@@ -806,7 +806,7 @@
       ],
       "required": true,
       "agent_usage": "El agente informa de los scripts de respuesta activa.",
-      "engine_usage": "EV-11 exige cada acción enviada a la máquina e instalada.",
+      "engine_usage": "EV-11 exige cada acción enviada al activo e instalada en él.",
       "evidence_ids": [
         "EV-11"
       ],
@@ -816,7 +816,7 @@
       "class": "system",
       "name": "antiguedad_maxima_keepalive_horas",
       "label": "Silencio máximo tolerado de un servidor (horas)",
-      "description": "Horas que puede pasar una máquina sin comunicar con el manager ni dejar registro de monitorización.",
+      "description": "Horas que puede pasar un activo sin comunicar con el manager ni dejar registro de monitorización.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -889,7 +889,7 @@
       "class": "platform",
       "name": "rutas_registros_actividad",
       "label": "Rutas de los registros de actividad",
-      "description": "Ficheros y directorios de los registros de actividad de la máquina cuyo acceso se controla.",
+      "description": "Ficheros y directorios de los registros de actividad del activo cuyo acceso se controla.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -1026,7 +1026,7 @@
     {
       "id": "acceso",
       "title": "Acceso a los registros",
-      "description": "Quién puede leer los registros de cada máquina.",
+      "description": "Quién puede leer los registros de cada activo.",
       "evidences": [
         "EV-08"
       ],

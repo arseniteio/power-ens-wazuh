@@ -39,7 +39,7 @@
       "controlId": "op.exp.3",
       "name": "lista_servicios_autorizados",
       "label": "Servicios autorizados por perfil",
-      "description": "Servicios autorizados en la máquina: unidades de systemd (ssh.service; getty@.service cubre cada getty@tty1.service) y procesos que escuchan fuera de una unidad.",
+      "description": "Servicios autorizados en el activo: unidades de systemd (ssh.service; getty@.service cubre cada getty@tty1.service) y procesos que escuchan fuera de una unidad.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -168,7 +168,7 @@
       "controlId": "op.exp.3",
       "name": "config_backup_destino",
       "label": "Alcance y destino de las copias de la configuración",
-      "description": "Copias de la configuración, una fila por alcance: alcance, fuente en la máquina (git:/etc para un directorio git como etckeeper, o un patrón de ficheros como /var/backups/etc-*.tgz) y destino.",
+      "description": "Copias de la configuración, una fila por alcance: alcance, fuente en el activo (git:/etc para un directorio git como etckeeper, o un patrón de ficheros como /var/backups/etc-*.tgz) y destino.",
       "levels": [
         "ALTO"
       ],

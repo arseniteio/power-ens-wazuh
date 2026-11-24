@@ -13,7 +13,7 @@
       "controlId": "mp.s.4",
       "name": "servicios_expuestos",
       "label": "Servicios expuestos",
-      "description": "Servicios expuestos a redes públicas: máquina con agente que los sirve, criticidad y disponibilidad comprometida.",
+      "description": "Servicios expuestos a redes públicas: activo con agente que los sirve, criticidad y disponibilidad comprometida.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -25,7 +25,7 @@
       "example": "sede | srv-web01 | alta | 99,5 %",
       "required": true,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "mp.s.4 se juzga en sus máquinas.",
+      "powerEnsUsage": "mp.s.4 se juzga en sus activos.",
       "evidenceIds": [
         "EV-01",
         "EV-02",
@@ -42,7 +42,7 @@
         },
         {
           "name": "maquina",
-          "label": "Máquina",
+          "label": "Activo",
           "type": "string",
           "required": true
         },

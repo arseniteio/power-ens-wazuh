@@ -153,7 +153,7 @@
     {
       "id": "EV-01",
       "title": "Inventario continuo de vulnerabilidades por activo",
-      "description": "Vulnerabilidades abiertas de cada máquina que detecta Wazuh cruzando su inventario de paquetes con los boletines de los fabricantes. Se da por al día si el inventario de paquetes lo está (op.exp.1). Cubre de hecho R4.",
+      "description": "Vulnerabilidades abiertas de cada activo que detecta Wazuh cruzando su inventario de paquetes con los boletines de los fabricantes. Se da por al día si el inventario de paquetes lo está (op.exp.1). Cubre de hecho R4.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -166,7 +166,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Wazuh mantiene al día las vulnerabilidades de esta máquina?"
+      "audit_question": "¿Wazuh mantiene al día las vulnerabilidades de este activo?"
     },
     {
       "id": "EV-02",
@@ -182,12 +182,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Alguna vulnerabilidad de esta máquina sigue abierta pasado el plazo de su criticidad?"
+      "audit_question": "¿Alguna vulnerabilidad de este activo sigue abierta pasado el plazo de su criticidad?"
     },
     {
       "id": "EV-03",
       "title": "Estado de parcheado del parque",
-      "description": "Actualizaciones pendientes, de ellas las de seguridad, y antigüedad de las listas de paquetes: una máquina que no las renueva no conoce las actualizaciones del fabricante.",
+      "description": "Actualizaciones pendientes, de ellas las de seguridad, y antigüedad de las listas de paquetes: un activo que no las renueva no conoce las actualizaciones del fabricante.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -198,7 +198,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Esta máquina renueva sus listas de paquetes dentro de P-10 y cuántas actualizaciones tiene pendientes?"
+      "audit_question": "¿Este activo renueva sus listas de paquetes dentro de P-10 y cuántas actualizaciones tiene pendientes?"
     },
     {
       "id": "EV-04",
@@ -214,12 +214,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Solo el personal de P-02 ha instalado, actualizado o desinstalado software en esta máquina?"
+      "audit_question": "¿Solo el personal de P-02 ha instalado, actualizado o desinstalado software en este activo?"
     },
     {
       "id": "EV-05",
       "title": "Software fuera de soporte del fabricante",
-      "description": "Sistema operativo de la máquina frente a su fin de soporte en P-05. Sin soporte no hay actualizaciones de seguridad.",
+      "description": "Sistema operativo del activo frente a su fin de soporte en P-05. Sin soporte no hay actualizaciones de seguridad.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -230,7 +230,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿El sistema operativo de esta máquina sigue con soporte del fabricante?"
+      "audit_question": "¿El sistema operativo de este activo sigue con soporte del fabricante?"
     },
     {
       "id": "EV-06",
@@ -246,12 +246,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Todo fabricante del software de esta máquina tiene una fuente de anuncios en P-03?"
+      "audit_question": "¿Todo fabricante del software de este activo tiene una fuente de anuncios en P-03?"
     },
     {
       "id": "EV-07",
       "title": "Actualizaciones aplicadas fuera de ventana de mantenimiento",
-      "description": "Transacciones de apt del periodo frente a las ventanas de mantenimiento de P-04, en la hora local de la máquina.",
+      "description": "Transacciones de apt del periodo frente a las ventanas de mantenimiento de P-04, en la hora local del activo.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -262,12 +262,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Todo cambio de software de esta máquina se hizo dentro de su ventana de P-04?"
+      "audit_question": "¿Todo cambio de software de este activo se hizo dentro de su ventana de P-04?"
     },
     {
       "id": "EV-08",
       "title": "Trazabilidad del paso por preproducción (R1)",
-      "description": "Cada versión instalada en una máquina de producción tiene que haberse instalado antes en su preproducción de P-06, o estar allí ahora.",
+      "description": "Cada versión instalada en un activo de producción tiene que haberse instalado antes en su preproducción de P-06, o estar allí ahora.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -431,7 +431,7 @@
       "class": "system",
       "name": "ventanas_mantenimiento",
       "label": "Ventanas de mantenimiento",
-      "description": "Ventanas de mantenimiento por máquina (nombre del agente, o * para las demás): tramos separados por ; con día (lun…dom, o *) y horas en hora local; un tramo que acaba antes de empezar cruza la medianoche.",
+      "description": "Ventanas de mantenimiento por activo (nombre del agente, o * para las demás): tramos separados por ; con día (lun…dom, o *) y horas en hora local; un tramo que acaba antes de empezar cruza la medianoche.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -458,7 +458,7 @@
       ],
       "required": true,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "EV-07 falla con una transacción que empieza fuera de las ventanas de la máquina.",
+      "engine_usage": "EV-07 falla con una transacción que empieza fuera de las ventanas del activo.",
       "evidence_ids": [
         "EV-07"
       ],
@@ -501,7 +501,7 @@
       ],
       "required": true,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "EV-05 falla si el sistema operativo de la máquina ha pasado su fin de soporte.",
+      "engine_usage": "EV-05 falla si el sistema operativo del activo ha pasado su fin de soporte.",
       "evidence_ids": [
         "EV-05"
       ],
@@ -511,7 +511,7 @@
       "class": "organisation",
       "name": "entorno_preproduccion",
       "label": "Entorno de preproducción",
-      "description": "Parejas de máquina de producción y su preproducción (nombres de agente), con la referencia que acredita que su configuración es consistente.",
+      "description": "Parejas de activo de producción y su preproducción (nombres de agente), con la referencia que acredita que su configuración es consistente.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -553,7 +553,7 @@
       "class": "organisation",
       "name": "mecanismo_reversion",
       "label": "Mecanismo de reversión",
-      "description": "Mecanismo de reversión por máquina (nombre del agente, o *): mecanismo, evidencia y horas antes del cambio en que debe existir el punto de reversión.",
+      "description": "Mecanismo de reversión por activo (nombre del agente, o *): mecanismo, evidencia y horas antes del cambio en que debe existir el punto de reversión.",
       "levels": [
         "ALTO"
       ],
@@ -650,7 +650,7 @@
       "class": "organisation",
       "name": "antiguedad_maxima_listas_dias",
       "label": "Antigüedad máxima de las listas de paquetes (días)",
-      "description": "Días que pueden pasar sin renovar las listas de paquetes; por encima, la máquina no conoce las actualizaciones del fabricante.",
+      "description": "Días que pueden pasar sin renovar las listas de paquetes; por encima, el activo no conoce las actualizaciones del fabricante.",
       "levels": [
         "BAJO",
         "MEDIO",

@@ -95,8 +95,8 @@
       "id": "P-04",
       "controlId": "mp.info.6",
       "name": "copias",
-      "label": "Copias de la máquina",
-      "description": "Copias que se hacen o guardan en la máquina, una por fila: nombre, ruta (un directorio, un patrón de ficheros como /var/backups/db-*.dump o git:/etc), y su frecuencia y retención si difieren de P-01 y P-03.",
+      "label": "Copias del activo",
+      "description": "Copias que se hacen o guardan en el activo, una por fila: nombre, ruta (un directorio, un patrón de ficheros como /var/backups/db-*.dump o git:/etc), y su frecuencia y retención si difieren de P-01 y P-03.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -110,7 +110,7 @@
       "example": "base de datos | /srv/copias/db | 24 | 30",
       "required": false,
       "wazuhUsage": "El motor pasa las rutas a la configuración del grupo; el agente data la copia más reciente y la más antigua de cada una, su tamaño, quién puede leerlas y el sistema de ficheros donde están.",
-      "powerEnsUsage": "Define qué copias se juzgan en EV-01 a EV-04 y EV-06. Una máquina sin copias declaradas queda fuera de mp.info.6.",
+      "powerEnsUsage": "Define qué copias se juzgan en EV-01 a EV-04 y EV-06. Un activo sin copias declaradas queda fuera de mp.info.6.",
       "evidenceIds": [
         "EV-01",
         "EV-02",
@@ -119,7 +119,7 @@
         "EV-06"
       ],
       "ruleIds": [],
-      "ifNotConfigured": "La máquina queda fuera de mp.info.6 (NO_APLICA).",
+      "ifNotConfigured": "El activo queda fuera de mp.info.6 (NO_APLICA).",
       "columns": [
         {
           "name": "copia",
@@ -177,7 +177,7 @@
       "controlId": "mp.info.6",
       "name": "registro_pruebas_restauracion",
       "label": "Registro de pruebas de restauración",
-      "description": "Una fila por prueba: fecha, máquina cuyas copias se restauran, copia, resultado y cómo se verificó el contenido.",
+      "description": "Una fila por prueba: fecha, activo cuyas copias se restauran, copia, resultado y cómo se verificó el contenido.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -189,7 +189,7 @@
       "example": "2026-10-20 | srv-bd01 | base de datos | correcta | suma SHA-256 del testigo",
       "required": true,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "EV-05 toma la restauración correcta más reciente de la máquina.",
+      "powerEnsUsage": "EV-05 toma la restauración correcta más reciente del activo.",
       "evidenceIds": [
         "EV-05"
       ],
@@ -204,7 +204,7 @@
         },
         {
           "name": "maquina",
-          "label": "Máquina",
+          "label": "Activo",
           "type": "string",
           "required": true
         },
@@ -262,7 +262,7 @@
       "controlId": "mp.info.6",
       "name": "claves_cifrado",
       "label": "Claves de cifrado de las copias",
-      "description": "Ruta de cada fichero de clave que cifra las copias de la máquina.",
+      "description": "Ruta de cada fichero de clave que cifra las copias del activo.",
       "levels": [
         "BAJO",
         "MEDIO",

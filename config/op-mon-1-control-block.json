@@ -14,7 +14,7 @@
       "controlId": "op.mon.1",
       "name": "necesidad_deteccion_red",
       "label": "Detección en red",
-      "description": "Si el análisis de riesgos exige detección de intrusiones en red además de en las máquinas, con qué producto y por qué. Una sola fila.",
+      "description": "Si el análisis de riesgos exige detección de intrusiones en red además de en los activos, con qué producto y por qué. Una sola fila.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -315,7 +315,7 @@
       "controlId": "op.mon.1",
       "name": "dias_maximos_sin_deteccion",
       "label": "Días máximos sin detección",
-      "description": "Días que una máquina puede pasar sin ninguna alerta antes de considerar que la detección no funciona en ella.",
+      "description": "Días que un activo puede pasar sin ninguna alerta antes de considerar que la detección no funciona en él.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -344,7 +344,7 @@
       "controlId": "op.mon.1",
       "name": "horas_maximas_sin_informar",
       "label": "Horas máximas sin informar al manager",
-      "description": "Horas que una máquina puede pasar sin informar al manager.",
+      "description": "Horas que un activo puede pasar sin informar al manager.",
       "levels": [
         "BAJO",
         "MEDIO",

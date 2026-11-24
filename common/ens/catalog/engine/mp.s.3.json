@@ -14,7 +14,7 @@
     "D"
   ],
   "annex_section": "5.8.3",
-  "description": "mp.s.3 exige proteger la navegación web: filtrado, resolución de nombres, protección del puesto, registro y concienciación. Se juzga sobre los registros y reglas del filtrado en Wazuh y, en cada máquina, sus servidores DNS y su antimalware.",
+  "description": "mp.s.3 exige proteger la navegación web: filtrado, resolución de nombres, protección del puesto, registro y concienciación. Se juzga sobre los registros y reglas del filtrado en Wazuh y, en cada activo, sus servidores DNS y su antimalware.",
   "levels": [
     "BAJO",
     "MEDIO",
@@ -289,7 +289,7 @@
     {
       "id": "EV-05",
       "title": "Resolución de nombres protegida",
-      "description": "Cada servidor DNS al que pregunta la máquina está entre los resolutores autorizados de P-04.",
+      "description": "Cada servidor DNS al que pregunta el activo está entre los resolutores autorizados de P-04.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -300,12 +300,12 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿La máquina resuelve nombres solo con resolutores autorizados?"
+      "audit_question": "¿El activo resuelve nombres solo con resolutores autorizados?"
     },
     {
       "id": "EV-06",
       "title": "Protección del puesto frente a la navegación",
-      "description": "La máquina tiene antimalware en marcha (como op.exp.6 EV-01).",
+      "description": "El activo tiene antimalware en marcha (como op.exp.6 EV-01).",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -422,7 +422,7 @@
       "class": "organisation",
       "name": "filtrado_navegacion",
       "label": "Filtrado de la navegación",
-      "description": "Proxies o pasarelas de filtrado: máquina con agente si la tienen y fuente de sus registros en Wazuh.",
+      "description": "Proxies o pasarelas de filtrado: activo con agente si la tienen y fuente de sus registros en Wazuh.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -443,7 +443,7 @@
         },
         {
           "name": "maquina",
-          "label": "Máquina",
+          "label": "Activo",
           "type": "string",
           "required": false
         },
@@ -529,7 +529,7 @@
       "class": "organisation",
       "name": "resolutores_autorizados",
       "label": "Resolutores DNS autorizados",
-      "description": "Servidores DNS a los que pueden preguntar las máquinas (dirección o CIDR).",
+      "description": "Servidores DNS a los que pueden preguntar los activos (dirección o CIDR).",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -542,7 +542,7 @@
       "example": "10.0.0.53, 10.0.0.54",
       "required": true,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "EV-05 exige cada servidor de la máquina entre ellos.",
+      "engine_usage": "EV-05 exige cada servidor del activo entre ellos.",
       "evidence_ids": [
         "EV-05"
       ],

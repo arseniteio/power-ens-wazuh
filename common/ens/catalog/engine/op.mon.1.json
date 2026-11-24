@@ -14,7 +14,7 @@
     "D"
   ],
   "annex_section": "4.7.1",
-  "description": "op.mon.1 exige herramientas de detección o prevención de intrusiones. Se juzga sobre el manager de Wazuh (procesos, reglas, exclusiones y respuesta activa, leídos por su API) y las alertas de cada máquina.",
+  "description": "op.mon.1 exige herramientas de detección o prevención de intrusiones. Se juzga sobre el manager de Wazuh (procesos, reglas, exclusiones y respuesta activa, leídos por su API) y las alertas de cada activo.",
   "levels": [
     "BAJO",
     "MEDIO",
@@ -122,8 +122,8 @@
     },
     {
       "id": "EV-02",
-      "title": "Cobertura de la detección en la máquina",
-      "description": "La máquina informa al manager dentro de P-09 horas y tiene FIM y SCA activos.",
+      "title": "Cobertura de la detección en el activo",
+      "description": "El activo informa al manager dentro de P-09 horas y tiene FIM y SCA activos.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -134,12 +134,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿La máquina está bajo la detección de intrusiones?"
+      "audit_question": "¿El activo está bajo la detección de intrusiones?"
     },
     {
       "id": "EV-03",
       "title": "Detecciones del período",
-      "description": "La máquina tiene alguna alerta, sin contar los hechos de OSCompliance, en los últimos P-08 días.",
+      "description": "El activo tiene alguna alerta, sin contar los hechos de OSCompliance, en los últimos P-08 días.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -150,7 +150,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿La detección produce resultados en la máquina?"
+      "audit_question": "¿La detección produce resultados en el activo?"
     },
     {
       "id": "EV-04",
@@ -222,7 +222,7 @@
       "class": "organisation",
       "name": "necesidad_deteccion_red",
       "label": "Detección en red",
-      "description": "Si el análisis de riesgos exige detección de intrusiones en red además de en las máquinas, con qué producto y por qué. Una sola fila.",
+      "description": "Si el análisis de riesgos exige detección de intrusiones en red además de en los activos, con qué producto y por qué. Una sola fila.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -508,7 +508,7 @@
       "class": "organisation",
       "name": "dias_maximos_sin_deteccion",
       "label": "Días máximos sin detección",
-      "description": "Días que una máquina puede pasar sin ninguna alerta antes de considerar que la detección no funciona en ella.",
+      "description": "Días que un activo puede pasar sin ninguna alerta antes de considerar que la detección no funciona en él.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -535,7 +535,7 @@
       "class": "organisation",
       "name": "horas_maximas_sin_informar",
       "label": "Horas máximas sin informar al manager",
-      "description": "Horas que una máquina puede pasar sin informar al manager.",
+      "description": "Horas que un activo puede pasar sin informar al manager.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -611,7 +611,7 @@
     {
       "id": "despliegue",
       "title": "Detección desplegada",
-      "description": "Procesos, reglas y cobertura de la máquina.",
+      "description": "Procesos, reglas y cobertura del activo.",
       "evidences": [
         "EV-01",
         "EV-02",

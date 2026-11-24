@@ -11,7 +11,7 @@
     "A"
   ],
   "annex_section": "5.4.3",
-  "description": "mp.com.3 exige asegurar la autenticidad del otro extremo y prevenir los ataques activos en las comunicaciones. Se juzga sobre la configuración SSH, las reglas de Wazuh que detectan ataques activos y sus incidentes, los túneles de cada máquina y los cambios en sus configuraciones.",
+  "description": "mp.com.3 exige asegurar la autenticidad del otro extremo y prevenir los ataques activos en las comunicaciones. Se juzga sobre la configuración SSH, las reglas de Wazuh que detectan ataques activos y sus incidentes, los túneles de cada activo y los cambios en sus configuraciones.",
   "levels": [
     "BAJO",
     "MEDIO",
@@ -161,7 +161,7 @@
     {
       "id": "EV-01",
       "title": "Autenticación del otro extremo",
-      "description": "El cliente SSH de la máquina comprueba la clave del otro extremo: ningún StrictHostKeyChecking no ni UserKnownHostsFile /dev/null.",
+      "description": "El cliente SSH del activo comprueba la clave del otro extremo: ningún StrictHostKeyChecking no ni UserKnownHostsFile /dev/null.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -257,7 +257,7 @@
     {
       "id": "EV-07",
       "title": "Incidente ante un ataque activo",
-      "description": "Cada hora en que la máquina detectó un ataque activo de P-02 tiene un incidente de op.exp.7 abierto en el día.",
+      "description": "Cada hora en que el activo detectó un ataque activo de P-02 tiene un incidente de op.exp.7 abierto en el día.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -273,7 +273,7 @@
     {
       "id": "EV-08",
       "title": "Canales cifrados fuera del dominio",
-      "description": "Cada canal de P-05 de la máquina tiene su túnel activo.",
+      "description": "Cada canal de P-05 del activo tiene su túnel levantado.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -479,7 +479,7 @@
       "class": "organisation",
       "name": "vpn_canales_fuera_dominio",
       "label": "Redes privadas virtuales de los canales",
-      "description": "Canales que discurren fuera del dominio: máquina que los establece, su interfaz o proceso de túnel, protocolo y cifrado.",
+      "description": "Canales que discurren fuera del dominio: activo que los establece, su interfaz o proceso de túnel, protocolo y cifrado.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -523,7 +523,7 @@
       ],
       "required": false,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "EV-08 exige el túnel activo en la máquina.",
+      "engine_usage": "EV-08 exige el túnel levantado en el activo.",
       "evidence_ids": [
         "EV-08"
       ],
@@ -533,7 +533,7 @@
       "class": "system",
       "name": "configuracion_canales",
       "label": "Configuración de los canales protegidos",
-      "description": "Ficheros o directorios de configuración de los extremos y túneles de la máquina.",
+      "description": "Ficheros o directorios de configuración de los extremos y túneles del activo.",
       "levels": [
         "BAJO",
         "MEDIO",

@@ -14,7 +14,7 @@
       "controlId": "op.mon.3",
       "name": "fuentes_eventos_seguridad",
       "label": "Fuentes de eventos de seguridad",
-      "description": "Fuentes que deben recogerse, una por fila: nombre, máquina (su nombre en Wazuh o * para todas), fichero que lee el agente y horas máximas sin eventos.",
+      "description": "Fuentes que deben recogerse, una por fila: nombre, activo (su nombre en Wazuh o * para todos), fichero que lee el agente y horas máximas sin eventos.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -27,7 +27,7 @@
       "example": "autenticación | * | /var/log/auth.log | 24",
       "required": true,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "EV-02 exige cada fuente de la máquina leída por su agente y con eventos dentro de sus horas.",
+      "powerEnsUsage": "EV-02 exige cada fuente del activo leída por su agente y con eventos dentro de sus horas.",
       "evidenceIds": [
         "EV-02"
       ],
@@ -102,8 +102,8 @@
       "id": "P-03",
       "controlId": "op.mon.3",
       "name": "horas_maximas_sin_eventos",
-      "label": "Horas máximas sin eventos de la máquina",
-      "description": "Horas que una máquina puede pasar sin enviar eventos al manager.",
+      "label": "Horas máximas sin eventos del activo",
+      "description": "Horas que un activo puede pasar sin enviar eventos al manager.",
       "levels": [
         "BAJO",
         "MEDIO",

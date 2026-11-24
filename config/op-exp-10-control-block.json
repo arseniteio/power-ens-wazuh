@@ -28,7 +28,7 @@
       "example": "clave de host SSH | SSH | fichero | /etc/ssh/ssh_host_ed25519_key | Responsable de Sistemas | activa | SHA256:…",
       "required": false,
       "wazuhUsage": "El agente informa de la huella y la ubicación de cada clave privada.",
-      "powerEnsUsage": "EV-06 busca en la máquina las claves retiradas.",
+      "powerEnsUsage": "EV-06 busca en el activo las claves retiradas.",
       "evidenceIds": [
         "EV-06"
       ],
@@ -251,7 +251,7 @@
         "EV-05"
       ],
       "ruleIds": [],
-      "ifNotConfigured": "Ninguna máquina se trata como medio de explotación.",
+      "ifNotConfigured": "Ningún activo se trata como medio de explotación.",
       "columns": [
         {
           "name": "medio",
@@ -295,7 +295,7 @@
       "example": "caja fuerte CPD | soporte fuera de línea | sin conexión a red",
       "required": false,
       "wazuhUsage": "Ningún agente lo lee.",
-      "powerEnsUsage": "Documental: EV-06 comprueba que no sigan en la máquina. Sale en el informe.",
+      "powerEnsUsage": "Documental: EV-06 comprueba que no sigan en el activo. Sale en el informe.",
       "evidenceIds": [],
       "ruleIds": [],
       "ifNotConfigured": "Sin efecto en el veredicto.",

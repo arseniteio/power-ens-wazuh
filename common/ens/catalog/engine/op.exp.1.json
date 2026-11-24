@@ -112,7 +112,7 @@
     {
       "id": "EV-01",
       "title": "Inventario de hardware y sistema operativo",
-      "description": "Sistema operativo, kernel, arquitectura, CPU y memoria de cada máquina, del inventario de Syscollector. Se da por actualizado si Syscollector está activo con sus escaneos de sistema y hardware, cada P-08 horas o menos, y el agente ha contactado con el manager en ese plazo.",
+      "description": "Sistema operativo, kernel, arquitectura, CPU y memoria de cada activo, del inventario de Syscollector. Se da por actualizado si Syscollector está activo con sus escaneos de sistema y hardware, cada P-08 horas o menos, y el agente ha contactado con el manager en ese plazo.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -123,12 +123,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Wazuh tiene el hardware y el sistema operativo de esta máquina y lo renueva dentro de P-08?"
+      "audit_question": "¿Wazuh tiene el hardware y el sistema operativo de este activo y lo renueva dentro de P-08?"
     },
     {
       "id": "EV-02",
       "title": "Inventario de software instalado",
-      "description": "Paquetes instalados en cada máquina, del inventario de Syscollector. Se da por actualizado con el escaneo de paquetes activo, cada P-08 horas o menos, y el agente en contacto en ese plazo. Cubre de hecho la relación de componentes de R4.",
+      "description": "Paquetes instalados en cada activo, del inventario de Syscollector. Se da por actualizado con el escaneo de paquetes activo, cada P-08 horas o menos, y el agente en contacto en ese plazo. Cubre de hecho la relación de componentes de R4.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -140,12 +140,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Wazuh tiene el software instalado en esta máquina y lo renueva dentro de P-08?"
+      "audit_question": "¿Wazuh tiene el software instalado en este activo y lo renueva dentro de P-08?"
     },
     {
       "id": "EV-03",
       "title": "Inventario de red: direcciones, puertos y procesos",
-      "description": "Direcciones de red, puertos en escucha y procesos de cada máquina, del inventario de Syscollector: lo que dice qué servicios presta. Se da por actualizado con los escaneos de red, puertos y procesos activos, cada P-08 horas o menos, y el agente en contacto en ese plazo.",
+      "description": "Direcciones de red, puertos en escucha y procesos de cada activo, del inventario de Syscollector: lo que dice qué servicios presta. Se da por actualizado con los escaneos de red, puertos y procesos activos, cada P-08 horas o menos, y el agente en contacto en ese plazo.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -156,12 +156,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Wazuh tiene las direcciones, los puertos y los procesos de esta máquina y los renueva dentro de P-08?"
+      "audit_question": "¿Wazuh tiene las direcciones, los puertos y los procesos de este activo y los renueva dentro de P-08?"
     },
     {
       "id": "EV-04",
       "title": "Visualización continua del estado de los equipos",
-      "description": "Estado del agente de Wazuh y su último contacto con el manager. Una máquina que deja de reportar más de P-08 horas ya no tiene el inventario al día. Cubre de hecho lo que pide R2.",
+      "description": "Estado del agente de Wazuh y su último contacto con el manager. Un activo que deja de reportar más de P-08 horas ya no tiene el inventario al día. Cubre de hecho lo que pide R2.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -173,12 +173,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿El agente de esta máquina está activo y ha contactado con el manager dentro de P-08?"
+      "audit_question": "¿El agente de este activo está activo y ha contactado con el manager dentro de P-08?"
     },
     {
       "id": "EV-05",
       "title": "Detección de activos nuevos no inventariados",
-      "description": "Hosts de la tabla de vecinos de la máquina (ARP), sin sondear la red. Cada IP tiene que ser de un activo sin agente de P-02 o de una máquina con agente. No ve hosts que no hablen con esta máquina.",
+      "description": "Hosts de la tabla de vecinos del activo (ARP), sin sondear la red. Cada IP tiene que ser de un activo sin agente de P-02 o de un activo con agente. No ve hosts que no hablen con este activo.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -189,7 +189,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Todo host que habla con esta máquina está inventariado, con agente o en P-02?"
+      "audit_question": "¿Todo host que habla con este activo está inventariado, con agente o en P-02?"
     },
     {
       "id": "EV-06",
@@ -210,7 +210,7 @@
     {
       "id": "EV-07",
       "title": "Cobertura del inventario frente a activos declarados",
-      "description": "La máquina tiene que figurar en P-01 por su nombre de agente, con responsable y con una naturaleza de la taxonomía de P-03.",
+      "description": "El activo tiene que figurar en P-01 por su nombre de agente, con responsable y con una naturaleza de la taxonomía de P-03.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -221,7 +221,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Esta máquina figura en P-01 con responsable y naturaleza?"
+      "audit_question": "¿Este activo figura en P-01 con responsable y naturaleza?"
     }
   ],
   "parameters": {
@@ -272,7 +272,7 @@
       "evidence_ids": [
         "EV-07"
       ],
-      "if_not_configured": "EV-07 queda sin demostrar: ninguna máquina tiene responsable declarado."
+      "if_not_configured": "EV-07 queda sin demostrar: ningún activo tiene responsable declarado."
     },
     "P-02": {
       "class": "organisation",
@@ -340,7 +340,7 @@
       "example": "HW servidor, HW red, SW aplicación, SW base, servicio, soporte, instalación",
       "required": false,
       "agent_usage": "Ningún agente lo lee.",
-      "engine_usage": "EV-07 comprueba que la naturaleza de la máquina en P-01 sea una de esta lista.",
+      "engine_usage": "EV-07 comprueba que la naturaleza del activo en P-01 sea una de esta lista.",
       "if_not_configured": "EV-07 no comprueba la naturaleza.",
       "evidence_ids": [
         "EV-07"
@@ -438,7 +438,7 @@
       "class": "organisation",
       "name": "antiguedad_maxima_inventario_horas",
       "label": "Antigüedad máxima del inventario técnico (horas)",
-      "description": "Horas que puede pasar una máquina sin renovar su inventario ni contactar con el manager. Syscollector escanea cada hora por defecto.",
+      "description": "Horas que puede pasar un activo sin renovar su inventario ni contactar con el manager. Syscollector escanea cada hora por defecto.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -558,8 +558,8 @@
   "report": [
     {
       "id": "inventario",
-      "title": "Inventario técnico de las máquinas",
-      "description": "Hardware, sistema operativo, software y red de cada máquina, del inventario de Syscollector.",
+      "title": "Inventario técnico de los activos",
+      "description": "Hardware, sistema operativo, software y red de cada activo, del inventario de Syscollector.",
       "evidences": [
         "EV-01",
         "EV-02",
@@ -572,7 +572,7 @@
     {
       "id": "cobertura",
       "title": "Cobertura del inventario",
-      "description": "Máquinas con responsable y naturaleza declarados en P-01.",
+      "description": "Activos con responsable y naturaleza declarados en P-01.",
       "evidences": [
         "EV-07"
       ],
@@ -584,7 +584,7 @@
     {
       "id": "componentes",
       "title": "Relación de componentes software",
-      "description": "Software instalado en cada máquina; cubre de hecho R4.",
+      "description": "Software instalado en cada activo; cubre de hecho R4.",
       "evidences": [
         "EV-02"
       ],
@@ -604,7 +604,7 @@
     {
       "id": "nuevos",
       "title": "Activos no inventariados detectados",
-      "description": "Vecinos de red que no son una máquina con agente ni un activo de P-02.",
+      "description": "Vecinos de red que no son un activo con agente ni un activo de P-02.",
       "evidences": [
         "EV-05"
       ],

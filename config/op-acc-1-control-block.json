@@ -28,7 +28,7 @@
       "example": "Active Directory",
       "required": true,
       "wazuhUsage": "Determina qué integración de Wazuh aporta los eventos de cuenta: Active Directory, eventos de Windows, auditd en Linux o un conector cloud.",
-      "powerEnsUsage": "Se indica en el informe como origen de las identidades auditadas. El agente no lo lee: recoge siempre las cuentas de su máquina.",
+      "powerEnsUsage": "Se indica en el informe como origen de las identidades auditadas. El agente no lo lee: recoge siempre las cuentas de su activo.",
       "evidenceIds": [
         "EV-01",
         "EV-02"
@@ -55,7 +55,7 @@
       "example": "srv-dc01 | Windows",
       "required": true,
       "wazuhUsage": "Delimita la monitorización: Wazuh solo detecta anomalías de cuentas en los sistemas incluidos.",
-      "powerEnsUsage": "Se contrasta con las máquinas que envían evidencias para detectar un servidor que debería auditarse y no reporta.",
+      "powerEnsUsage": "Se contrasta con los activos que envían evidencias para detectar un servidor que debería auditarse y no reporta.",
       "evidenceIds": [
         "EV-01"
       ],
@@ -107,7 +107,7 @@
       "example": "admin",
       "required": true,
       "wazuhUsage": "Se carga como lista CDB: cualquier autenticación correcta con una de estas cuentas genera alerta.",
-      "powerEnsUsage": "Es la lista contra la que se juzga EV-03. Editarla en esta pantalla cambia el veredicto sin ejecutar nada en la máquina.",
+      "powerEnsUsage": "Es la lista contra la que se juzga EV-03. Editarla en esta pantalla cambia el veredicto sin ejecutar nada en el activo.",
       "evidenceIds": [
         "EV-03"
       ],
@@ -229,7 +229,7 @@
       "example": "sí",
       "required": false,
       "wazuhUsage": "Con integración, los eventos de baja de recursos humanos se correlacionan con la deshabilitación de la cuenta.",
-      "powerEnsUsage": "Documenta en el informe cómo llegan las bajas. El agente no lo lee: consulta el registro de bajas de su máquina, descrito en la documentación del runbook.",
+      "powerEnsUsage": "Documenta en el informe cómo llegan las bajas. El agente no lo lee: consulta el registro de bajas de su activo, descrito en la documentación del runbook.",
       "evidenceIds": [
         "EV-04"
       ],

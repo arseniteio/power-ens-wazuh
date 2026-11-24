@@ -262,7 +262,7 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿La puntuación SCA de esta máquina se ha mantenido sobre el mínimo en los últimos P-12 días?"
+      "audit_question": "¿La puntuación SCA de este activo se ha mantenido sobre el mínimo en los últimos P-12 días?"
     },
     {
       "id": "EV-02",
@@ -278,7 +278,7 @@
       ],
       "category": "INTEGRITY",
       "criticality": "HIGH",
-      "audit_question": "¿Solo las cuentas de P-03 han editado la configuración de seguridad de esta máquina?"
+      "audit_question": "¿Solo las cuentas de P-03 han editado la configuración de seguridad de este activo?"
     },
     {
       "id": "EV-03",
@@ -293,7 +293,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Todo software instalado a petición en esta máquina está autorizado en P-01?"
+      "audit_question": "¿Todo software instalado a petición en este activo está autorizado en P-01?"
     },
     {
       "id": "EV-04",
@@ -310,7 +310,7 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿Todo lo que se ejecuta como servicio en esta máquina está autorizado en P-02?"
+      "audit_question": "¿Todo lo que se ejecuta como servicio en este activo está autorizado en P-02?"
     },
     {
       "id": "EV-05",
@@ -326,12 +326,12 @@
       ],
       "category": "INTEGRITY",
       "criticality": "HIGH",
-      "audit_question": "¿Cada edición de la configuración de seguridad de esta máquina tiene una petición de cambio aprobada?"
+      "audit_question": "¿Cada edición de la configuración de seguridad de este activo tiene una petición de cambio aprobada?"
     },
     {
       "id": "EV-06",
       "title": "Reacción de la configuración ante vulnerabilidades notificadas",
-      "description": "Vulnerabilidades abiertas de la máquina que han pasado el plazo de su criticidad en op.exp.4 P-01: la misma medida que op.exp.4 EV-02.",
+      "description": "Vulnerabilidades abiertas del activo que han pasado el plazo de su criticidad en op.exp.4 P-01: la misma medida que op.exp.4 EV-02.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -342,12 +342,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Esta máquina corrige las vulnerabilidades notificadas dentro de su plazo?"
+      "audit_question": "¿Este activo corrige las vulnerabilidades notificadas dentro de su plazo?"
     },
     {
       "id": "EV-07",
       "title": "Reacción de la configuración ante incidentes",
-      "description": "Cada incidente cerrado de la máquina en el registro de op.exp.7 P-13 deja constancia de sus medidas de mejora: la misma medida que op.exp.7 EV-12.",
+      "description": "Cada incidente cerrado del activo en el registro de op.exp.7 P-13 deja constancia de sus medidas de mejora: la misma medida que op.exp.7 EV-12.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -358,7 +358,7 @@
       ],
       "category": "MONITORING",
       "criticality": "MEDIUM",
-      "audit_question": "¿Los incidentes de esta máquina dejaron medidas sobre su configuración?"
+      "audit_question": "¿Los incidentes de este activo dejaron medidas sobre su configuración?"
     },
     {
       "id": "EV-08",
@@ -386,7 +386,7 @@
       ],
       "category": "RECOVERY",
       "criticality": "HIGH",
-      "audit_question": "¿Hay una copia de la configuración de esta máquina dentro del plazo de P-10?"
+      "audit_question": "¿Hay una copia de la configuración de este activo dentro del plazo de P-10?"
     },
     {
       "id": "EV-10",
@@ -403,7 +403,7 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿Alguna comprobación SCA de esta máquina ha empeorado en los últimos P-12 días?"
+      "audit_question": "¿Alguna comprobación SCA de este activo ha empeorado en los últimos P-12 días?"
     },
     {
       "id": "EV-11",
@@ -449,7 +449,7 @@
       "class": "system",
       "name": "lista_servicios_autorizados",
       "label": "Servicios autorizados por perfil",
-      "description": "Servicios autorizados en la máquina: unidades de systemd (ssh.service; getty@.service cubre cada getty@tty1.service) y procesos que escuchan fuera de una unidad.",
+      "description": "Servicios autorizados en el activo: unidades de systemd (ssh.service; getty@.service cubre cada getty@tty1.service) y procesos que escuchan fuera de una unidad.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -567,7 +567,7 @@
       "class": "system",
       "name": "config_backup_destino",
       "label": "Alcance y destino de las copias de la configuración",
-      "description": "Copias de la configuración, una fila por alcance: alcance, fuente en la máquina (git:/etc para un directorio git como etckeeper, o un patrón de ficheros como /var/backups/etc-*.tgz) y destino.",
+      "description": "Copias de la configuración, una fila por alcance: alcance, fuente en el activo (git:/etc para un directorio git como etckeeper, o un patrón de ficheros como /var/backups/etc-*.tgz) y destino.",
       "levels": [
         "ALTO"
       ],

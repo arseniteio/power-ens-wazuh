@@ -314,7 +314,7 @@
       "class": "platform",
       "name": "acciones_por_funcion",
       "label": "Acciones por función",
-      "description": "Traducción de cada función a lo observable en la máquina: comandos, binarios o rutas que identifican una acción. Cada fila lleva el nombre de la función y uno o varios indicadores, que casan por subcadena con el binario ejecutado y la ruta tocada.",
+      "description": "Traducción de cada función a lo observable en el activo: comandos, binarios o rutas que identifican una acción. Cada fila lleva el nombre de la función y uno o varios indicadores, que casan por subcadena con el binario ejecutado y la ruta tocada.",
       "levels": [
         "MEDIO",
         "ALTO"
@@ -341,7 +341,7 @@
         }
       ],
       "required": true,
-      "agent_usage": "El agente emite las acciones sin clasificar; esta tabla las convierte en función y decide qué vigila el sistema. Las reglas de auditoría solo observan los binarios declarados aquí: al añadir una función hay que añadir su binario en la máquina y recargar las reglas.",
+      "agent_usage": "El agente emite las acciones sin clasificar; esta tabla las convierte en función y decide qué vigila el sistema. Las reglas de auditoría solo observan los binarios declarados aquí: al añadir una función hay que añadir su binario en el activo y recargar las reglas.",
       "engine_usage": "Traduce el plano organizativo al técnico: con ella el motor construye el conjunto de funciones ejercidas por cada cuenta, que se cruza con P-02.",
       "evidence_ids": [
         "EV-01",

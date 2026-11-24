@@ -14,7 +14,7 @@
     "D"
   ],
   "annex_section": "4.7.2",
-  "description": "op.mon.2 exige recopilar los datos que miden la implantación de la seguridad, la gestión de incidentes y los recursos consumidos. Se juzga sobre el registro de ciclos de métricas, el registro de incidentes de op.exp.7 y la medición de cada máquina.",
+  "description": "op.mon.2 exige recopilar los datos que miden la implantación de la seguridad, la gestión de incidentes y los recursos consumidos. Se juzga sobre el registro de ciclos de métricas, el registro de incidentes de op.exp.7 y la medición de cada activo.",
   "levels": [
     "BAJO",
     "MEDIO",
@@ -94,7 +94,7 @@
     {
       "id": "EV-01",
       "title": "Grado de implantación de las medidas",
-      "description": "La máquina tiene veredictos de control en la ventana: su grado de implantación es la media de la puntuación de sus controles aplicables, contra la declaración de aplicabilidad de P-01.",
+      "description": "El activo tiene veredictos de control en la ventana: su grado de implantación es la media de la puntuación de sus controles aplicables, contra la declaración de aplicabilidad de P-01.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -141,7 +141,7 @@
     {
       "id": "EV-04",
       "title": "Fiabilidad de la medición",
-      "description": "El agente de la máquina está activo y su última pasada de OSCompliance está dentro de la ventana.",
+      "description": "El agente del activo está conectado y su última pasada de OSCompliance está dentro de la ventana.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -152,12 +152,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿La medición de la máquina es fiable?"
+      "audit_question": "¿La medición del activo es fiable?"
     },
     {
       "id": "EV-05",
       "title": "Controles no evaluables por falta de parámetros",
-      "description": "Relación de los controles con evidencias no evaluables por configuración en la máquina, para seguir la deuda de configuración.",
+      "description": "Relación de los controles con evidencias no evaluables por configuración en el activo, para seguir la deuda de configuración.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -568,7 +568,7 @@
     {
       "id": "medicion",
       "title": "Fiabilidad de la medición",
-      "description": "Máquinas con medición al día.",
+      "description": "Activos con medición al día.",
       "evidences": [
         "EV-04"
       ],

@@ -220,7 +220,7 @@
     {
       "id": "EV-01",
       "title": "Presencia y estado del antimalware en todos los equipos",
-      "description": "Antimalware instalado en la máquina y si está en ejecución, frente a los productos esperados de P-02.",
+      "description": "Antimalware instalado en el activo y si está en ejecución, frente a los productos esperados de P-02.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -232,7 +232,7 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿Esta máquina ejecuta el antimalware que se espera de ella?"
+      "audit_question": "¿Este activo ejecuta el antimalware que se espera de él?"
     },
     {
       "id": "EV-02",
@@ -248,7 +248,7 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿Las firmas del antimalware de esta máquina están al día?"
+      "audit_question": "¿Las firmas del antimalware de este activo están al día?"
     },
     {
       "id": "EV-03",
@@ -265,7 +265,7 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿El antimalware de esta máquina está configurado como pide P-04?"
+      "audit_question": "¿El antimalware de este activo está configurado como pide P-04?"
     },
     {
       "id": "EV-04",
@@ -281,7 +281,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Las detecciones de código dañino de esta máquina se han resuelto?"
+      "audit_question": "¿Las detecciones de código dañino de este activo se han resuelto?"
     },
     {
       "id": "EV-05",
@@ -296,7 +296,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Se ha escaneado entera esta máquina dentro del plazo de P-06?"
+      "audit_question": "¿Se ha escaneado entera este activo dentro del plazo de P-06?"
     },
     {
       "id": "EV-06",
@@ -311,7 +311,7 @@
       ],
       "category": "INTEGRITY",
       "criticality": "HIGH",
-      "audit_question": "¿Se analizan al arrancar las funciones críticas de esta máquina?"
+      "audit_question": "¿Se analizan al arrancar las funciones críticas de este activo?"
     },
     {
       "id": "EV-07",
@@ -325,12 +325,12 @@
       ],
       "category": "CONFIGURATION",
       "criticality": "HIGH",
-      "audit_question": "¿Esta máquina solo ejecuta aplicaciones autorizadas?"
+      "audit_question": "¿Este activo solo ejecuta aplicaciones autorizadas?"
     },
     {
       "id": "EV-08",
       "title": "Análisis reputacional de ficheros nuevos y modificados (R4)",
-      "description": "Integración de VirusTotal en el manager sobre los cambios del FIM de la máquina, y ficheros que ha señalado en el periodo.",
+      "description": "Integración de VirusTotal en el manager sobre los cambios del FIM del activo, y ficheros que ha señalado en el periodo.",
       "levels": [
         "ALTO"
       ],
@@ -339,12 +339,12 @@
       ],
       "category": "INTEGRITY",
       "criticality": "MEDIUM",
-      "audit_question": "¿Se consulta la reputación de los ficheros que cambian en esta máquina?"
+      "audit_question": "¿Se consulta la reputación de los ficheros que cambian en este activo?"
     },
     {
       "id": "EV-09",
       "title": "Detección por reglas de contenido en ficheros (R4)",
-      "description": "Respuesta activa de YARA desplegada en la máquina: script y binario presentes.",
+      "description": "Respuesta activa de YARA desplegada en el activo: script y binario presentes.",
       "levels": [
         "ALTO"
       ],
@@ -353,12 +353,12 @@
       ],
       "category": "MONITORING",
       "criticality": "MEDIUM",
-      "audit_question": "¿Esta máquina tiene desplegada la detección por reglas YARA?"
+      "audit_question": "¿Este activo tiene desplegada la detección por reglas YARA?"
     },
     {
       "id": "EV-10",
       "title": "Detección de actividad sospechosa en puestos y servidores (R4)",
-      "description": "rootcheck de Wazuh activo en la máquina: rootkits, procesos y puertos ocultos, binarios troyanizados.",
+      "description": "rootcheck de Wazuh activo en el activo: rootkits, procesos y puertos ocultos, binarios troyanizados.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -370,12 +370,12 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Wazuh busca actividad sospechosa en esta máquina?"
+      "audit_question": "¿Wazuh busca actividad sospechosa en este activo?"
     },
     {
       "id": "EV-11",
       "title": "Contención automática ante detección (R4)",
-      "description": "Respuestas activas que el manager envía a la máquina y cuyo script está presente en ella.",
+      "description": "Respuestas activas que el manager envía al activo y cuyo script está presente en él.",
       "levels": [
         "BAJO",
         "MEDIO",
@@ -387,7 +387,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Esta máquina puede contener automáticamente una detección?"
+      "audit_question": "¿Este activo puede contener automáticamente una detección?"
     },
     {
       "id": "EV-12",
@@ -404,7 +404,7 @@
       ],
       "category": "MONITORING",
       "criticality": "HIGH",
-      "audit_question": "¿Los dispositivos extraíbles de esta máquina siguen la política de P-10?"
+      "audit_question": "¿Los dispositivos extraíbles de este activo siguen la política de P-10?"
     }
   ],
   "parameters": {
@@ -458,7 +458,7 @@
       "class": "platform",
       "name": "cobertura_esperada_antimalware",
       "label": "Cobertura esperada de antimalware",
-      "description": "Antimalware que tiene que estar en ejecución en la máquina, por su nombre: clamav, mdatp, falcon-sensor, sophos-spl, eset, sentinelone, trendmicro-ds.",
+      "description": "Antimalware que tiene que estar en ejecución en el activo, por su nombre: clamav, mdatp, falcon-sensor, sophos-spl, eset, sentinelone, trendmicro-ds.",
       "levels": [
         "BAJO",
         "MEDIO",
