@@ -8,6 +8,7 @@ import {
   maturityLabel,
 } from '../../../common/ens/maturity/types';
 import { InfoTip } from '../ui/info-tip';
+import { ExplainedText } from '../ui/explained-text';
 
 interface LevelRow {
   level: number;
@@ -85,10 +86,10 @@ export const OrganizationMaturityPanel = ({
         <>
           <EuiFlexGroup gutterSize='m' responsive={false}>
             <EuiFlexItem>
-              <EuiStat title={maturityLabel(data.summary.global_accredited)} description='Continuidad de la evidencia (30 días)' titleSize='s' />
+              <EuiStat title={<ExplainedText text={maturityLabel(data.summary.global_accredited)} />} description='Continuidad de la evidencia (30 días)' titleSize='s' />
             </EuiFlexItem>
             <EuiFlexItem>
-              <EuiStat title={assessedTitle(data)} description='Madurez valorada' titleSize='s' />
+              <EuiStat title={<ExplainedText text={assessedTitle(data)} />} description='Madurez valorada' titleSize='s' />
             </EuiFlexItem>
           </EuiFlexGroup>
           <EuiSpacer size='s' />
@@ -97,7 +98,7 @@ export const OrganizationMaturityPanel = ({
             items={rowsOf(data)}
             noItemsMessage='No hay datos.'
             columns={[
-              { field: 'level', name: 'Nivel', render: (level: LevelRow['level']) => `L${level} ${ENS_MATURITY_LABELS[level]}` },
+              { field: 'level', name: 'Nivel', render: (level: LevelRow['level']) => <ExplainedText text={`L${level} ${ENS_MATURITY_LABELS[level]}`} /> },
               {
                 field: 'accredited',
                 name: (

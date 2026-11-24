@@ -62,6 +62,7 @@ import { dateTimeLabel } from '../../../common/ens/core/date-label';
 import { OPERATIONAL_INDICATOR_NOTE } from '../../../common/ens/catalog/support/provenance';
 import { downloadCsv } from '../download-csv';
 import { InfoTip } from '../ui/info-tip';
+import { ExplainedText } from '../ui/explained-text';
 
 const PAGE_SIZE = 25;
 
@@ -231,7 +232,7 @@ const MachineFlyout = ({
                   render: (title: string, it: any) => (
                     <EuiText size='xs'>
                       <span>
-                        {it.evidenceId && <EuiBadge color='hollow'>{it.evidenceId}</EuiBadge>} {title}
+                        {it.evidenceId && <EuiBadge color='hollow'>{it.evidenceId}</EuiBadge>} <ExplainedText controlId={it.controlId} text={title} />
                       </span>
                     </EuiText>
                   ),

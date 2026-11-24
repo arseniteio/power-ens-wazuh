@@ -4,6 +4,7 @@ import { EuiBadge, EuiButtonEmpty, EuiText } from '@elastic/eui';
 import type { ENSEvidenceResult } from '../../../../common/ens/core/evaluation/types';
 import { reasonDocText } from '../../../../common/ens/catalog/engine-messages';
 import { groupResults, machinesOf } from './evidence-motive';
+import { ExplainedText } from '../../ui/explained-text';
 
 const SUMMARY_MAX = 160;
 
@@ -30,7 +31,7 @@ export const EvidenceMotiveCell = ({ evidence, onOpen }: { evidence: ENSEvidence
             </EuiBadge>{' '}
           </>
         )}
-        {shorten(reasonDocText(first.display.doc))}
+        <ExplainedText text={shorten(reasonDocText(first.display.doc))} />
       </p>
       <EuiButtonEmpty size='xs' flush='left' iconType='inspect' onClick={onOpen}>
         {groups.length > 1 ? `Ver motivo · ${groups.length} resultados en ${machines} máquinas` : 'Ver motivo'}

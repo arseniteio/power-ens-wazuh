@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { explainParameter } from '../../../../common/ens/catalog/explanations';
+import { ExplainedControl, ExplainedText } from '../../ui/explained-text';
 import { EuiBadge, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 import {
   formatTimestamp,
@@ -58,7 +60,7 @@ const WithDates = ({ text }: { text: string }) => (
           {formatTimestamp(slice.iso)}
         </span>
       ) : (
-        <React.Fragment key={i}>{slice.text}</React.Fragment>
+        <ExplainedText key={i} text={slice.text} />
       )
     )}
   </>
@@ -104,18 +106,21 @@ export const MotiveText = ({ text, list }: { text: string; list?: MotiveList }) 
     <WithDates text={text} />
   );
 
-export const ParameterBadges = ({ ids, handlers }: { ids: { id: string; label?: string }[]; handlers: MotiveViewHandlers }) => (
+export const ParameterBadges = ({ ids, handlers }: { ids: { id: string; label?: string }[]; handlers: MotiveViewHandlers }) => {
+  const control = useContext(ExplainedControl);
+  return (
   <EuiFlexGroup gutterSize='xs' wrap responsive={false}>
     {ids.map(parameter => {
       const info = handlers.parameterInfo?.(parameter.id);
       const text = `${parameter.id}${parameter.label || info?.label ? ` · ${parameter.label || info?.label}` : ''}`;
       const detail = info?.value !== undefined ? `${info.value}${info.origin ? ` (${info.origin})` : ''}` : undefined;
+      const meaning = explainParameter(control, parameter.id)?.text;
       return (
         <EuiFlexItem grow={false} key={parameter.id}>
           <LinkBadge
             color='hollow'
             iconType='gear'
-            title={detail ? `Valor que aplica: ${detail}` : `Configurar ${parameter.id}`}
+            title={[meaning, detail ? `Valor que aplica: ${detail}` : `Configurar ${parameter.id}`].filter(Boolean).join(' · ')}
             onClick={handlers.onParameter ? () => handlers.onParameter!(parameter.id) : undefined}
             label={`Configurar ${parameter.id}`}
           >
@@ -130,7 +135,8 @@ export const ParameterBadges = ({ ids, handlers }: { ids: { id: string; label?: 
       );
     })}
   </EuiFlexGroup>
-);
+  );
+};
 
 const MotivePartView = ({ part, handlers, withSummary = true }: { part: MotivePart; handlers: MotiveViewHandlers; withSummary?: boolean }) => (
   <div style={{ marginBottom: 8 }}>

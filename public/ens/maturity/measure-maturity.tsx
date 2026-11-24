@@ -33,6 +33,7 @@ import {
 import { dateTimeLabel } from '../../../common/ens/core/date-label';
 import { Choice } from '../ui/choice';
 import { InfoTip } from '../ui/info-tip';
+import { ExplainedText } from '../ui/explained-text';
 
 const LEVEL_OPTIONS = [
   { value: '', text: 'Sin valorar' },
@@ -150,10 +151,10 @@ export const MeasureMaturity = ({
       <EuiSpacer size='s' />
       <EuiFlexGroup gutterSize='s' wrap responsive={false}>
         <EuiFlexItem grow={false}>
-          <EuiBadge color='hollow'>{`Continuidad 30 días: ${maturity?.accredited === undefined ? 'sin medición' : maturityLabel(maturity.accredited)}`}</EuiBadge>
+          <EuiBadge color='hollow'><ExplainedText text={`Continuidad 30 días: ${maturity?.accredited === undefined ? 'sin medición' : maturityLabel(maturity.accredited)}`} /></EuiBadge>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiBadge color={assessed === undefined ? 'default' : 'primary'}>{`Valorado: ${assessed === undefined ? 'sin valorar' : maturityLabel(assessed)}`}</EuiBadge>
+          <EuiBadge color={assessed === undefined ? 'default' : 'primary'}><ExplainedText text={`Valorado: ${assessed === undefined ? 'sin valorar' : maturityLabel(assessed)}`} /></EuiBadge>
         </EuiFlexItem>
         {target !== undefined && (
           <EuiFlexItem grow={false}>

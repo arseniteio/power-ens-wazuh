@@ -5,6 +5,7 @@ import type { ENSRequirementResult } from '../../../../common/ens/core/evaluatio
 import { statusLabel } from '../../../../common/ens/core/status-label';
 import { statusBadgeColor } from '../../status-colors';
 import { InfoTip } from '../../ui/info-tip';
+import { ExplainedText } from '../../ui/explained-text';
 
 const opensInBrowser = (link: string): boolean => /^https?:\/\//i.test(link);
 
@@ -15,12 +16,14 @@ const DocumentLinks = ({ requirement, onConfigure }: { requirement: ENSRequireme
       <EuiFlexGroup gutterSize='s' alignItems='center' responsive={false} wrap>
         <EuiFlexItem grow={false}>
           <EuiText size='xs' color='subdued'>
-            <span>Sin documento con referencia y enlace en P-ATT</span>
+            <span>
+              <ExplainedText text='Sin documento con referencia y enlace en P-ATT' />
+            </span>
           </EuiText>
         </EuiFlexItem>
         {onConfigure && (
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty size='xs' iconType='gear' onClick={onConfigure}>
+            <EuiButtonEmpty size='xs' iconType='gear' onClick={onConfigure} title='P-ATT · Atestaciones documentales: requisito | referencia | enlace | fecha | responsable'>
               Configurar P-ATT
             </EuiButtonEmpty>
           </EuiFlexItem>
@@ -66,7 +69,7 @@ export const DocumentaryEvidences = ({
           </EuiTitle>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <InfoTip content='Requisitos que se acreditan con un documento: una fila de P-ATT con referencia y enlace.' />
+          <InfoTip content='Requisitos que se acreditan con un documento: una fila de P-ATT (atestaciones documentales: requisito | referencia | enlace | fecha | responsable) con referencia y enlace.' />
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiSpacer size='s' />

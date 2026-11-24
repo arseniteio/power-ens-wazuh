@@ -2,13 +2,13 @@ import React from 'react';
 import { EuiBadge, EuiToolTip } from '@elastic/eui';
 
 import type { ENSCompliance } from '../../../common/ens/maturity/compliance-level';
-import { maturityLevelName } from '../../../common/ens/maturity/compliance-level';
+import { maturityLevelMeaning, maturityLevelName } from '../../../common/ens/maturity/compliance-level';
 import { statusLabel } from '../../../common/ens/core/status-label';
 import { statusBadgeColor, statusColor } from '../status-colors';
 import { ENS_THEME } from '../theme-colors';
 
 export const complianceTooltip = (compliance: ENSCompliance): string =>
-  `${compliance.percent} % · L${compliance.level} ${maturityLevelName(compliance.level)} · exigido L${compliance.required} (${compliance.category})`;
+  `${compliance.percent} % · L${compliance.level} ${maturityLevelName(compliance.level)}: ${maturityLevelMeaning(compliance.level)} · exigido L${compliance.required} ${maturityLevelName(compliance.required)} (${compliance.category})`;
 
 // The level and the status read as one mark: the level on the left, the status it gives on the
 // right in its colour. The percentage and the required level sit in the tooltip.

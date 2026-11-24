@@ -52,6 +52,7 @@ import { ProvenancedText, RequirementTextsPanel, TemplateCorrespondencePanel } f
 import { InfoTip } from '../../ui/info-tip';
 import { AttestationLinks } from './attestation-links';
 import { MaturitySeal } from '../../ui/maturity-seal';
+import { ExplainedControl, ExplainedText } from '../../ui/explained-text';
 import { ControlMaturity } from './control-maturity';
 import { EvidenceSeal } from './evidence-seal';
 import { scaleFor } from '../../../../common/ens/maturity/scale';
@@ -819,6 +820,7 @@ export const ControlDetailENS = ({
   ];
 
   return (
+    <ExplainedControl.Provider value={control.id}>
     <EuiPage paddingSize='m'>
       <EuiPanel style={{ position: 'relative' }}>
         {header}
@@ -1017,7 +1019,9 @@ export const ControlDetailENS = ({
                       </EuiFlexItem>
                       <EuiFlexItem>
                         <EuiText size='xs'>
-                          <strong>{pair.value}</strong>
+                          <strong>
+                            <ExplainedText text={pair.value} />
+                          </strong>
                         </EuiText>
                       </EuiFlexItem>
                     </EuiFlexGroup>
@@ -1277,5 +1281,6 @@ export const ControlDetailENS = ({
         )}
       </EuiPanel>
     </EuiPage>
+    </ExplainedControl.Provider>
   );
 };

@@ -1,9 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { EuiBadge, EuiButtonEmpty, EuiFieldSearch, EuiSpacer, EuiText, EuiToolTip } from '@elastic/eui';
 
 import type { ReasonDoc, ReasonInline } from '../../../../common/ens/catalog/engine-messages';
 import { reasonDocText } from '../../../../common/ens/catalog/engine-messages';
 import { formatTimestamp, splitTimestamps } from '../../../../common/ens/evaluation/motive-parser';
+import { explainParameter } from '../../../../common/ens/catalog/explanations';
+import { ExplainedControl, ExplainedText } from '../../ui/explained-text';
 
 export interface ParameterLookup {
   (id: string): { label?: string; description?: string } | undefined;
@@ -21,14 +23,16 @@ const Dated = ({ text }: { text: string }) => (
           {formatTimestamp(slice.iso)}
         </span>
       ) : (
-        <React.Fragment key={i}>{slice.text}</React.Fragment>
+        <ExplainedText key={i} text={slice.text} />
       )
     )}
   </>
 );
 
 export const ParameterChip = ({ id, lookup }: { id: string; lookup?: ParameterLookup }) => {
-  const info = lookup?.(id);
+  const control = useContext(ExplainedControl);
+  const fallback = explainParameter(control, id);
+  const info = lookup?.(id) || (fallback && { label: fallback.title.split(' · ').slice(1).join(' · '), description: fallback.text });
   const chip = (
     <EuiBadge color='hollow' iconType='gear'>
       {info?.label ? `${id} · ${info.label}` : id}
@@ -52,7 +56,7 @@ const InlinePart = ({ part, lookup }: { part: ReasonInline; lookup?: ParameterLo
       </strong>
     );
   }
-  return <Dated text={part.text} />;
+  return <ExplainedText text={part.text} />;
 };
 
 const ReasonList = ({ items, lookup }: { items: ReasonDoc[]; lookup?: ParameterLookup }) => {

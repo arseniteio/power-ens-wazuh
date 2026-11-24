@@ -6,6 +6,7 @@ import { assessmentOf } from '../../../common/ens/maturity/assessments';
 import { ENS_DECLARED_MEASURES } from '../../../common/ens/maturity/declared-measures';
 import { maturityLabel } from '../../../common/ens/maturity/types';
 import { AssessModal } from './measure-maturity';
+import { ExplainedText } from '../ui/explained-text';
 
 type Row = (typeof ENS_DECLARED_MEASURES)[number];
 
@@ -39,7 +40,7 @@ export const DeclaredMeasuresPanel = ({ configuration, onSaved }: { configuratio
             width: '210px',
             render: (id: string) => {
               const a = assessmentOf(configuration, id);
-              return a?.level === undefined ? 'sin valorar' : `${maturityLabel(a.level)}${a.target === undefined ? '' : ` · objetivo L${a.target}`}`;
+              return a?.level === undefined ? 'sin valorar' : <ExplainedText text={`${maturityLabel(a.level)}${a.target === undefined ? '' : ` · objetivo L${a.target}`}`} />;
             },
           },
           {

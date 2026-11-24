@@ -9,6 +9,7 @@ import { machineName } from './parameter-panel';
 import type { ParameterView } from './parameter-panel';
 import { groupNonConformities } from '../../../../common/ens/core/nonconformity-groups';
 import type { GroupedNonConformity, NonConformityKind as Kind } from '../../../../common/ens/core/nonconformity-groups';
+import { ExplainedText } from '../../ui/explained-text';
 
 const KINDS: Record<Kind, { label: string; color: string; order: number }> = {
   measure: { label: 'Incumplimiento', color: 'danger', order: 0 },
@@ -130,7 +131,9 @@ const Card = ({ group, props }: { group: GroupedNonConformity; props: NonConform
             {motive ? (
               <ReasonView doc={motive.display.doc} lookup={motive.lookup} />
             ) : (
-              <span>Sin documento con referencia y enlace en P-ATT</span>
+              <span>
+                <ExplainedText text='Sin documento con referencia y enlace en P-ATT' controlId={props.controlId} />
+              </span>
             )}
           </div>
         </EuiText>
@@ -144,7 +147,7 @@ const Card = ({ group, props }: { group: GroupedNonConformity; props: NonConform
                 <EuiToolTip content={view.description}>
                   <EuiText size='s'>
                     <span>
-                      <strong>{view.id}</strong> {view.label}: <em>{valueSummary(view)}</em>
+                      <strong style={{ borderBottom: '1px dotted currentColor', cursor: 'help' }}>{view.id}</strong> {view.label}: <em>{valueSummary(view)}</em>
                     </span>
                   </EuiText>
                 </EuiToolTip>
@@ -159,13 +162,13 @@ const Card = ({ group, props }: { group: GroupedNonConformity; props: NonConform
           <EuiFlexItem grow={false}>
             <EuiText size='s'>
               <span>
-                {group.kind === 'measure'
+                <ExplainedText controlId={props.controlId} text={group.kind === 'measure'
                   ? `Corregir en ${group.machines.length > 1 ? 'las máquinas' : 'la máquina'} lo que señala ${group.evidenceId}`
                   : group.kind === 'configuration'
                   ? missing ? `Dar valor a ${missing}` : 'Completar los parámetros de la evidencia'
                   : group.kind === 'collection'
                   ? 'Revisar el agente y la recogida de datos de la máquina'
-                  : 'Registrar el documento con referencia y enlace'}
+                  : 'Registrar el documento con referencia y enlace'} />
               </span>
             </EuiText>
           </EuiFlexItem>
@@ -178,7 +181,7 @@ const Card = ({ group, props }: { group: GroupedNonConformity; props: NonConform
           )}
           {group.kind === 'documentary' && (
             <EuiFlexItem grow={false}>
-              <EuiButtonEmpty size='xs' iconType='gear' onClick={() => props.onConfigure('P-ATT')}>
+              <EuiButtonEmpty size='xs' iconType='gear' onClick={() => props.onConfigure('P-ATT')} title='P-ATT · Atestaciones documentales: requisito | referencia | enlace | fecha | responsable'>
                 Configurar P-ATT
               </EuiButtonEmpty>
             </EuiFlexItem>

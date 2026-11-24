@@ -37,6 +37,7 @@ import { ENS_STATUS_COLORS } from '../status-colors';
 import { ENS_THEME } from '../theme-colors';
 import { useOpenControl } from '../open-control';
 import { FilterBar } from '../ui/filter-bar';
+import { ExplainedControl } from '../ui/explained-text';
 
 interface EvidenceRow {
   evidenceId: string;
@@ -714,7 +715,9 @@ export const EvidencesENS = () => {
               .map(group => [
                 group.controlId,
                 group.rows.length > 0 ? (
-                  <EuiBasicTable noItemsMessage='No hay datos.' items={group.rows} columns={columns} compressed />
+                  <ExplainedControl.Provider value={group.controlId}>
+                    <EuiBasicTable noItemsMessage='No hay datos.' items={group.rows} columns={columns} compressed />
+                  </ExplainedControl.Provider>
                 ) : (
                   <EuiText size='xs' color='subdued'>
                     <span>Sin evidencias en el periodo</span>

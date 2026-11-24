@@ -9,6 +9,7 @@ import { controlTitle, parameterTitle } from './parameter-titles';
 import { machines } from './profile-labels';
 import type { ENSPendingParameter } from './profiles-client';
 import type { ENSHostSummaryState } from './use-host-summary';
+import { ExplainedText } from '../../ui/explained-text';
 
 interface PendingTabProps {
   summary: ENSHostSummaryState;
@@ -39,7 +40,7 @@ export const PendingTab = ({ summary, onNavigate }: PendingTabProps) => {
         <EuiText size='s'>
           <strong>{parameterTitle(row.controlId, row.parameterId)}</strong>
           <EuiText size='xs' color='subdued'>
-            {`${row.controlId} ${row.parameterId} · ${controlTitle(row.controlId)}`}
+            <ExplainedText controlId={row.controlId} text={`${row.controlId} ${row.parameterId} · ${controlTitle(row.controlId)}`} />
           </EuiText>
         </EuiText>
       ),

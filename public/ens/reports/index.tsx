@@ -73,6 +73,10 @@ import { ENS_MATURITY_NOTE } from '../../../common/ens/maturity/types';
 import { useOpenControl } from '../open-control';
 import { FilterBar } from '../ui/filter-bar';
 import { InfoTip } from '../ui/info-tip';
+import { ExplainedControl, ExplainedText } from '../ui/explained-text';
+import { explainParameter } from '../../../common/ens/catalog/explanations';
+import { MATURITY_LEVELS } from '../../../common/ens/maturity/compliance-level';
+import { scaleFor } from '../../../common/ens/maturity/scale';
 
 (pdfMake as any).vfs = (pdfFonts as any).pdfMake ? (pdfFonts as any).pdfMake.vfs : (pdfFonts as any).vfs;
 
@@ -267,8 +271,17 @@ const ControlReport = ({
     return String(value);
   };
 
+  const scaleThresholds = scaleFor(activeConfiguration, controlId, agentId);
+  const complianceRequiredText = (() => {
+    const compliance = (complianceResult as { compliance?: { level: number; required: number; category: string; percent: number } } | undefined)?.compliance;
+    return compliance
+      ? `L${compliance.required} en ${compliance.category}; alcanzado L${compliance.level} con ${compliance.percent} %`
+      : 'L2 en BÁSICO, L3 en MEDIO, L4 en ALTO';
+  })();
+
   const parameterRows = parameterResults.map(parameter => ({
     parameter: `${parameter.id} · ${parameter.label}`,
+    description: explainParameter(controlId, parameter.id)?.text || '',
     status: parameter.status,
     value: hostParameter(controlId, parameter.id)?.value ?? formatParameterValue(parameter.value, describeParameterForMachine(activeConfiguration, controlId, agentId, parameter.id)?.matchMode),
     origin: hostParameter(controlId, parameter.id)?.origin ?? describeParameterForMachine(activeConfiguration, controlId, agentId, parameter.id)?.origin ?? '',
@@ -440,7 +453,7 @@ const ControlReport = ({
       render: (parameter: string, item: { ifNotConfigured: string }) => (
         <>
           <EuiText size='xs'>
-            {parameter} <ProvenanceLabel provenance={ENS_PROPOSAL_TEXT_PROVENANCE} />
+            <ExplainedText text={parameter} /> <ProvenanceLabel provenance={ENS_PROPOSAL_TEXT_PROVENANCE} />
           </EuiText>
           {item.ifNotConfigured ? (
             <EuiText size='xs' color='subdued'>
@@ -726,7 +739,11 @@ const ControlReport = ({
               ],
               ...parameterRows.map(parameter => [
                 {
-                  text: [pdfRowLabel(), `${parameter.parameter}: ${parameter.value}${parameter.origin ? ` (${parameter.origin})` : ''}`],
+                  text: [
+                    pdfRowLabel(),
+                    `${parameter.parameter}: ${parameter.value}${parameter.origin ? ` (${parameter.origin})` : ''}`,
+                    ...(parameter.description ? [{ text: `\n${parameter.description}`, color: PDF_SECONDARY_COLOR }] : []),
+                  ],
                   style: 'td',
                 },
                 { text: parameter.required, style: 'td' },
@@ -754,6 +771,32 @@ const ControlReport = ({
           },
           layout: 'lightHorizontalLines',
         },
+
+        { text: 'Escala de madurez', style: 'h3', margin: [0, 16, 0, 6] },
+        { text: `Exigido: ${complianceRequiredText}`, style: 'sub', margin: [0, 0, 0, 6] },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['auto', 'auto', 'auto', '*'],
+            body: [
+              [
+                { text: 'Nivel', style: 'th' },
+                { text: 'Nombre', style: 'th' },
+                { text: 'Desde', style: 'th' },
+                { text: 'Significado', style: 'th' },
+              ],
+              ...MATURITY_LEVELS.map(level => [
+                { text: `L${level.level}`, style: 'td', bold: true },
+                { text: level.name, style: 'td' },
+                { text: `${scaleThresholds[level.level - 1] ?? 0} %`, style: 'td' },
+                { text: level.meaning, style: 'td' },
+              ]),
+            ],
+          },
+          layout: 'lightHorizontalLines',
+          margin: [0, 0, 0, 6],
+        },
+        { text: 'P-ATT · Atestaciones documentales: documentos que acreditan los requisitos sin evidencia técnica (requisito | referencia | enlace | fecha | responsable).', style: 'sub', margin: [0, 0, 0, 16] },
 
         ...buildTemplateCorrespondencePdf(controlId),
       ],
@@ -817,7 +860,7 @@ const ControlReport = ({
   }
 
   return (
-    <>
+    <ExplainedControl.Provider value={controlId}>
       <EuiButtonEmpty size='s' flush='left' iconType='arrowRight' iconSide='right' onClick={() => openControl(controlId)}>
         {`Ver ${controlId} en Detalle del control`}
       </EuiButtonEmpty>
@@ -918,7 +961,7 @@ const ControlReport = ({
       <EuiButton iconType='download' size='s' fill onClick={exportPdf} isDisabled={!exportable}>
         Exportar PDF
       </EuiButton>
-    </>
+    </ExplainedControl.Provider>
   );
 };
 
